@@ -20,3 +20,5 @@ __all__ = [
 	'write_to_xl', 'read_xl', 
 	'device', 'DeviceDB',
 	]
+
+__ver__ = "0.0.1"
