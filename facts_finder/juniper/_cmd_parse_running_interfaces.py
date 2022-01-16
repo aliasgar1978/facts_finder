@@ -6,7 +6,6 @@ from nettoolkit import DIC, JSet
 
 from facts_finder.common import verifid_output
 from facts_finder.common import blank_line
-from facts_finder.common import get_string_trailing
 from facts_finder.juniper.statics import JUNIPER_IFS_IDENTIFIERS
 from facts_finder.juniper.common import get_subnet
 from facts_finder.juniper.common import get_v6_subnet

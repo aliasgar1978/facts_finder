@@ -3,11 +3,8 @@
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
 
-from facts_finder.common import remove_domain
 from facts_finder.common import verifid_output
-from facts_finder.common import blank_line
-from facts_finder.common import get_string_trailing
-from facts_finder.cisco.common import standardize_if
+
 # ------------------------------------------------------------------------------
 
 def get_chassis_hardware(cmd_op, *args):

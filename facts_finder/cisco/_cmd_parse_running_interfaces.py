@@ -4,7 +4,6 @@
 from collections import OrderedDict
 from nettoolkit import DIC
 
-from facts_finder.cisco.common import standardize_if
 from facts_finder.common import verifid_output
 from facts_finder.common import blank_line
 from facts_finder.cisco.common import get_interface_cisco

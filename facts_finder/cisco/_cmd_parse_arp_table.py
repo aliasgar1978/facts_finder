@@ -5,8 +5,6 @@ from facts_finder.cisco.common import standardize_if
 from facts_finder.common import verifid_output
 from facts_finder.common import blank_line
 from facts_finder.common import standardize_mac
-from facts_finder.common import mac_4digit_separated
-from facts_finder.common import mac_2digit_separated
 
 # ------------------------------------------------------------------------------
 
