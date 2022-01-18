@@ -4,6 +4,7 @@
 from collections import OrderedDict
 from nettoolkit import DIC, JSet
 
+from facts_finder.juniper._cmd_parse_running import Running
 from facts_finder.common import verifid_output
 from facts_finder.common import blank_line
 from facts_finder.juniper.statics import JUNIPER_IFS_IDENTIFIERS
@@ -14,13 +15,10 @@ from facts_finder.juniper.common import get_vlans_juniper
 merge_dict = DIC.merge_dict
 # ------------------------------------------------------------------------------
 
-class RunningInterfaces():
+class RunningInterfaces(Running):
 
 	def __init__(self, cmd_op):
-		self.cmd_op = cmd_op
-		JS = JSet(input_list=cmd_op)
-		JS.to_set
-		self.set_cmd_op = verifid_output(JS.output)
+		super().__init__(cmd_op)
 		self.interface_dict = OrderedDict()
 
 	def interface_read(self, func):
@@ -108,7 +106,19 @@ class RunningInterfaces():
 		if not port_dict.get('port_mode'): port_dict['port_mode'] = spl[-1]
 
 
+	def interface_description(self):
+		func = self.get_int_description
+		merge_dict(self.interface_dict, self.interface_read(func))
 
+	@staticmethod
+	def get_int_description(port_dict, l, spl):
+		description = ""
+		if l.startswith("set interfaces ") and "description" in spl:
+			desc_idx = spl.index("description")
+			description = " ".join(spl[desc_idx+1:])
+		if description and not port_dict.get('description'):
+			port_dict['description'] = description
+		return port_dict
 
 	# # Add more interface related methods as needed.
 
@@ -124,6 +134,7 @@ def get_interfaces_running(cmd_op, *args):
 	R.interface_v6_ips()
 	R.interface_vlans()
 	R.interface_mode()
+	R.interface_description()
 	# # update more interface related methods as needed.
 
 	return R.interface_dict
@@ -173,9 +184,6 @@ def get_v6_ip(v6ip):
 
 def get_v6_mask(v6ip):
 	return v6ip.split("/")[1]
-
-# def get_v6_subnet(v6ip):
-# 	return get_v6_subnet(v6ip)
 
 def is_v6_addressline(spl, line):
 	if line.find("family inet6") == -1: return None
