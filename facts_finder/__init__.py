@@ -1,4 +1,5 @@
-
+"""generate Network Devices (Switch/Router) facts from its configuration outputs.
+"""
 
 # ------------------------------------------------------------------------------
 # BELOW ARE FUNCTION IMPORTED AND PUBLISHED OUT FOR TESTING ONLY.
@@ -16,9 +17,10 @@ from .merger import device
 from .merger import DeviceDB
 
 
+
 __all__ = [ 
 	'write_to_xl', 'read_xl', 
 	'device', 'DeviceDB',
 	]
 
-__ver__ = "0.0.2"
+__ver__ = "0.0.1"

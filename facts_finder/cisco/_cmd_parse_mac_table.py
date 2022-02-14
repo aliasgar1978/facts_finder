@@ -10,7 +10,20 @@ from facts_finder.common import mac_2digit_separated
 # ------------------------------------------------------------------------------
 
 def get_mac_address_table(cmd_op, *args):
-	# cmd_op = command output in list/multiline string.
+	"""parser - show mac address-table command output
+
+	Parsed Fields:
+		* port/interface
+		* neighbor mac
+		* neighbor mac2
+		* neighbor mac4
+
+	Args:
+		cmd_op (list, str): command output in list/multiline string.
+
+	Returns:
+		dict: output dictionary with parsed fields
+	"""	
 	cmd_op = verifid_output(cmd_op)
 	op_dict = {}
 	start = False

@@ -9,7 +9,19 @@ from facts_finder.common import standardize_mac
 # ------------------------------------------------------------------------------
 
 def get_arp_table(cmd_op, *args):
-	# cmd_op = command output in list/multiline string.
+	"""parser - show ip arp command output
+
+	Parsed Fields:
+		* port/interface 
+		* ip address
+		* mac address
+
+	Args:
+		cmd_op (list, str): command output in list/multiline string.
+
+	Returns:
+		dict: output dictionary with parsed fields
+	"""    	
 	cmd_op = verifid_output(cmd_op)
 	op_dict = {}
 	start = False

@@ -10,6 +10,21 @@ from facts_finder.common import get_string_trailing
 # ------------------------------------------------------------------------------
 
 def get_interface_status(cmd_op, *args):
+	"""parser - show int status command output
+
+	Parsed Fields:
+		* port/interface
+		* port_type
+		* duplex
+		* speed
+		* port_status
+
+	Args:
+		cmd_op (list, str): command output in list/multiline string.
+
+	Returns:
+		dict: output dictionary with parsed fields
+	"""	
 	# cmd_op = command output in list/multiline string.
 	cmd_op = verifid_output(cmd_op)
 	int_status_dict = {}

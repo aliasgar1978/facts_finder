@@ -7,8 +7,20 @@ from facts_finder.cisco.common import standardize_if
 # ------------------------------------------------------------------------------
 
 def get_lldp_neighbour(cmd_op, *args, dsr=True):
-	# cmd_op = command output in list/multiline string.
-	# dsr = DOMAIN SUFFIX REMOVAL
+	"""parser - show lldp neighbor command output
+
+	Parsed Fields:
+		* port/interface 
+		* neighbor hostname
+		* neighbor interface
+
+	Args:
+		cmd_op (list, str): command output in list/multiline string.
+		dsr (bool, optional): DOMAIN SUFFIX REMOVAL. Defaults to True.
+
+	Returns:
+		dict: output dictionary with parsed fields
+	"""
 	cmd_op = verifid_output(cmd_op)
 	nbr_d, remote_hn = {}, ""
 	nbr_table_start = False
