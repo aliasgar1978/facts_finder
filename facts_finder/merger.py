@@ -14,17 +14,36 @@ from facts_finder.juniper_parser import juniper_cmds_op_hierachy_level
 merge_dict = DIC.merge_dict
 
 class DeviceDB():
+	"""class defining collection of devices database
+	"""    	
 
 	def __init__(self):
+		"""initialize object by creating a blank database
+		"""    		
 		self.config = OrderedDict()
 
 	def __getitem__(self, k): return self.config[k]
 	def __setitem__(self, k, v): self.config[k] = v
 	def __iter__(self):
 		for k, v in self.config.items(): yield k,v
-	def keys(self): return self.config.keys()
+	def keys(self): 
+		"""keys, sections of configuration
+
+		Returns:
+			list: list of keys/sections
+		"""		
+		return self.config.keys()
 
 	def evaluate(self, device):
+		"""evaluate for each command, and update hierarcy for each parsed output
+		and converts dictionary to dataframe.
+
+		Args:
+			device (Cisco, Juniper): Cisco or Juniper objects from parsers
+
+		Returns:
+			DataFrame: DataFrame with all parsed output
+		"""    		
 		cl_hl = get_cmd_hierachylevels(device)
 		cmds_list = cl_hl['cmds_list']
 		hierachy_levels = cl_hl['hierachy_levels']
@@ -39,12 +58,26 @@ class DeviceDB():
 		return self.convert_dict_to_df()
 
 	def update_hierarcy(self, hierarchy, content=None):
+		"""update the content to device config at given hierarcy/level
+
+		Args:
+			hierarchy (hashable): hierarchy where content to be updated
+			content (dict, optional): details to be updated. Defaults to None.
+
+		Returns:
+			dict: merged dictionary by adding the content at given hierarchy level
+		"""    		
 		if not content: return None
 		if not self.config.get(hierarchy):
 			self[hierarchy] = OrderedDict()
 		merge_dict(self.config[hierarchy], content)
 
 	def convert_dict_to_df(self):
+		"""convert the dictionary to dataframe
+
+		Returns:
+			dict: dictionary of dataframe
+		"""    		
 		df_dict = {}
 		for k, v in self:
 			df = dataframe_generate(v)
@@ -54,12 +87,34 @@ class DeviceDB():
 
 
 def device(file):
+	"""get the device dynamically based on captured file.
+
+	Args:
+		file (file): captured file
+
+	Raises:
+		TypeError: unrecognized file type will throw exception
+
+	Returns:
+		Cisco, Juniper: detected Cisco or Juniper objects from parsers
+	"""    	
 	dev_manu = get_device_manufacturar(file)
 	if dev_manu == "Cisco":  return Cisco(file)
 	if dev_manu == "Juniper": return Juniper(file)
 	raise TypeError("Device configuration Unidentified, please re-check")
 
 def get_cmd_hierachylevels(device):
+	"""get the dictionary of hierarcy levels  and commands list based on device type
+
+	Args:
+		device (Cisco, Juniper): Cisco or Juniper objects from parsers
+
+	Raises:
+		TypeError: unrecognized device type will throw exception
+
+	Returns:
+		dict: dictionary of hierarcy levels  and commands list
+	"""    	
 	if isinstance(device, Cisco):
 		cmds_list = cisco_cmds_list
 		hierachy_levels = cisco_cmds_op_hierachy_level
