@@ -1,4 +1,6 @@
+""" static variables used for Cisco defined here.
 
+"""
 # ------------------------------------------------------------------------------
 # Standard number of characters for identifing interface short-hand
 # ------------------------------------------------------------------------------
