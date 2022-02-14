@@ -127,10 +127,10 @@ Detailed How To
 
 	command output format should be as follows
 
-		# ===================================================	
-		# output for command: show configuration | no-more
-		# ===================================================			
-		<<output of command>> ...
+		* # ===================================================	
+		* # output for command: show configuration | no-more
+		* # ===================================================			
+		* <<output of command>> ...
 
 
 	* No hostname-prompt requires to be mentioned in command line.
