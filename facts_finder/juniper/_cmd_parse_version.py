@@ -8,7 +8,18 @@ from facts_finder.common import blank_line
 # ------------------------------------------------------------------------------
 
 def get_version(cmd_op, *args):
-	# cmd_op = command output in list/multiline string.
+	"""parser - show version command output
+
+	Parsed Fields:
+		* version
+		* model
+
+	Args:
+		cmd_op (list, str): command output in list/multiline string.
+
+	Returns:
+		dict: output dictionary with parsed fields
+	"""
 	cmd_op = verifid_output(cmd_op)
 	op_dict = OrderedDict()
 	version, model = "", ""

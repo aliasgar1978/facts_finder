@@ -8,8 +8,18 @@ from facts_finder.common import verifid_output
 # ------------------------------------------------------------------------------
 
 def get_chassis_hardware(cmd_op, *args):
-	# cmd_op = command output in list/multiline string.
-	# arg = DeviceDB object from merger
+	"""parser - show chassis hardware command output
+
+	Parsed Fields:
+		* port/interface 
+		* port_type
+
+	Args:
+		cmd_op (list, str): command output in list/multiline string.
+
+	Returns:
+		dict: output dictionary with parsed fields
+	"""
 	cmd_op = verifid_output(cmd_op)
 	op_dict = OrderedDict()
 	toggle = False
@@ -27,18 +37,28 @@ def get_chassis_hardware(cmd_op, *args):
 
 class JuniperChassisHardware():
 	"""read the show chassis hardware output from juniper and returns port type(sfp)"""
+
 	def __init__(self, output):
+		"""initialize and read output
+
+		Args:
+			output (list): show chassis hardware output in list
+		"""    		
 		self.fpc, self.pic = '', ''
 		self.port = ''
 		self.ports = {}
-		self.read(output)
+		self._read(output)
 
-	def read(self, output):
+	def _read(self, output):
+		"""read the output and adds line to port info
+		"""    		
 		for l in output:
 			if not l.strip(): continue
-			self.add(l)
+			self._add(l)
 
-	def add(self, line):
+	def _add(self, line):
+		"""adds port info from line 
+		"""    		
 		# if line.upper().find("BUILTIN") > 0: return         # Some of juniper output are incosistent so removed.
 		spl = line.strip().split()
 		if not spl[0].upper() in ("FPC", "PIC", "XCVR"): return
@@ -53,7 +73,14 @@ class JuniperChassisHardware():
 			self.port=''
 
 	def get_sfp(self, port):
-		"""return port type/sfp for given port"""
+		"""get the SFP details for given port
+
+		Args:
+			port (str): port number only (port type to be excluded)
+
+		Returns:
+			str: SFP type
+		"""    		
 		for p, sfp in self.ports.items():
 			spl_port = port.split("-")
 			if spl_port[-1] == p:

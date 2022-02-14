@@ -1,3 +1,6 @@
+""" static variables used for Juniper defined here.
+
+"""
 
 # ------------------------------------------------------------------------------
 JUNIPER_IFS_IDENTIFIERS = {

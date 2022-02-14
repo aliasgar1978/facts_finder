@@ -11,7 +11,21 @@ from facts_finder.common import mac_2digit_separated
 # ------------------------------------------------------------------------------
 
 def get_arp_table(cmd_op, *args):
-	# cmd_op = command output in list/multiline string.
+	"""parser - show arp command output
+
+	Parsed Fields:
+		* port/interface 
+		* ip
+		* mac, mac2, mac4
+		* dns
+		* vlan
+
+	Args:
+		cmd_op (list, str): command output in list/multiline string.
+
+	Returns:
+		dict: output dictionary with parsed fields
+	"""
 	cmd_op = verifid_output(cmd_op)
 	op_dict = OrderedDict()
 
@@ -27,12 +41,22 @@ def get_arp_table(cmd_op, *args):
 		if dns.isdigit(): dns = spl[2]
 		vlan = spl[3]	
 		p = spl[4].replace("[","").replace("]","").split(".")[0]
-		add_arp(op_dict, p, _mac, ip, dns, vlan)
-		add_arp(op_dict, vlan, _mac, ip, dns, vlan)
+		_add_arp(op_dict, p, _mac, ip, dns, vlan)
+		_add_arp(op_dict, vlan, _mac, ip, dns, vlan)
 		## add/modify for ae interface as well to add arp if need.
 	return op_dict
 # ------------------------------------------------------------------------------
-def add_arp(op_dict, p, _mac, ip, dns, vlan):
+def _add_arp(op_dict, p, _mac, ip, dns, vlan):
+	"""add the detais to output dictionary
+
+	Args:
+		op_dict (dict): dicationary with/without info
+		p (str): port
+		_mac (str): mac address
+		ip (str): ip address
+		dns (str): dns name
+		vlan (str): vlan number
+	"""    	
 	if not op_dict.get(p): op_dict[p] = {'neighbor': {}}
 	nbr = op_dict[p]['neighbor']
 	if not nbr.get("mac"): nbr["mac"] = set()
