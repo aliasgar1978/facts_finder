@@ -11,7 +11,7 @@ Requirements
 Installation
 ==================
 
-Install the fwOper package::
+Install the facts_finder package::
 
     pip install --upgrade facts_finder
 	

@@ -77,7 +77,7 @@ juniper_commands_parser_map = {
 	'show lldp neighbors': get_lldp_neighbour,
 	'show configuration': (get_interfaces_running, get_running_system),
 	'show version': get_version,
-	'show interfaces descriptions': None,# get_int_description,
+	'show interfaces descriptions': None,# get_int_description, # // removed as covered from running //
 	'show interfaces terse': None,
 	'show chassis hardware': get_chassis_hardware,
 	'show arp': get_arp_table,
