@@ -2,9 +2,8 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
-from nettoolkit import DIC
+from nettoolkit import DIC, decrypt_type7
 
-from facts_finder.cpw_cracker import decrypt_type7
 from facts_finder.common import verifid_output
 from facts_finder.common import blank_line
 

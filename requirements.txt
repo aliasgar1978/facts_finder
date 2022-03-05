@@ -1,4 +1,4 @@
-nettoolkit
+nettoolkit>=0.0.14
 pandas
 openpyxl
 capture_it
