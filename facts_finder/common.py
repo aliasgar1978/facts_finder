@@ -2,6 +2,7 @@
 # ------------------------------------------------------------------------------
 
 import pandas as pd
+from nettoolkit import IPv4
 # ------------------------------------------------------------------------------
 
 ### IDENTIFER OF COMMAND LINE ### >
@@ -221,3 +222,18 @@ def dataframe_generate(d):
 		new_d[k] = flatten(v, "")
 	return pd.DataFrame(new_d).fillna("").T
 # ------------------------------------------------------------------------------
+
+
+def add_additional_ip_columns(port_dict, **kwargs):
+	v4obj = IPv4(port_dict['v4']['subnet'])
+	for _, v in kwargs.items():
+		try:
+			if v == 'both':
+				port_dict['v4']['subnet+'+str(_)] = v4obj.n_thIP(int(_))
+				port_dict['v4']['subnet+'+str(_)+"/mm"] = v4obj.n_thIP(int(_), withMask=True)
+			elif v is True:
+				port_dict['v4']['subnet+'+str(_)+"/mm"] = v4obj.n_thIP(int(_), withMask=True)
+			elif v is False:
+				port_dict['v4']['subnet+'+str(_)] = v4obj.n_thIP(int(_))
+		except:
+			pass

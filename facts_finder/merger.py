@@ -1,5 +1,6 @@
 
 from collections import OrderedDict
+from netmiko import InLineTransfer
 from nettoolkit import DIC
 
 from facts_finder.common import get_device_manufacturar
@@ -33,6 +34,21 @@ class DeviceDB():
 			list: list of keys/sections
 		"""		
 		return self.config.keys()
+
+	def add_extra_v4_ips(self, device, n, mask='both'):
+		"""additional columns for given nth ip's will be added for the subnet.
+		additional subnet+[n] and/or subnet+[n]/mm columns will be added.
+
+		Args:
+			device (Cisco, Juniper): Device type (_model)
+			n (str, int, iterator, dict): provide for which nth ip's the columns needs to be added.
+			mask (str, optional): Options = True/False/'both'. Defaults to 'both'. input n as dict will override this parameter.
+		"""
+		d = _normalize_extra_v4_ips_dict(n, mask)
+		if isinstance(device, Cisco):
+			get_cmd_hierachylevels(device)['cmds_list']['sh run'] = d
+		if isinstance(device, Juniper):
+			get_cmd_hierachylevels(device)['cmds_list']['show configuration'] = d
 
 	def evaluate(self, device):
 		"""evaluate for each command, and update hierarcy for each parsed output
@@ -125,3 +141,24 @@ def get_cmd_hierachylevels(device):
 		raise TypeError("Device configuration Unidentified, please re-check")
 	return {'cmds_list': cmds_list, 'hierachy_levels': hierachy_levels}
 
+
+# normalize various input data to a common dict format.
+def _normalize_extra_v4_ips_dict(n, mask):
+	d = {}
+	if isinstance(n, dict):
+		for k, v in n.items():
+			if isinstance(k, (tuple, set, list)):
+				try:
+					for _ in k: d[str(_)] = v
+				except: pass
+			elif isinstance(k, (str, int)):
+				try: d[str(k)] = v
+				except: pass
+	elif isinstance(n, (tuple, list, set, range)):
+		try:
+			for _ in n: d[str(_)] = mask
+		except: pass
+	elif isinstance(n, (str, int)):
+		try: d[str(n)] = mask
+		except: pass
+	return d

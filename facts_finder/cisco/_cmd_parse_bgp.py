@@ -194,7 +194,7 @@ def get_bgp_af_running(cmd_op, *args):
 
 	return AF.op_dict
 
-def get_bgp_running(cmd_op, *args):
+def get_bgp_running(cmd_op, *args, **kwargs):
 	"""defines set of methods executions. to get various bgp native parameters.
 	uses BGP in order to get all.
 

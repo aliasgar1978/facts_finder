@@ -41,7 +41,7 @@ class RunningSystem():
 # ------------------------------------------------------------------------------
 
 
-def get_system_running(cmd_op, *args):
+def get_system_running(cmd_op, *args, **kwargs):
 	"""defines set of methods executions. to get various system parameters.
 	uses RunningSystem in order to get all.
 

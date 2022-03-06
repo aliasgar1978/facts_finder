@@ -62,7 +62,7 @@ cisco_cmds_list = OrderedDict([
 	('sh int desc', {}),
 	('show mac address-table', {}),
 	('sh ip arp', {}),
-	('sh run', {}),
+	('sh run', {} ),
 	('sh ver', {}),
 	## ADD More as grow ##
 ])

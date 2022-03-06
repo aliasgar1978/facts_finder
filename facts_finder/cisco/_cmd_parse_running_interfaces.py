@@ -2,10 +2,11 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
-from nettoolkit import DIC
+from nettoolkit import DIC, IPv4
 
 from facts_finder.common import verifid_output
 from facts_finder.common import blank_line
+from facts_finder.common import add_additional_ip_columns
 from facts_finder.cisco.common import get_interface_cisco
 from facts_finder.cisco.common import get_inet_address
 from facts_finder.cisco.common import get_subnet
@@ -31,7 +32,7 @@ class RunningInterfaces():
 		self.cmd_op = verifid_output(cmd_op)
 		self.interface_dict = OrderedDict()
 
-	def interface_read(self, func):
+	def interface_read(self, func, **kwargs):
 		"""directive function to get the various interface level output
 
 		Args:
@@ -55,17 +56,17 @@ class RunningInterfaces():
 				int_toggle = True
 				continue
 			if int_toggle:
-				func(port_dict, l)
+				func(port_dict, l, **kwargs)
 		return ports_dict
 
-	def interface_ips(self):
+	def interface_ips(self, **kwargs):
 		"""update the interface ipv4 ip address details
 		"""    		
 		func = self.get_ip_details
-		merge_dict(self.interface_dict, self.interface_read(func))
+		merge_dict(self.interface_dict, self.interface_read(func, **kwargs))
 
 	@staticmethod
-	def get_ip_details(port_dict, l):
+	def get_ip_details(port_dict, l, **kwargs):
 		"""parser function to update interface ipv4 ip address details
 
 		Args:
@@ -82,7 +83,8 @@ class RunningInterfaces():
 		port_dict['v4']['ip'] = get_int_ip(address)
 		port_dict['v4']['mask'] = get_int_mask(address)
 		port_dict['v4']['subnet'] = get_subnet(address)
-
+		if not kwargs: return None
+		add_additional_ip_columns(port_dict, **kwargs)
 
 	def interface_v6_ips(self):
 		"""update the interface ipv6 ip address details
@@ -202,7 +204,7 @@ class RunningInterfaces():
 # ------------------------------------------------------------------------------
 
 
-def get_interfaces_running(cmd_op, *args):
+def get_interfaces_running(cmd_op, *args, **kwargs):
 	"""defines set of methods executions. to get various inteface parameters.
 	uses RunningInterfaces in order to get all.
 
@@ -212,8 +214,9 @@ def get_interfaces_running(cmd_op, *args):
 	Returns:
 		dict: output dictionary with parsed with system fields
 	"""    	
+	# print(*args)
 	R  = RunningInterfaces(cmd_op)
-	R.interface_ips()
+	R.interface_ips(**kwargs)
 	R.interface_v6_ips()
 	R.interface_vlans()
 	R.interface_channel_group()

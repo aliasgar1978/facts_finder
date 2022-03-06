@@ -7,6 +7,7 @@ from nettoolkit import DIC, JSet
 from facts_finder.juniper._cmd_parse_running import Running
 from facts_finder.common import verifid_output
 from facts_finder.common import blank_line
+from facts_finder.common import add_additional_ip_columns
 from facts_finder.juniper.statics import JUNIPER_IFS_IDENTIFIERS
 from facts_finder.juniper.common import get_subnet
 from facts_finder.juniper.common import get_v6_subnet
@@ -28,7 +29,7 @@ class RunningInterfaces(Running):
 		super().__init__(cmd_op)
 		self.interface_dict = OrderedDict()
 
-	def interface_read(self, func):
+	def interface_read(self, func, **kwargs):
 		"""directive function to get the various interface level output
 
 		Args:
@@ -56,18 +57,18 @@ class RunningInterfaces(Running):
 			if not p: continue
 			if not ports_dict.get(p): ports_dict[p] = {}
 			port_dict = ports_dict[p]
-			func(port_dict, l, spl)
+			func(port_dict, l, spl, **kwargs)
 		return ports_dict
 
 
-	def interface_ips(self):
+	def interface_ips(self, **kwargs):
 		"""update the interface ipv4 ip address details
 		"""    		
 		func = self.get_ip_details
-		merge_dict(self.interface_dict, self.interface_read(func))
+		merge_dict(self.interface_dict, self.interface_read(func, **kwargs))
 
 	@staticmethod
-	def get_ip_details(port_dict, l, spl):
+	def get_ip_details(port_dict, l, spl, **kwargs):
 		"""parser function to update interface ipv4 ip address details
 
 		Args:
@@ -84,6 +85,8 @@ class RunningInterfaces(Running):
 		port_dict['v4']['ip'] = _get_v4_ip(spl, l)
 		port_dict['v4']['mask'] = _get_v4_mask(spl, l)
 		port_dict['v4']['subnet'] = subnet
+		if not kwargs: return None
+		add_additional_ip_columns(port_dict, **kwargs)
 
 	def interface_v6_ips(self):
 		"""update the interface ipv6 ip address details
@@ -196,7 +199,7 @@ class RunningInterfaces(Running):
 # ------------------------------------------------------------------------------
 
 
-def get_interfaces_running(cmd_op, *args):
+def get_interfaces_running(cmd_op, *args, **kwargs):
 	"""defines set of methods executions. to get various inteface parameters.
 	uses RunningInterfaces in order to get all.
 
@@ -207,7 +210,7 @@ def get_interfaces_running(cmd_op, *args):
 		dict: output dictionary with parsed with system fields
 	"""    	
 	R  = RunningInterfaces(cmd_op)
-	R.interface_ips()
+	R.interface_ips(**kwargs)
 	R.interface_v6_ips()
 	R.interface_vlans()
 	R.interface_mode()
