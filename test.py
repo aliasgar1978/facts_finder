@@ -22,4 +22,5 @@ device_database.add_extra_v4_ips(_model, n=range(1, 6), mask='both')				# pass n
 
 df_dict = device_database.evaluate(_model)		# evaluate object by providing necessary model, and return dictionary
 
+
 write_to_xl(output, df_dict, index=True, overwrite=True)	# write output to Excel

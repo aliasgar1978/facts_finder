@@ -11,3 +11,4 @@ from ._cmd_parse_arp_table import get_arp_table
 from ._cmd_parse_running_interfaces import get_interfaces_running
 from ._cmd_parse_version import get_version
 from ._cmd_parse_running_system import get_running_system
+from ._cmd_parse_bgp import get_bgp_running
