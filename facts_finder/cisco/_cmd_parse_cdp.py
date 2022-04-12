@@ -25,6 +25,7 @@ def get_cdp_neighbour(cmd_op, *args, dsr=True):
 	cmd_op = verifid_output(cmd_op)
 	nbr_d, remote_hn = {}, ""
 	nbr_table_start = False
+	skipnext = False
 	for i, line in enumerate(cmd_op):
 		line = line.strip()
 		dbl_spl = line.split("  ")
@@ -42,11 +43,20 @@ def get_cdp_neighbour(cmd_op, *args, dsr=True):
 		if not remote_hn:
 			remote_hn = dbl_spl[0].strip()
 			if dsr: remote_hn = remove_domain(remote_hn)
-		if len(line.split()) == 1:  continue
+		if len(line.split()) == 1:
+			skipnext = True
+			continue
+		if skipnext:
+			skipnext = False
+			continue
 
+		# print(line)
 		# // LOCAL/NBR INTERFACE, NBR PLATFORM //
 		local_if = standardize_if("".join(dbl_spl[0].split()))
-		remote_if = standardize_if("".join(dbl_spl[-1].split()[1:]))
+		try:
+			remote_if = standardize_if("".join(dbl_spl[-1].split()[1:]))
+		except:
+			remote_if = standardize_if("".join(dbl_spl[-1].strip()))
 		remote_plateform = dbl_spl[-1].split()[0]
 
 		# SET / RESET

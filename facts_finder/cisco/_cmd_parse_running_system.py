@@ -37,6 +37,20 @@ class RunningSystem():
 					if l.startswith('ip address'):
 						return(l.strip().split()[-2])
 
+	def system_exec_banner(self):
+		"""get the device exec banner
+		"""
+		banner, banner_start = "", False
+		for l in self.cmd_op:
+			if l.startswith("banner exec "):
+				banner_start = True
+				spl = l.strip().split()
+				banner_starter = spl[2]
+				l = " ".join(spl[3:])
+			if banner_start: banner += l
+			if banner_start and l.strip().endswith(banner_starter):
+				break
+		return banner
 
 # ------------------------------------------------------------------------------
 
@@ -53,6 +67,7 @@ def get_system_running(cmd_op, *args, **kwargs):
 	"""    	
 	R  = RunningSystem(cmd_op)
 	R.system_dict['management_ip'] = R.system_management_ip()
+	R.system_dict['banner'] = R.system_exec_banner()
 	# # update more interface related methods as needed.
 
 	return R.system_dict
