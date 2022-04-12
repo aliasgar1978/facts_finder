@@ -39,10 +39,12 @@ def get_arp_table(cmd_op, *args):
 		ip = spl[1]
 		dns = spl[2].split(".")[0]
 		if dns.isdigit(): dns = spl[2]
-		vlan = spl[3]	
-		p = spl[4].replace("[","").replace("]","").split(".")[0]
-		_add_arp(op_dict, p, _mac, ip, dns, vlan)
-		_add_arp(op_dict, vlan, _mac, ip, dns, vlan)
+		try:
+			vlan = spl[3]	
+			p = spl[4].replace("[","").replace("]","").split(".")[0]
+			_add_arp(op_dict, p, _mac, ip, dns, vlan)
+			_add_arp(op_dict, vlan, _mac, ip, dns, vlan)
+		except:pass
 		## add/modify for ae interface as well to add arp if need.
 	return op_dict
 # ------------------------------------------------------------------------------
