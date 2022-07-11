@@ -183,7 +183,11 @@ def mac_4digit_separated(mac):
 	return s
 
 # ------------------------------------------------------------------------------
-from collections import MutableMapping
+try:
+	from collections import MutableMapping
+except:
+	from collections.abc import MutableMapping
+
 def flatten(d, parent_key='', sep='_'):
 	"""flattens the dictionary
 
