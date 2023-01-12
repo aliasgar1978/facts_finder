@@ -376,14 +376,14 @@ class RunningInterfaces(Running):
 def get_physical_port_number(port):
 	""" physical interface - interface number calculator.
 	"""
-    port = port.split(".")[0]
-    port_lst = port.split("-")[-1].split("/")
-    port_id = 0
-    for i, n in enumerate(reversed(port_lst)):
-        multiplier = 100**i
-        nm = int(n)*multiplier
-        port_id += nm
-    return port_id
+	port = port.split(".")[0]
+	port_lst = port.split("-")[-1].split("/")
+	port_id = 0
+	for i, n in enumerate(reversed(port_lst)):
+		multiplier = 100**i
+		nm = int(n)*multiplier
+		port_id += nm
+	return port_id
 
 def get_interfaces_running(cmd_op, *args):
 	"""defines set of methods executions. to get various inteface parameters.
