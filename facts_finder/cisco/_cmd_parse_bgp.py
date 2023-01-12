@@ -41,20 +41,24 @@ class BGP_Papa():
 		Returns:
 			None: None
 		"""    		
-		if spl[2] == "remote-as": op_dict['remote-as'] = spl[-1]
+		if spl[2] == "remote-as": op_dict['bgp_peer_as'] = spl[-1]
 		if spl[2] == "update-source": op_dict['update-source'] = spl[-1]
 		if spl[2] == "ebgp-multihop": op_dict['ebgp-multihop'] = spl[-1]
 		if spl[2] == "unsuppress-map" : op_dict["unsuppress-map"] = spl[-1]
-		if spl[-2] == "peer-group": op_dict["peer-group"] = spl[-1]
+		if spl[-2] == "peer-group": 
+			op_dict["bgp_peergrp"] = spl[-1]
+			op_dict["bgp_peer_ip"] = spl[1]
+		if spl[-1] == "peer-group": 
+			op_dict["bgp_peergrp"] = spl[1]
 
 		if spl[2] == "password":
-			op_dict["password"] = decrypt_type7(spl[-1]) if spl[3] == "7" else spl[-1]
+			op_dict["bgp_peer_password"] = decrypt_type7(spl[-1]) if spl[3] == "7" else spl[-1]
 
 		if spl[2] == "route-map" and spl[-1] == "in": op_dict["route-map in"] = spl[-2]
 		if spl[2] == "route-map" and spl[-1] == "out": op_dict["route-map out"] = spl[-2]
 
 		if spl[2] == "local-as": op_dict['local-as'] = spl[3]
-		if spl[2] == "description": op_dict['description'] = " ".join(spl[3:])
+		if spl[2] == "description": op_dict['bgp_peer_description'] = " ".join(spl[3:])
 		## add more as necessary ##
 		return op_dict
 
@@ -78,7 +82,7 @@ class AddressFamily(BGP_Papa):
 			spl = l.strip().split()
 			if l.startswith(" address-family "):
 				op_dict['type'] = spl[1]
-				op_dict['vrf'] = spl[3]
+				op_dict['bpg_vrf'] = spl[3]
 				continue
 			if spl[1] == "router-id ": 
 				op_dict['router_id'] = spl[-1]
@@ -173,7 +177,7 @@ def merge_vrftype_name_inkey(d):
 			vrf = vrftype_spl[-1]
 			af = vrftype_spl[-3]
 			update_dict[nbr] = vrfattr
-			update_dict[nbr]['vrf'] = vrf
+			update_dict[nbr]['bgp_vrf'] = vrf
 			update_dict[nbr]['address-family'] = af
 	return update_dict
 

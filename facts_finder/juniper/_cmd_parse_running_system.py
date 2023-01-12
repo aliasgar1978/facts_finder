@@ -84,11 +84,13 @@ class RunningSystem(Running):
 		Returns:
 			None: None
 		"""    		
-		dns = ""
+		dns = ''
 		if l.startswith("set system name-server"): dns = spl[-1]
-		if dns and not op_dict.get('name_servers'):
-			op_dict['name_servers'] = set()
-		if dns: op_dict['name_servers'].add(dns)
+		if dns:
+			if op_dict.get('name_servers'):
+				op_dict['name_servers'] = op_dict['name_servers'] + "\n" + dns
+			else:
+				op_dict['name_servers'] = dns
 		return op_dict
 
 
@@ -214,6 +216,29 @@ class RunningSystem(Running):
 			op_dict['banner'] = banner
 		return op_dict
 
+	def system_as_number(self):
+		"""update the system as details
+		"""    		
+		func = self.get_system_as_number
+		merge_dict(self.system_dict, self.system_read(func))
+
+	@staticmethod
+	def get_system_as_number(op_dict, l, spl):
+		"""parser function to update system as details
+
+		Args:
+			port_dict (dict): dictionary with a port info
+			l (str): line to parse
+
+		Returns:
+			None: None
+		"""    		
+		banner = ""
+		if l.startswith("set routing-options autonomous-system "): 
+			as_no = spl[3]
+			op_dict['system_bgp_as_number'] = as_no
+
+
 
 	# # Add more interface related methods as needed.
 
@@ -239,7 +264,8 @@ def get_running_system(cmd_op, *args):
 	R.system_syslog_servers()
 	R.system_ntp_servers()
 	R.system_banner()
-
+	R.system_as_number()
+	
 	# # update more interface related methods as needed.
 
 	return R.system_dict

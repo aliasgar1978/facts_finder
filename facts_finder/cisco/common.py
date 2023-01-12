@@ -239,6 +239,17 @@ def get_int_mask(ip):
 
 # ---------------------------------------------------------------
 
+def get_vrf_cisco(line):
+	"""get the standard vrf string from vrf config line
+
+	Args:
+		ifname (str): line starting with vrf definition [vrf name]
+
+	Returns:
+		str: standard interface string
+	"""    	
+	vrfname = line.split()[-1]	
+	return vrfname
 
 
 

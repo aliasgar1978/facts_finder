@@ -13,6 +13,7 @@ def get_subnet(address):
 		str: subnet zero/network address
 	"""	
 	return IPv4(address).subnet_zero()
+
 def get_v6_subnet(address):
 	"""get subnet zero network address for provided v6 address
 
@@ -24,7 +25,7 @@ def get_v6_subnet(address):
 	"""	
 	return IPv6(address).subnet_zero()
 
-def get_vlans_juniper(spl):
+def get_vlans_juniper(spl, how="s"):
 	"""get the list of vlans on the interface
 
 	Args:
@@ -40,7 +41,11 @@ def get_vlans_juniper(spl):
 		if is_any_members: break
 	if not is_any_members: return None
 	int_vl_list = [int(vl) for vl in spl[spl.index(memid)+1:] if vl.isdigit()]
-	return int_vl_list
+	str_vl_list = [vl for vl in spl[spl.index(memid)+1:] if vl.isdigit()]
+	if how == 's':
+		return str_vl_list
+	else:
+		return int_vl_list
 
 
 # ------------------------------------------------------------------------------

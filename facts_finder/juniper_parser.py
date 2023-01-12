@@ -39,6 +39,8 @@ from facts_finder.juniper import get_arp_table
 from facts_finder.juniper import get_interfaces_running
 from facts_finder.juniper import get_version
 from facts_finder.juniper import get_running_system
+from facts_finder.juniper import get_instances_running
+from facts_finder.juniper import get_instances_bgps
 from facts_finder.common import get_op
 from facts_finder.device import DevicePapa
 # ------------------------------------------------------------------------------
@@ -63,7 +65,7 @@ juniper_cmds_list = OrderedDict([
 # ------------------------------------------------------------------------------
 juniper_cmds_op_hierachy_level = {
 	'show lldp neighbors': 'Interfaces',
-	'show configuration': ('Interfaces', 'system'),
+	'show configuration': ('Interfaces', 'system', 'vrf', 'bgp neighbor'),
 	'show version': 'system',
 	'show interfaces descriptions': 'Interfaces',
 	'show chassis hardware': 'Interfaces',
@@ -75,9 +77,9 @@ juniper_cmds_op_hierachy_level = {
 # ------------------------------------------------------------------------------
 juniper_commands_parser_map = {
 	'show lldp neighbors': get_lldp_neighbour,
-	'show configuration': (get_interfaces_running, get_running_system),
+	'show configuration': (get_interfaces_running, get_running_system, get_instances_running, get_instances_bgps),
 	'show version': get_version,
-	'show interfaces descriptions': None,# get_int_description,
+	'show interfaces descriptions': None,
 	'show interfaces terse': None,
 	'show chassis hardware': get_chassis_hardware,
 	'show arp': get_arp_table,

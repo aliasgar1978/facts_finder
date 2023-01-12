@@ -15,8 +15,8 @@ CISCO_IFSH_IDENTIFIERS = {
 		'TenGigabitEthernet': 3, 
 		'FortyGigabitEthernet':2, 
 		'TwentyFiveGigE':3, 
-		'TwoGigabitEthernet': 2,
-		'HundredGigE':3,
+		'TwoGigabitEthernet': 3,
+		'HundredGigE':2,
 		'AppGigabitEthernet': 2,
 		},
 }

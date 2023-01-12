@@ -1,50 +1,19 @@
-"""Cisco devices (Switch/Router) configuration parser directive.
-
-local variables::
-	List down all commands requires to be parsed here in dictionary of tuples.
-	where index-0 refers to command and index-1 refers to filters/arguments if any
-
-	cisco_cmds_list = OrderedDict([
-		('sh lldp nei', {'dsr': True}),			# dsr = domain suffix removal
-		('sh cdp nei', {'dsr': True}),			# dsr = domain suffix removal
-		('sh int status', {}),
-		('sh int desc', {}),
-		('show mac address-table', {}),
-		('sh ip arp', {}),
-		('sh run', {}),
-		('sh ver', {}),
-		## ADD More as grow ## ])
-
-	List down all commands: belonging level here in dictionary
-
-	cisco_cmds_op_hierachy_level = {
-		'sh lldp nei': 'Interfaces',
-		'sh cdp nei': 'Interfaces',
-		'sh int status': 'Interfaces',
-		'sh int desc': 'Interfaces',
-		'show mac address-table': 'arp',
-		'sh ip arp': 'arp',
-		'sh run': ('Interfaces', 'system', 'bgp neighbor'),
-		'sh ver': 'system',
-		## ADD More as grow ## }
-
-Returns:
-	None: None
-"""
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
 
 from facts_finder.common import read_file
 from facts_finder.device import DevicePapa
-from facts_finder.cisco import get_cdp_neighbour
-from facts_finder.cisco import get_lldp_neighbour
-from facts_finder.cisco import get_interface_status
-from facts_finder.cisco import get_interface_description
-from facts_finder.cisco import get_mac_address_table
-from facts_finder.cisco import get_arp_table
-from facts_finder.cisco import get_interfaces_running, get_system_running
-from facts_finder.cisco import get_version
+# from facts_finder.cisco import get_cdp_neighbour
+# from facts_finder.cisco import get_lldp_neighbour
+# from facts_finder.cisco import get_interface_status
+# from facts_finder.cisco import get_interface_description
+# from facts_finder.cisco import get_mac_address_table
+# from facts_finder.cisco import get_arp_table
+from facts_finder.cisco import get_system_running
+from facts_finder.cisco import get_interfaces_running
+# from facts_finder.cisco import get_version
 from facts_finder.cisco import get_bgp_running
+from facts_finder.cisco import get_vrfs_running
 # ------------------------------------------------------------------------------
 
 CMD_LINE_START_WITH = "output for command: "
@@ -56,42 +25,52 @@ LEN_CMD_LINE = len(CMD_LINE_START_WITH)
 # COMMANDS LIST DICTIONARY, DEFINE **kwargs as dictionary in command value     #
 # ------------------------------------------------------------------------------
 cisco_cmds_list = OrderedDict([
-	('sh lldp nei', {'dsr': True}),			# dsr = domain suffix removal
-	('sh cdp nei', {'dsr': True}),			# dsr = domain suffix removal
-	('sh int status', {}),
-	('sh int desc', {}),
-	('show mac address-table', {}),
-	('sh ip arp', {}),
+	# ('sh lldp nei', {'dsr': True}),			# dsr = domain suffix removal
+	# ('sh cdp nei', {'dsr': True}),			# dsr = domain suffix removal
+	# ('sh int status', {}),
+	# ('sh int desc', {}),
+	# ('show mac address-table', {}),
+	# ('sh ip arp', {}),
 	('sh run', {}),
-	('sh ver', {}),
+	# ('sh ver', {}),
 	## ADD More as grow ##
 ])
 # ------------------------------------------------------------------------------
 # COMMAND OUTPUT HIERARCHY LEVEL ( key need to match with 'cisco_cmds_list' )
 # ------------------------------------------------------------------------------
 cisco_cmds_op_hierachy_level = {
-	'sh lldp nei': 'Interfaces',
-	'sh cdp nei': 'Interfaces',
-	'sh int status': 'Interfaces',
-	'sh int desc': 'Interfaces',
-	'show mac address-table': 'arp',
-	'sh ip arp': 'arp',
-	'sh run': ('Interfaces', 'system', 'bgp neighbor'),
-	'sh ver': 'system',
+	# 'sh lldp nei': 'Interfaces',
+	# 'sh cdp nei': 'Interfaces',
+	# 'sh int status': 'Interfaces',
+	# 'sh int desc': 'Interfaces',
+	# 'show mac address-table': 'arp',
+	# 'sh ip arp': 'arp',
+	'sh run': (
+		'system', 
+		'bgp neighbor', 
+		'Interfaces', 
+		'vrf'
+		)
+	# 'sh ver': 'system',
 	## ADD More as grow ##
 }
 # ------------------------------------------------------------------------------
 # Dict of cisco commands, %full commands in keys mapped with parser func.
 # ------------------------------------------------------------------------------
 cisco_commands_parser_map = {
-	'show lldp neighbors': get_lldp_neighbour,
-	'show cdp neighbors': get_cdp_neighbour,
-	'show interfaces status': get_interface_status,
-	'show interfaces description': get_interface_description,
-	'show mac address-table': get_mac_address_table,
-	'show ip arp': get_arp_table,
-	'show running-config': (get_interfaces_running, get_system_running, get_bgp_running),
-	'show version': get_version,
+	# 'show lldp neighbors': get_lldp_neighbour,
+	# 'show cdp neighbors': get_cdp_neighbour,
+	# 'show interfaces status': get_interface_status,
+	# 'show interfaces description': get_interface_description,
+	# 'show mac address-table': get_mac_address_table,
+	# 'show ip arp': get_arp_table,
+	'show running-config': (
+		get_system_running, 
+		get_bgp_running, 
+		get_interfaces_running, 
+		get_vrfs_running
+		)
+	# 'show version': get_version,
 }
 
 # ------------------------------------------------------------------------------
@@ -121,7 +100,7 @@ def absolute_command(cmd, cmd_parser_map):
 	return cmd
 
 
-def get_op_cisco(file, abs_cmd, cmd_parser_map):
+def get_op_cisco(file, abs_cmd, cmd_parser_map=cisco_commands_parser_map):
 	"""returns output of a command in list format found from capture file.
 	this is differ from general get_op() in a way that it has to get absolute command
 	in case if provided trunked while capture. Juniper does auto-complete at terminal

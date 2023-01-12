@@ -23,19 +23,27 @@ class RunningSystem():
 		self.system_dict = {}
 
 
-	def system_management_ip(self):
-		"""get the device management ip address
-		"""    		
-		src_mgmt_vl, ifconf = '', False
+	def system_bgp_as_number(self):
+		"""get the device bgp as number
+		""" 
 		for l in self.cmd_op:
-			if not src_mgmt_vl and l.find('source-interface')>0: 
-				src_mgmt_vl=l.strip().split()[-1]
-			if src_mgmt_vl:
-				if not ifconf and l.startswith('interface ') and l.find(src_mgmt_vl) > 0:
-					ifconf = True
-				if ifconf:
-					if l.startswith('ip address'):
-						return(l.strip().split()[-2])
+			if not l.startswith("router bgp "): continue
+			return {'system_bgp_as_number': l.strip().split()[-1]}
+
+
+	def system_ca_certificate(self):
+		"""get the device certificate hex values for cisco 9xxx and later series  switches.
+		""" 
+		ca_start, cert = False, ''
+		for l in self.cmd_op:
+			if l.strip().startswith("certificate ca 01"):
+				ca_start = True
+				continue
+			if ca_start and l.strip().startswith("quit"):
+				break
+			if not ca_start: continue
+			cert += l+'\n'
+		return {'ca_certificate': cert.rstrip()}
 
 
 # ------------------------------------------------------------------------------
@@ -52,7 +60,9 @@ def get_system_running(cmd_op, *args):
 		dict: output dictionary with parsed with system fields
 	"""    	
 	R  = RunningSystem(cmd_op)
-	R.system_dict['management_ip'] = R.system_management_ip()
+	R.system_dict.update(R.system_bgp_as_number())
+	R.system_dict.update(R.system_ca_certificate())
+
 	# # update more interface related methods as needed.
 
 	return R.system_dict

@@ -14,6 +14,7 @@ from facts_finder.cisco.common import get_int_mask
 from facts_finder.cisco.common import get_vlans_cisco
 from facts_finder.cisco.common import get_v6_subnet
 from facts_finder.cisco.common import get_inetv6_address
+from facts_finder.cpw_cracker import decrypt_type7
 
 merge_dict = DIC.merge_dict
 # ------------------------------------------------------------------------------
@@ -196,6 +197,31 @@ class RunningInterfaces():
 		port_dict['vrf'] = vrf
 
 
+	@staticmethod
+	def get_int_udld(port_dict, l):
+		udld = None
+		if l.strip().startswith("udld port "):
+			port_dict['int_udld'] = l.strip().split(" ", 2)[-1]
+		if not udld: return None
+
+	def interface_udld(self):
+		func = self.get_int_udld
+		merge_dict(self.interface_dict, self.interface_read(func))
+
+
+	@staticmethod
+	def get_int_ospf_auth(port_dict, l):
+		auth, auth_type = None, None
+		if l.strip().startswith("ip ospf authentication-key"):
+			port_dict['ospf_auth'] = decrypt_type7(l.strip().split()[-1])
+		if l.strip().startswith("ip ospf network "):
+			port_dict['ospf_auth_type'] = l.strip().split()[-1]
+		if not auth and not auth_type: return None
+
+	def interface_ospf_auth(self):
+		func = self.get_int_ospf_auth
+		merge_dict(self.interface_dict, self.interface_read(func))
+
 	# # Add more interface related methods as needed.
 
 
@@ -213,11 +239,14 @@ def get_interfaces_running(cmd_op, *args):
 		dict: output dictionary with parsed with system fields
 	"""    	
 	R  = RunningInterfaces(cmd_op)
-	R.interface_ips()
-	R.interface_v6_ips()
-	R.interface_vlans()
-	R.interface_channel_group()
-	R.interface_vrf()
+	# R.interface_ips()
+	# R.interface_v6_ips()
+	# R.interface_vlans()
+	# R.interface_channel_group()
+	# R.interface_vrf()
+	R.interface_ospf_auth()
+	R.interface_udld()
+
 	# # update more interface related methods as needed.
 
 	return R.interface_dict
