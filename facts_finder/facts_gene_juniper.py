@@ -4,7 +4,7 @@ from facts_finder.gene import KeyExchanger
 from facts_finder.gene import VarInterfaceJuniper
 from facts_finder.gene import TableInterfaceJuniper
 from facts_finder import DeviceFactsFg
-from capture_it.database import write_to_xl, append_to_xl
+from facts_finder.database import write_to_xl, append_to_xl
 
 from facts_finder.common import get_op
 from nettoolkit import JSet
@@ -29,56 +29,16 @@ def evaluate_juniper(
 												'hardware_type': 'GRE',
 												'interface': 'interface',
 												'link_status': 'protocol_status',
-												'local': '//subnet1',
-												'mtu': ''},
+												'local': '//subnet1'},
 					'show lacp interfaces | no-more': {'aggregated_interface': 'interface',
-													'member_interface': '//po_to_interface',
-													'mux_state': '',
-													'receive_state': '',
-													'transmit_state': ''},
-					'show lldp neighbors | no-more': {'chassis_id': '',
-												'local_interface': 'interface',
-												'parent_interface': '',
-												'port_info': 'nbr_interface',
-												'system_name': '//nbr_hostname'},
-					'show version | no-more': {'appid_services': '',
-											'base_os_boot': '',
-											'base_os_software_suite': '',
-											'border_gateway_function_package': '',
-											'crypto_software_suite': '',
-											'hostname': 'hostname',
-											'idp_services': '',
+													'member_interface': '//po_to_interface'},
+					'show lldp neighbors | no-more': {'local_interface': 'interface',
+												   'port_info': 'nbr_interface',
+												   'system_name': '//nbr_hostname'},
+					'show version | no-more': {'hostname': 'hostname',
 											'junos_version': 'ios_version',
-											'kernel_software_suite': '',
-											'lab_package': '',
 											'model': 'hardware',
-											'online_documentation': '',
-											'other_device_properties': '',
-											'other_properties_versions': '',
-											'packet_forwarding_engine_support_m_t_ex_common': '',
-											'packet_forwarding_engine_support_mx_common': '',
-											'platform_software_suite': '',
-											'py_base_i386': '',
-											'qfabric_system_id': '',
-											'routing_software_suite': '',
-											'runtime_software_suite': '',
-											'serial_number': 'serial',
-											'services_aacl_container_package': '',
-											'services_application_level_gateways': '',
-											'services_captive_portal_content_delivery_package': '',
-											'services_crypto': '',
-											'services_http_content_management_package': '',
-											'services_ipsec': '',
-											'services_jflow_container_package': '',
-											'services_ll_pdf_container_package': '',
-											'services_mobile_subscriber_service_package': '',
-											'services_mobilenext_software_package': '',
-											'services_nat': '',
-											'services_ptsp_container_package': '',
-											'services_rpm': '',
-											'services_ssl': '',
-											'services_stateful_firewall': '',
-											'voice_services_container_package': ''}}
+											'serial_number': 'serial'}}
 
 	output_file = f'{capture_file}-facts_Gene.xlsx'		## Output Excel Facts Captured File
 
@@ -86,7 +46,10 @@ def evaluate_juniper(
 	try: os.remove(output_file)	# remove old file if any
 	except: pass
 
+	## 1.5 --- Optional if no mapper file provided
 	if column_mapper_file is not None:
+		for k,v in juniper_cmd_lst.copy().items():
+			juniper_cmd_lst[k] = {}
 		KEC_VAR = KeyExchanger(column_mapper_file, juniper_cmd_lst)
 		juniper_cmd_lst = KEC_VAR.cisco_cmd_lst
 
@@ -96,7 +59,6 @@ def evaluate_juniper(
 	append_to_xl(output_file, CIV.var)
 
 	## 3. ---  `table` Tab 
-
 	CID = TableInterfaceJuniper(capture_file)
 	CID.execute(juniper_cmd_lst)
 	append_to_xl(output_file, CID.pdf)
@@ -105,7 +67,7 @@ def evaluate_juniper(
 	DFF = DeviceFactsFg(capture_log_file, output_file)
 	DFF.execute_juniper()
 
-	print(f'Check output in -> {output_file}')
+	print(f'New Data Excel output stored in -> {output_file}')
 
 	return {'var': CIV, 'output': output_file}
 

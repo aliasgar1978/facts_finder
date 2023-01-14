@@ -29,6 +29,7 @@ class RunningSystem():
 		for l in self.cmd_op:
 			if not l.startswith("router bgp "): continue
 			return {'system_bgp_as_number': l.strip().split()[-1]}
+		return {}
 
 
 	def system_ca_certificate(self):
@@ -58,11 +59,13 @@ def get_system_running(cmd_op, *args):
 
 	Returns:
 		dict: output dictionary with parsed with system fields
-	"""    	
+	"""
 	R  = RunningSystem(cmd_op)
 	R.system_dict.update(R.system_bgp_as_number())
 	R.system_dict.update(R.system_ca_certificate())
 
 	# # update more interface related methods as needed.
+	if not R.system_dict:
+		R.system_dict['dummy_col'] = ""
 
 	return R.system_dict

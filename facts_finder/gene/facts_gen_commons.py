@@ -2,7 +2,7 @@
 import nettoolkit as nt
 import pandas as pd
 import numpy as np
-from capture_it.database import append_to_xl
+from facts_finder.database import append_to_xl
 from pprint import pprint
 
 # ================================================================================================
@@ -51,7 +51,10 @@ class CiscoDB():
 	def remove_unwanted(self, ccl):
 		for k, v in ccl.items():
 			if k in self.interface_para:
-				self.dfd[k] = self.dfd[k][v.keys()]
+				try:
+					self.dfd[k] = self.dfd[k][v.keys()]
+				except:
+					print(f"Missing Capture {k}")
 		return self.dfd
 
 

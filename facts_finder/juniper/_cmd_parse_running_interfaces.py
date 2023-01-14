@@ -102,7 +102,7 @@ class RunningInterfaces(Running):
 			spl = l.split()
 			ospf_idx = _is_ospf_auth_line(l, spl)
 			if not ospf_idx: continue
-			if len(spl)>ospf_idx+4 and spl[ospf_idx+3] == 'interface':
+			if len(spl)>ospf_idx+6 and spl[ospf_idx+3] == 'interface':
 				p = spl[ospf_idx+4]
 				if not p: continue
 				if not ports_dict.get(p): ports_dict[p] = {}
@@ -302,15 +302,22 @@ class RunningInterfaces(Running):
 	def int_dot_zero_merge_to_parent(self):
 		""" merges the value of two keys for `parent` and `parent unit 0` configs
 		"""
+		# print('came for zero merge')
 		for k, v in self.interface_dict.copy().items():
+			# print('k,v', k , v)
 			if k.endswith(".0"):
-				self.interface_dict[k[:-2]].update(v)
+				# print(k, ">>>>")
+				if self.interface_dict.get(k[:-2]):
+					self.interface_dict[k[:-2]].update(v)
+				else:
+					self.interface_dict[k[:-2]] = v
 				del(self.interface_dict[k])
 
 	def int_to_int_number(self):
 		''' creates an arbirary unique number for each interface on interface types 
 		'''
 		for k, v in self.interface_dict.items():
+			# print(k, v.keys())
 			if v['filter'] == 'physical':
 				v['int_number'] = get_physical_port_number(k)
 				continue
@@ -340,9 +347,11 @@ class RunningInterfaces(Running):
 
 	def ospf_authentication_details(self):
 		"""update the interface ospf authentication details
-		"""    		
+		"""
+		# print(self.interface_dict['ge-0/0/7.0'])
 		func = self.get_ospf_authentication_details
 		merge_dict(self.interface_dict, self.ospf_auth_para_read(func))
+		# print(self.interface_dict['ge-0/0/7.0'])
 
 	@staticmethod
 	def get_ospf_authentication_details(port_dict, l, spl, ospf_idx):
@@ -405,12 +414,12 @@ def get_interfaces_running(cmd_op, *args):
 	R.int_filter()
 	R.interface_channel_grp()
 
-	# ospf authentication on interface
-	R.ospf_authentication_details()
 
 	# # update more interface related methods as needed.
+	R.int_filter()
 	R.int_to_int_number()
 	R.routing_instance_read()
+	R.ospf_authentication_details()
 	R.int_dot_zero_merge_to_parent()
 
 	return R.interface_dict

@@ -13,10 +13,10 @@ def nbr_hostname(hn):
 	return hn.split(".")[0]
 
 def h4block(h4block):
-	l = eval(h4block)
-	if isinstance(l, (list, set, tuple)):
+	# l = eval(h4block)
+	if isinstance(h4block, (list, set, tuple)):
 		try:
-			v6 = nt.IPv6(l[-1][:-2]+"/64")
+			v6 = nt.IPv6(h4block[-1][:-2]+"/64")
 			block = v6.get_hext(4)  # vua/vsa/wlc
 			if block and block!='0':
 				return block
@@ -55,7 +55,10 @@ def subnet(subnet):
 		subnet
 
 def shrink_if(intf):
-	return nt.STR.shrink_if(intf)
+	try:
+		return nt.STR.shrink_if(intf)
+	except:
+		return intf
 
 def intvrf_update(vrf):
 	if vrf.lower()=='mgmt-vrf': return ""
@@ -135,8 +138,14 @@ class TableInterfaceCisco(CiscoDB):
 
 		
 	def po_to_interface(self):
-		pos = self.dfd['show etherchannel summary']['po_name']
-		intfs = self.dfd['show etherchannel summary']['interfaces']
+		sht = 'show etherchannel summary'
+		try:
+			self.dfd[sht]
+		except:
+			return None
+		if self.dfd[sht].empty: return None
+		pos = self.dfd[sht]['po_name']
+		intfs = self.dfd[sht]['interfaces']
 		int_dict = {'interface':[],'channel_grp':[]}
 		for po, ints in zip(pos, intfs):
 			channel_group_no = po[2:]

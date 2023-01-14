@@ -189,8 +189,8 @@ def get_instances_bgps(cmd_op, *args):
 	R.bgp_nbr_info()
 
 	# # update more instance related methods as needed.
-
-
+	if not R.instance_dict:
+		R.instance_dict['dummy_col'] = ""
 
 	return R.instance_dict
 

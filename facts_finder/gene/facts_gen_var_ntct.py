@@ -47,14 +47,24 @@ class VarInterfaceCisco(CiscoDB):
 
 	def update_h2b_h3b(self):
 		sht = 'show ipv6 interface brief'
+		if ((isinstance(self.dfd.get(sht), dict) and not self.dfd.get(sht)) or 
+			(isinstance(self.dfd.get(sht), pd.DataFrame) and self.dfd.get(sht).empty)): 
+			print(f'missing a mandatory command output {sht}, Further processing may result error.')
+			return None
 		self.dfd[sht]['temp'] = self.dfd[sht]['ipaddr'].apply(get_h2b_h3b)
-		hxb = [_ for _ in self.dfd[sht]['temp'].dropna().drop_duplicates() if _ != ""][0]
-		self.var['h2b'] = hxb[0]
-		self.var['h3b'] = hxb[1]
-		return hxb
+		tmp_hxb_list = [_ for _ in self.dfd[sht]['temp'].dropna().drop_duplicates() if _ != ""]
+		if len(tmp_hxb_list) > 0:
+			hxb = [_ for _ in self.dfd[sht]['temp'].dropna().drop_duplicates() if _ != ""][0]
+			self.var['h2b'] = hxb[0]
+			self.var['h3b'] = hxb[1]
+			return hxb
 
 	def update_device(self):
 		sht = 'show version'
+		if ((isinstance(self.dfd.get(sht), dict) and not self.dfd.get(sht)) or 
+			(isinstance(self.dfd.get(sht), pd.DataFrame) and self.dfd.get(sht).empty)): 
+			print(f'missing a mandatory command output {sht}, Further processing may result error.')
+			return None
 		col_var_maps = {
 			'hardware': 'hardware',
 			'hostname': 'hostname',
@@ -66,7 +76,7 @@ class VarInterfaceCisco(CiscoDB):
 		for k, v in col_var_maps.items():
 			try:
 				x = eval(self.dfd[sht][k][0])
-			except: 
+			except:
 				x = self.dfd[sht][k][0]
 			if isinstance(x, (int, str)):
 				self.var[v] = x

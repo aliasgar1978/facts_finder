@@ -115,6 +115,8 @@ def get_instances_running(cmd_op, *args):
 	R.vrf_description()
 
 	# # update more instance related methods as needed.
+	if not R.instance_dict:
+		R.instance_dict['dummy col'] = ''
 
 	return R.instance_dict
 

@@ -58,20 +58,30 @@ def split_to_multiple_tabs(pdf):
 	return pdf
 
 def update_int_number(number):
+	if not number: return -1
 	start = 2
 	if number.startswith("Tw"):
 		start = 3
 	s = 0
 	for i, n in enumerate(reversed(number[start:].split("/"))):
+		spl_n = n.split(".")
+		pfx = spl_n[0]
+		if len(spl_n) == 2:
+			sfx = float("0." + spl_n[1])
+		else:
+			sfx = 0
 		multiplier = 100**i
-		nm = int(n)*multiplier
-		s += nm
+		nm = int(pfx)*multiplier
+		s += nm+sfx
 	return s
+
+def get_int_number(port):
+	return port[2:]
 
 def generate_int_number(pdf):
 	for sheet, df in pdf.items():
 		if sheet != 'physical':
-			pdf[sheet]['int_number'] =  df['interface'].apply(lambda x: int(x[2:]))
+			pdf[sheet]['int_number'] =  df['interface'].apply(get_int_number)
 		else:
 			pdf[sheet]['int_number'] =  df['interface'].apply(update_int_number)
 		pdf[sheet].sort_values(by=['int_number'], inplace=True)
@@ -82,7 +92,7 @@ def generate_int_number_juniper(pdf):
 		if sheet == 'physical':
 			pdf[sheet]['int_number'] = df['interface'].apply( get_physical_port_number )
 		if sheet == 'aggregated':
-			pdf[sheet]['int_number'] = df['interface'].apply(lambda x: int(x[2:])) 
+			pdf[sheet]['int_number'] = df['interface'].apply(get_int_number) 
 		if sheet == 'vlan':
 			pdf[sheet]['int_number'] = df['interface'].apply(lambda x: x.split(".")[-1]) 
 	return pdf

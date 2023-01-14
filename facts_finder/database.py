@@ -10,6 +10,7 @@ index:
 """
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
+import os
 import pandas as pd
 # ------------------------------------------------------------------------------
 __ver__ = "0.0.1"
@@ -44,6 +45,10 @@ def append_to_xl(file, df_dict, overwrite=True):
 	except:
 		prev_dict = {}
 	prev_dict.update(df_dict)
+	if overwrite:
+		try:
+			os.remove(file)
+		except: pass
 	write_to_xl(file, prev_dict, overwrite=overwrite)
 
 def write_to_xl(file, df_dict, index=False, overwrite=False):
@@ -127,9 +132,18 @@ class XL_WRITE():
 			overwrite (bool, optional): overwrite the file (if exist) or not. Defaults to False.
 		"""    		
 		fileName = name if overwrite else self.get_valid_file_name(name)
-		with pd.ExcelWriter(fileName) as writer_file:			
+		with pd.ExcelWriter(fileName) as writer_file:
 			for sht_name, df in df_dict.items():
-				df.to_excel(writer_file, sheet_name=sht_name, index=index)
+				try:
+					df.to_excel(writer_file, sheet_name=sht_name, index=index)
+				except:
+					try:
+						print(f"writing data for {fileName} sheet {sht_name} ...failed!!!, length of sheet name = {len(sht_name)}")
+						print(f"writing data for {fileName} sheet {sht_name[:31]}|trunked ...done!")
+						df.to_excel(writer_file, sheet_name=sht_name, index=index)
+						print(f"writing data for {fileName} sheet {sht_name[:31]}|trunked ...done!")
+					except:
+						print(f"writing data for {fileName} sheet {sht_name[:31]}|trunked ...failed!!!")
 
 	def copy_of_file(self, file, n):
 		"""return a valid next available file name.

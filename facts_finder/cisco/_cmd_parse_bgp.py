@@ -197,6 +197,9 @@ def get_bgp_af_running(cmd_op, *args):
 	AF = AddressFamily(cmd_op)	
 	AF.bgp_nbr_attributes()
 
+	# if not AF.op_dict:
+	# 	AF.op_dict['dummy_col1'] = ""
+
 	return AF.op_dict
 
 def get_bgp_running(cmd_op, *args):
@@ -212,5 +215,7 @@ def get_bgp_running(cmd_op, *args):
 	R  = BGP(cmd_op)
 	R.bgp_nbr_attributes()
 
+	if not R.op_dict:
+		R.op_dict['dummy_col2'] = ""
 	return R.op_dict
 
