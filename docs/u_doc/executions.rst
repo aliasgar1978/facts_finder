@@ -97,11 +97,22 @@ Detailed How To
 	Below are the commands requires to be captured from device for **Cisco** Devices.
 
 	* show lldp neighbors
+	* show lldp neighbors detail
 	* show cdp neighbors
+	* show cdp neighbors detail
+	* show interfaces
+	* show interfaces switchport
 	* show interfaces status
 	* show interfaces description
+	* show ipv6 interface brief
 	* show mac address-table
 	* show ip arp
+	* show etherchannel summary
+	* show ip bgp all summary
+	* show ip bgp vpnv4 all neighbors
+	* show vrf
+	* show ip vrf interfaces
+	* show route-map
 	* show running-config
 	* show version
 
@@ -121,8 +132,10 @@ Detailed How To
 	* show lldp neighbors
 	* show configuration
 	* show version
+	* show interfaces
 	* show interfaces descriptions
 	* show chassis hardware
+	* show lacp interfaces
 	* show arp
 
 	command output format should be as follows

@@ -33,4 +33,4 @@ __all__ = [
 	'evaluate_cisco', 'evaluate_juniper', 'evaluate'
 	]
 
-__ver__ = "0.0.5"
+__ver__ = "0.0.6"

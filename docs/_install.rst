@@ -24,6 +24,7 @@ Inherited python packages
 
 	* nettoolkit
 	* pandas
+	* numpy
 	* openpyxl
 	* capture_it
 

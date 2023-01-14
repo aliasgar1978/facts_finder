@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="facts_finder",
-    version="0.0.5",
+    version="0.0.6",
     author="ALIASGAR - ALI",
     author_email="aholo2000@gmail.com",
     description="facts_finder for Networking Geeks",
@@ -19,6 +19,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.7',
-    install_requires=['pandas', 'xlrd', 'openpyxl', 'nettoolkit', 'capture_it']
+    install_requires=['pandas', 'numpy', 'xlrd', 'openpyxl', 'nettoolkit', 'capture_it']
 )
 
