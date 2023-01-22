@@ -3,13 +3,12 @@ import os
 
 from facts_finder.modifiers.commons import KeyExchanger
 
+from .commands.cmd_dict import *
 from .juniper_var import VarJuniper
 from .juniper_tables import TableInterfaceJuniper
 from facts_finder.modifiers import juniper
 
 # ================================================================================================
-command_path = str(Path(os.path.abspath(juniper.__file__)).resolve().parents[0]) + "/commands"
-
 
 def get_cmd_list_juniper(
 	column_mapper_file=None,
@@ -21,9 +20,6 @@ def get_cmd_list_juniper(
 		'cmd_lst_var': None,
 		'cmd_lst_int': None,
 	}
-	#
-	with open(f'{command_path}/cmd_dict.txt', 'r') as f:
-		exec(f.read())
 	#
 	if column_mapper_file is not None:
 		for k,v in cmd_lst_var.copy().items():

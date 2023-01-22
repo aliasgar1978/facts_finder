@@ -3,8 +3,6 @@
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
 from nettoolkit import *
-from pathlib import *
-import os
 
 from .cisco import *
 from .device import DevicePapa
@@ -13,7 +11,6 @@ from facts_finder.generators import cisco
 
 CMD_LINE_START_WITH = "output for command: "
 LEN_CMD_LINE = len(CMD_LINE_START_WITH)
-command_path = str(Path(os.path.abspath(cisco.__file__)).resolve().parents[1]) + "/commands"
 
 # ------------------------------------------------------------------------------
 # // Cisco //
@@ -21,20 +18,56 @@ command_path = str(Path(os.path.abspath(cisco.__file__)).resolve().parents[1]) +
 # COMMANDS LIST DICTIONARY, DEFINE **kwargs as dictionary in command value     #
 # ``cisco_cmds_list``
 # ------------------------------------------------------------------------------
-with open(f'{command_path}/cisco_cmd_list.txt', 'r') as f:
-	exec(f.read())
+cisco_cmds_list = OrderedDict([
+	# ('sh lldp nei', {'dsr': True}),			# dsr = domain suffix removal
+	# ('sh cdp nei', {'dsr': True}),			# dsr = domain suffix removal
+	# ('sh int status', {}),
+	# ('sh int desc', {}),
+	# ('show mac address-table', {}),
+	# ('sh ip arp', {}),
+	('sh run', {}),
+	# ('sh ver', {}),
+	## ADD More as grow ##
+])
 # ------------------------------------------------------------------------------
 # COMMAND OUTPUT HIERARCHY LEVEL ( key need to match with 'cisco_cmds_list' )
 # ``cisco_cmds_op_hierachy_level``
 # ------------------------------------------------------------------------------
-with open(f'{command_path}/cisco_cmd_hierarchy.txt', 'r') as f:
-	exec(f.read())
+cisco_cmds_op_hierachy_level = {
+	# 'sh lldp nei': 'Interfaces',
+	# 'sh cdp nei': 'Interfaces',
+	# 'sh int status': 'Interfaces',
+	# 'sh int desc': 'Interfaces',
+	# 'show mac address-table': 'arp',
+	# 'sh ip arp': 'arp',
+	'sh run': (
+		'system', 
+		'bgp neighbor', 
+		'Interfaces', 
+		'vrf'
+		)
+	# 'sh ver': 'system',
+	## ADD More as grow ##
+}
 # ------------------------------------------------------------------------------
 # Dict of cisco commands, %full commands in keys mapped with parser func.
 # ``cisco_commands_parser_map``
 # ------------------------------------------------------------------------------
-with open(f'{command_path}/cisco_cmd_cmd_parser_maps.txt', 'r') as f:
-	exec(f.read())
+cisco_commands_parser_map = {
+	# 'show lldp neighbors': get_lldp_neighbour,
+	# 'show cdp neighbors': get_cdp_neighbour,
+	# 'show interfaces status': get_interface_status,
+	# 'show interfaces description': get_interface_description,
+	# 'show mac address-table': get_mac_address_table,
+	# 'show ip arp': get_arp_table,
+	'show running-config': (
+		get_system_running, 
+		get_bgp_running, 
+		get_interfaces_running, 
+		get_vrfs_running
+		)
+	# 'show version': get_version,
+}
 # ------------------------------------------------------------------------------
 
 def absolute_command(cmd, cmd_parser_map):

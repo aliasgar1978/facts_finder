@@ -3,14 +3,13 @@ import os
 
 from facts_finder.modifiers.commons import KeyExchanger
 
+from .commands.cmd_dict import *
 from .cisco_var import VarCisco
 from .cisco_tables import TableInterfaceCisco
 from .cisco_vrfs import TableVrfsCisco
 from facts_finder.modifiers import cisco
 
 # ================================================================================================
-command_path = str(Path(os.path.abspath(cisco.__file__)).resolve().parents[0]) + "/commands"
-
 
 def get_cmd_list_cisco(
 	var_column_mapper_file=None,
@@ -24,9 +23,6 @@ def get_cmd_list_cisco(
 		'cmd_lst_int': None,
 		'cmd_lst_vrf': None,
 	}
-	#
-	with open(f'{command_path}/cmd_dict.txt', 'r') as f:
-		exec(f.read())
 	#
 	if var_column_mapper_file is not None:
 		for k,v in cmd_lst_var.copy().items():

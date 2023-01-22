@@ -45,7 +45,7 @@ def _df_columns_rearrange(pdf_dict, all_cols):
 	"""rearrange columns of the dataframe as per interface properties grouping defined globally """
 	for sht, df in pdf_dict.items():
 		if sht in ('var',): continue
-		if sht in ('bgp', 'vrf'):
+		if sht in ('bgp', 'vrf',):
 			cols = all_cols[sht]
 		elif sht in ('aggregated', 'vlan', 'physical', 'loopback', 'management', 'tunnel', ):
 			cols = all_cols['interfaces']

@@ -67,7 +67,9 @@ cmd_lst_int = {
 #
 # ---------- VRF
 #
-cmd_lst_vrf = {'show vrf': {'name': 'vrf'}}
+cmd_lst_vrf = {
+    'show vrf': {'name': 'vrf'},
+}
 
 #
 # ---------- BGP

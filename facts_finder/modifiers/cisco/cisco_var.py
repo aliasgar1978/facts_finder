@@ -1,16 +1,11 @@
-# from pathlib import *
-# import os
 
 from nettoolkit import *
 import pandas as pd
 
 from .commands.cmd_dict import *
 from facts_finder.modifiers.commons import *
-# from facts_finder.modifiers import cisco
 
-# ================================================================================================
 
-# command_path = str(Path(os.path.abspath(cisco.__file__)).resolve().parents[0]) + "/commands"
 # ================================================================================================
 # Cisco  Var  DB
 # ================================================================================================
@@ -20,8 +15,6 @@ class VarCisco(DataFrameInit, Var):
 		self.var = {}
 		self.cmd_lst=cmd_lst
 		if not self.cmd_lst:
-			# with open(f'{command_path}/cmd_dict.txt', 'r') as f:
-			# 	exec(f.read())
 			self.cmd_lst = cmd_lst_var
 		super().__init__(capture)
 		self.var_df = pd.DataFrame({"interface":[]})

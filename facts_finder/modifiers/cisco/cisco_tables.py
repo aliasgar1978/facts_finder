@@ -80,8 +80,6 @@ class TableInterfaceCisco(DataFrameInit, TableInterfaces):
 	def __init__(self, capture, cmd_lst=None):
 		self.cmd_lst=cmd_lst
 		if not self.cmd_lst:
-			# with open('commands/cmd_dict.txt', 'r') as f:
-			# 	exec(f.read())
 			self.cmd_lst = cmd_lst_int
 		super().__init__(capture)
 		self.pdf = pd.DataFrame({"interface":[]})
@@ -162,8 +160,11 @@ class TableInterfaceCisco(DataFrameInit, TableInterfaces):
 			'//subnet': subnet,
 		}
 		for col, func in func_cols.items():
-			self.pdf[col[2:]] = self.pdf[col].apply(func)
-			self.pdf.drop([col,], axis=1, inplace=True)
+			try:
+				self.pdf[col[2:]] = self.pdf[col].apply(func)
+				self.pdf.drop([col,], axis=1, inplace=True)
+			except:
+				print(f"Missing detail found in database {col}, mostly a key output capture failed.")
 
 	def update_neighbor_intf(self):
 		"""standardize neighbor interface length """

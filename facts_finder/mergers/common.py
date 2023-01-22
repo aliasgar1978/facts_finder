@@ -100,9 +100,6 @@ class Merged:
 		self.fg_int_df = fg_df
 		fm_df = self.pdf_dict['tables']												## facts-modifier dataframe
 		pdf = self.merge_and_drop_empty_filter_rows(fg_df, fm_df, 'interface')
-		# pdf = pd.merge( fm_df, fg_df, on=['interface',], how='outer').fillna("")	## merged dataframe
-		# ix = [x for x in reversed(pdf.index[pdf['filter'] == ""])]					## row indexes for data where filter column value unavailable.
-		# pdf.drop(ix, inplace=True)													##    remove such rows 
 		self.int_df = pdf
 
 	def merged_vrfs_dataframe(self):
@@ -110,9 +107,6 @@ class Merged:
 		fm_df = self.pdf_dict['vrf']											## facts-modifier dataframe
 		self.fg_vrf_df = fg_df
 		pdf = self.merge_and_drop_empty_filter_rows(fg_df, fm_df, 'vrf')
-		# pdf = pd.merge( fm_df, fg_df, on=['vrf',], how='outer').fillna("")		## merged dataframe
-		# ix = [x for x in reversed(pdf.index[pdf['filter'] == ""])]				## row indexes for data where filter column value unavailable.
-		# pdf.drop(ix, inplace=True)												##    remove such rows 		
 		pdf.drop(pdf[pdf["vrf"] == "Mgmt-vrf"].index, axis=0, inplace=True)	## Remove row with management vrfs ( add more description for mgmt vrf )
 		self.vrf_df = pdf
 		self['vrf'] = pdf

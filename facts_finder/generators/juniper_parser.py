@@ -3,15 +3,11 @@
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
 from nettoolkit import *
-from pathlib import *
-import os
 
 from .juniper import *
 from .device import DevicePapa
 from facts_finder.generators import juniper
 # ------------------------------------------------------------------------------
-
-command_path = str(Path(os.path.abspath(juniper.__file__)).resolve().parents[1]) + "/commands"
 
 # ------------------------------------------------------------------------------
 # // Juniper //
@@ -19,20 +15,54 @@ command_path = str(Path(os.path.abspath(juniper.__file__)).resolve().parents[1])
 # COMMANDS LIST DICTIONARY, DEFINE **kwargs as dictionary in command value     #
 # ``juniper_cmds_list``
 # ------------------------------------------------------------------------------
-with open(f'{command_path}/juniper_cmd_list.txt', 'r') as f:
-	exec(f.read())
+juniper_cmds_list = OrderedDict([
+	('show lldp neighbors', {'dsr': True}),		# dsr = domain-suffix removal, default=True
+	('show configuration', {}),
+	('show version', {}),
+	('show interfaces descriptions', {}),
+	('show chassis hardware', {}),
+	('show arp', {}),
+
+
+	## ADD More as grow ##
+])
 # ------------------------------------------------------------------------------
 # COMMAND OUTPUT HIERARCHY LEVEL
 # ``juniper_cmds_op_hierachy_level``
 # ------------------------------------------------------------------------------
-with open(f'{command_path}/juniper_cmd_hierarchy.txt', 'r') as f:
-	exec(f.read())
+juniper_cmds_op_hierachy_level = {
+	'show lldp neighbors': 'Interfaces',
+	'show configuration': ('Interfaces', 'system', 'vrf', 'bgp neighbor'),
+	'show version': 'system',
+	'show interfaces descriptions': 'Interfaces',
+	'show chassis hardware': ('Interfaces', 'system'),
+	'show arp': 'arp',
+
+
+	## ADD More as grow ##
+}
 # ------------------------------------------------------------------------------
 # Dict of Juniper commands, %trunked commands mapped with parser func.
 # ``juniper_commands_parser_map``
 # ------------------------------------------------------------------------------
-with open(f'{command_path}/juniper_cmd_cmd_parser_maps.txt', 'r') as f:
-	exec(f.read())
+juniper_commands_parser_map = {
+
+    # ---- ADD PARSER FUNCTIONS IN BELOW FORMAT ONLY ----
+    # 'juniper show command' : function_name,                               ## if single hierarchy details from output
+    # 'juniper show command' : (function_name1, function_name2, ... ),      ## if multiple hierarchies details from output
+    # ---------------------------------------------------
+
+	'show lldp neighbors': get_lldp_neighbour,
+	'show configuration': (get_interfaces_running, get_running_system, get_instances_running, get_instances_bgps),
+	'show version': get_version,
+	'show interfaces descriptions': None,
+	'show interfaces terse': None,
+	'show chassis hardware': (get_chassis_hardware, get_chassis_serial),
+	'show arp': get_arp_table,
+	'show bgp summary': None,
+    
+    # ... ADD MORE AS NECESSARY ... 
+}
 # ------------------------------------------------------------------------------
 
 def absolute_command(cmd, cmd_parser_map, op_filter=False):
