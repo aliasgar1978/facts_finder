@@ -2,5 +2,4 @@ nettoolkit>=0.0.17
 pandas
 numpy
 openpyxl
-capture_it>=0.0.10
 

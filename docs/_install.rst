@@ -23,7 +23,6 @@ Inherited python packages
 ====================================
 
 	* nettoolkit >= 0.0.17
-	* capture_it>=0.0.10
 	* pandas
 	* numpy
 	* openpyxl
