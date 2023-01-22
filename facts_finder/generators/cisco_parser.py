@@ -6,7 +6,6 @@ from nettoolkit import *
 
 from .cisco import *
 from .device import DevicePapa
-from facts_finder.generators import cisco
 # ------------------------------------------------------------------------------
 
 CMD_LINE_START_WITH = "output for command: "

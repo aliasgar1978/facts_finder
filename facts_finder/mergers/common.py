@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 from nettoolkit import *
 
-from facts_finder.generators import FactsGen
 
 # ========================================================================================
 

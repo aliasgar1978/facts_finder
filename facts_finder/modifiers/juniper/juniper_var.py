@@ -1,6 +1,5 @@
 
 from nettoolkit import *
-import pandas as pd
 
 from facts_finder.modifiers.commons import *
 from .commands.cmd_dict import *

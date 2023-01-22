@@ -7,7 +7,6 @@ from .commands.cmd_dict import *
 from .cisco_var import VarCisco
 from .cisco_tables import TableInterfaceCisco
 from .cisco_vrfs import TableVrfsCisco
-from facts_finder.modifiers import cisco
 
 # ================================================================================================
 

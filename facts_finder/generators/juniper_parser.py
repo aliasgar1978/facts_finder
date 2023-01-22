@@ -6,7 +6,6 @@ from nettoolkit import *
 
 from .juniper import *
 from .device import DevicePapa
-from facts_finder.generators import juniper
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------

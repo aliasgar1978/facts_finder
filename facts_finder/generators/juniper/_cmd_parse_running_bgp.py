@@ -2,7 +2,6 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
-from nettoolkit.gpl import JUNIPER_IFS_IDENTIFIERS
 
 from ._cmd_parse_running import Running
 from .common import *

@@ -6,7 +6,6 @@ from facts_finder.modifiers.commons import KeyExchanger
 from .commands.cmd_dict import *
 from .juniper_var import VarJuniper
 from .juniper_tables import TableInterfaceJuniper
-from facts_finder.modifiers import juniper
 
 # ================================================================================================
 
@@ -30,7 +29,7 @@ def get_cmd_list_juniper(
 	if column_mapper_file is not None:
 		for k,v in cmd_lst_int.copy().items():
 			cmd_lst_int[k] = {}
-		KEC_INT = KeyExchanger(int_column_mapper_file, cmd_lst_int)
+		KEC_INT = KeyExchanger(column_mapper_file, cmd_lst_int)
 		cmd_lst['cmd_lst_int'] = KEC_INT.cmd_lst
 	
 	return cmd_lst
