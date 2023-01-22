@@ -79,7 +79,7 @@ class RunningInterfaces(Running):
 					intf = spl[-1]
 					# print(vrf, intf)
 					self.interface_dict[intf]['intvrf'] = vrf
-					foundavrf = true
+					foundavrf = True
 			except:
 				continue
 

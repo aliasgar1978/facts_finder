@@ -9,5 +9,3 @@ __all__ = [
 	'CiscoMerge', 'JuniperMerge'
 ]
 
-
-# __ver__ == '0.0.1'
