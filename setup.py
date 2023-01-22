@@ -5,13 +5,21 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="facts_finder",
-    version="0.0.6",
+    version="0.0.7",
     author="ALIASGAR - ALI",
     author_email="aholo2000@gmail.com",
     description="facts_finder for Networking Geeks",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/alias1978/facts_finder",
+    packages=setuptools.find_packages(),    
+    package_data={
+        'facts_finder': [
+            'generators/commands/*',
+            'modifiers/cisco/commands/*',
+            'modifiers/juniper/commands/*', 
+            ],
+    },
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -19,6 +27,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.7',
-    install_requires=['pandas', 'numpy', 'xlrd', 'openpyxl', 'nettoolkit', 'capture_it']
+    install_requires=['pandas', 'numpy', 'xlrd', 'openpyxl', 'nettoolkit>=0.0.17', 'capture_it>=0.0.10']
 )
 

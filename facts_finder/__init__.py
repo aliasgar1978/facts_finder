@@ -11,26 +11,18 @@
 # from .juniper import get_lldp_neighbour
 # ------------------------------------------------------------------------------
 
-from .database import write_to_xl, read_xl
+from .generators.merger import device
+from .generators.merger import DeviceDB
+from .rearrange import rearrange_tables
 
-from .merger import device
-from .merger import DeviceDB
-
-from .facts_gen_from_fg import DeviceFactsFg
-
-from .facts_gene_cisco import evaluate_cisco
-from .facts_gene_juniper import evaluate_juniper
-
-
-from .cleaning import evaluate
+from .clean import CleanFacts
 
 
 
 __all__ = [ 
-	'write_to_xl', 'read_xl', 
 	'device', 'DeviceDB',
-	'DeviceFactsFg',
-	'evaluate_cisco', 'evaluate_juniper', 'evaluate'
+	'CleanFacts',
+	'rearrange_tables',
 	]
 
-__ver__ = "0.0.6"
+__ver__ = "0.0.7"

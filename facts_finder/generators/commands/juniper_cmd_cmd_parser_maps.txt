@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------------------ #
+# Dict of Juniper commands, %trunked commands mapped with parser func.
+# ------------------------------------------------------------------------------ #
+juniper_commands_parser_map = {
+
+    # ---- ADD PARSER FUNCTIONS IN BELOW FORMAT ONLY ----
+    # 'juniper show command' : function_name,                               ## if single hierarchy details from output
+    # 'juniper show command' : (function_name1, function_name2, ... ),      ## if multiple hierarchies details from output
+    # ---------------------------------------------------
+
+	'show lldp neighbors': get_lldp_neighbour,
+	'show configuration': (get_interfaces_running, get_running_system, get_instances_running, get_instances_bgps),
+	'show version': get_version,
+	'show interfaces descriptions': None,
+	'show interfaces terse': None,
+	'show chassis hardware': (get_chassis_hardware, get_chassis_serial),
+	'show arp': get_arp_table,
+	'show bgp summary': None,
+    
+    # ... ADD MORE AS NECESSARY ... 
+}
+# ------------------------------------------------------------------------------ #

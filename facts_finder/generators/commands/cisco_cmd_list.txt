@@ -1,0 +1,15 @@
+# ------------------------------------------------------------------------------
+# COMMANDS LIST DICTIONARY, DEFINE **kwargs as dictionary in command value     #
+# ------------------------------------------------------------------------------
+cisco_cmds_list = OrderedDict([
+	# ('sh lldp nei', {'dsr': True}),			# dsr = domain suffix removal
+	# ('sh cdp nei', {'dsr': True}),			# dsr = domain suffix removal
+	# ('sh int status', {}),
+	# ('sh int desc', {}),
+	# ('show mac address-table', {}),
+	# ('sh ip arp', {}),
+	('sh run', {}),
+	# ('sh ver', {}),
+	## ADD More as grow ##
+])
+# ------------------------------------------------------------------------------

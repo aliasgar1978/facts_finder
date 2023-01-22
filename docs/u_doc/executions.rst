@@ -35,7 +35,7 @@ High-level Overview
 ----------------------------
 
 	#. Import necessary package, modules
-	#. Define your input files ( i.e. captures )
+	#. Define your input files ( i.e. capture files )
 	#. Generate and evaluate database from device
 	#. Write database to Excel
 

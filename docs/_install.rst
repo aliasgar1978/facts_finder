@@ -22,9 +22,9 @@ Install the fwOper package::
 Inherited python packages
 ====================================
 
-	* nettoolkit
+	* nettoolkit >= 0.0.17
+	* capture_it>=0.0.10
 	* pandas
 	* numpy
 	* openpyxl
-	* capture_it
 

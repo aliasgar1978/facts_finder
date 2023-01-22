@@ -1,0 +1,20 @@
+# ------------------------------------------------------------------------------
+# Dict of cisco commands, %full commands in keys mapped with parser func.
+# ------------------------------------------------------------------------------
+cisco_commands_parser_map = {
+	# 'show lldp neighbors': get_lldp_neighbour,
+	# 'show cdp neighbors': get_cdp_neighbour,
+	# 'show interfaces status': get_interface_status,
+	# 'show interfaces description': get_interface_description,
+	# 'show mac address-table': get_mac_address_table,
+	# 'show ip arp': get_arp_table,
+	'show running-config': (
+		get_system_running, 
+		get_bgp_running, 
+		get_interfaces_running, 
+		get_vrfs_running
+		)
+	# 'show version': get_version,
+}
+
+# ------------------------------------------------------------------------------
