@@ -47,8 +47,10 @@ def _df_columns_rearrange(pdf_dict, all_cols):
 		if sht in ('var',): continue
 		if sht in ('bgp', 'vrf'):
 			cols = all_cols[sht]
-		else:
+		elif sht in ('aggregated', 'vlan', 'physical', 'loopback', 'management', 'tunnel', ):
 			cols = all_cols['interfaces']
+		else:
+			cols = df.columns
 		pdf_dict[sht] = df[[ col for col in cols if col in df.columns ]]
 	return pdf_dict
 
