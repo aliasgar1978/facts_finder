@@ -12,14 +12,6 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/alias1978/facts_finder",
-    # packages=setuptools.find_packages(),    
-    package_data={
-        'facts_finder': [
-            'generators/commands/*',
-            'modifiers/cisco/commands/*',
-            'modifiers/juniper/commands/*', 
-            ],
-    },
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
