@@ -9,8 +9,9 @@ Using facts-finder - Method 1 (DeviceDB)
 
 .. important::
 
-	Use this method-1 if only device commands output captures is availalble.
-	Use more advanced method-2 if parsed excel device fact also available along with device commands output captures.
+	Use this method-1 (using DeviceDB), if only device commands output captures are availalble.
+	
+	Go for more advanced method-2 (using CleanFacts), if parsed excel device facts are also available along with device commands output captures.
 
 
 Detailed How To
@@ -46,9 +47,6 @@ Detailed How To
 			device_database = DeviceDB()	# create a new device database object
 			df_dict = device_database.evaluate(_model)	# evaluate object by providing necessary model, and return dictionary
 
-		see also:
-			* `device() <https://facts-finder.readthedocs.io/en/latest/docs/t_doc/__merger.html#facts_finder.merger.device>`_
-			* `DeviceDB() <https://facts-finder.readthedocs.io/en/latest/docs/t_doc/__merger.html#facts_finder.merger.DeviceDB>`_
 
 	#. Write database to Excel
 
@@ -128,7 +126,7 @@ Detailed How To
 
 .. admonition:: Notice
 
-	Make a note that output differs between version to version on devices, and thus it is obvious that parsing may not work every where, as expected incase if format differs from expectation. 
+	Make a note that output differs between version to version on devices, and thus it is obvious that parsing may not work every where, incase if format differs from expectation. 
 
 	Make sure to cross-check the generated facts before using it.
 

@@ -9,8 +9,8 @@ Using facts-finder - Method 2 (CleanFacts)
 
 .. important::
 
-	Use this method-2 if parsed excel device fact also available along with device commands output captures.
-	This will enable for more advanced technique to modify for the custom variables later on.
+	Use this method, if parsed excel device fact also available along with device commands output captures.
+	This will enables more advanced technique to modify for the custom variables later on.
 
 
 Detailed How To
@@ -23,12 +23,13 @@ Detailed How To
 			from facts_finder import CleanFacts, rearrange_tables
 
 
-	#. Define your input files ( i.e. captures-log, facts-xl )
+	#. Define input files ( i.e. captures-log, facts-excel )
 
-		parsed_excelfile can be generated using capture_it utility.  
+		``parsed_excelfile`` can be generated using capture_it utility.  
 		Along with device log capture it can generate the device facts by parsing the outputs concurrently..
 		It generates a separate sheet for each parsed command output.
-		`**see also:** <https://capture_it.readthedocs.io>`
+
+		* `see also: <https://capture_it.readthedocs.io>`_
 
 		.. code::
 
@@ -59,13 +60,12 @@ Detailed How To
 			cf()
 
 
-	.. important::
+		.. Note::
 
-		Incase if you have your own custom classes to modify the output database.
-		than execute it here. cf instance will provide the necessary attributes in order to process the data further.
+			Incase if you have your own custom classes to modify the output database.
+			than execute it here. cf instance will provide the necessary attributes in order to process the data further.
 
-		see next page for an example of such.
-
+			see next page for an example of such.
 
 
 	#. Rearrange columns in excel file in orders [optional step]
