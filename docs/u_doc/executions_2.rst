@@ -45,10 +45,10 @@ Detailed How To
 
 		Returning cf instance of an CleanFacts object, will have a few properties.
 
-			* hostname: hostname of the device discovered from config
-			* config: raw configuration of device. ( for cisco it will be running config, while for juniper it will be set commands configuration )  
-			* dev_type: detected device type (either `cisco` or `juniper`) string
-			* clean_file: new output file name 
+			* **hostname**: hostname of the device discovered from config
+			* **config**: raw configuration of device. ( for cisco it will be running config, while for juniper it will be set commands configuration )  
+			* **dev_type**: detected device type (either `cisco` or `juniper`) string
+			* **clean_file**: new output file name 
 
 		.. code:: python
 			
