@@ -13,7 +13,7 @@ cisco_parser
 
 
 CISCO PARSER CLASSES AND FUNCTIONS
-========================================
+-------------------------------------
 
 cisco common functions
 -------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ juniper_parser
 
 
 JUNIPER PARSER CLASSES AND FUNCTIONS
-========================================
+-------------------------------------------
 
 
 juniper common functions
