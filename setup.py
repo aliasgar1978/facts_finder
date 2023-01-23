@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/alias1978/facts_finder",
-    packages=setuptools.find_packages(),    
+    # packages=setuptools.find_packages(),    
     # package_data={
     #     'facts_finder': [
     #         'generators/commands/*',
