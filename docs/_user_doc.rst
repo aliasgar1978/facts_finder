@@ -8,4 +8,5 @@ User documentation!
 
 
    Description <u_doc/four_ws>
-   Executions <u_doc/executions_1>
+   Executions-DeviceDB <u_doc/executions_1>
+   Executions-CleanFacts <u_doc/executions_2>
