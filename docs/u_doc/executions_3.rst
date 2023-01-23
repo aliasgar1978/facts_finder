@@ -17,8 +17,9 @@ Detailed How To
 
 		modify as per custom package/module name(s).
 
-		*customer_x*: is custom package
-		*package_class*: custom package class containing modifying methonds.
+		``customer_x``: is custom package
+		
+		``package_class``: custom package class containing modifying methonds.
 
 		.. code::
 
@@ -43,9 +44,9 @@ Detailed How To
 			ADF.write()							## custom method to write out modified data.
 
 
-	#. Rearrange columns in excel file in orders [optional step]
+	#. Rearrange columns in excel file in orders *[optional step]*
 
-		Orders are defined as per `rearrange.py` module of the package.
+		Orders are defined as per ``rearrange.py`` module of the package.
 
 		.. code:: python
 			
