@@ -22,7 +22,7 @@ Install the fwOper package::
 Inherited python packages
 ====================================
 
-	* nettoolkit >= 0.0.17
+	* nettoolkit > 0.0.17
 	* pandas
 	* numpy
 	* openpyxl
