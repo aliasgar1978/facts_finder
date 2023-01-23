@@ -34,12 +34,7 @@ Detailed How To
 
 		.. code::
 
-			ADF = CustomDeviceFacts(			## provide input to custom class
-				hostname=cf.hostname,
-				dev_type=cf.dev_type,
-				config=cf.config,
-				facts_gene_file=cf.clean_file,
-			)
+			ADF = CustomDeviceFacts(cf)			## provide input to custom class
 			ADF()								## call to generate modified data.
 			ADF.write()							## custom method to write out modified data.
 
