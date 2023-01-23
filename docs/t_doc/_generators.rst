@@ -1,9 +1,11 @@
 GENERATORS
 ===========================
 
+CISCO
+-----------------------------------------------------------------------------
 
 cisco_parser
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco_parser
 	:members:
@@ -13,10 +15,10 @@ cisco_parser
 
 
 CISCO PARSER CLASSES AND FUNCTIONS
--------------------------------------
+-----------------------------------------------------------------------------
 
 cisco common functions
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco.common
 	:members:
@@ -27,7 +29,7 @@ cisco common functions
 
 
 cisco command parser - arp table
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_arp_table
 	:members:
@@ -36,7 +38,7 @@ cisco command parser - arp table
 
 
 cisco command parser - bgp
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_bgp
 	:members:
@@ -46,7 +48,7 @@ cisco command parser - bgp
 
 
 cisco command parser - cdp neighbour
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_cdp
 	:members:
@@ -55,7 +57,7 @@ cisco command parser - cdp neighbour
 
 
 cisco command parser - interface description
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_int_description
 	:members:
@@ -64,7 +66,7 @@ cisco command parser - interface description
 
 
 cisco command parser - interface status
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_int_status
 	:members:
@@ -73,7 +75,7 @@ cisco command parser - interface status
 
 
 cisco command parser - lldp neigbour
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_lldp
 	:members:
@@ -82,7 +84,7 @@ cisco command parser - lldp neigbour
 
 
 cisco command parser - mac table
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_mac_table
 	:members:
@@ -91,7 +93,7 @@ cisco command parser - mac table
 
 
 cisco command parser - interfaces from running config
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_running_interfaces
 	:members:
@@ -100,7 +102,7 @@ cisco command parser - interfaces from running config
 
 
 cisco command parser - system from running config
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_running_system
 	:members:
@@ -109,7 +111,7 @@ cisco command parser - system from running config
 
 
 cisco command parser - vrfs from running config
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_running_vrf
 	:members:
@@ -118,7 +120,7 @@ cisco command parser - vrfs from running config
 
 
 cisco command parser - system version
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_version
 	:members:
@@ -132,7 +134,7 @@ cisco command parser - system version
 
 
 juniper_parser
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper_parser
 	:members:
@@ -143,11 +145,11 @@ juniper_parser
 
 
 JUNIPER PARSER CLASSES AND FUNCTIONS
--------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 juniper common functions
----------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
 .. automodule:: facts_finder.generators.juniper.common
 	:members:
@@ -156,7 +158,7 @@ juniper common functions
 
 
 juniper command parser - arp table
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_arp_table
 	:members:
@@ -165,7 +167,7 @@ juniper command parser - arp table
 
 
 juniper command parser - chassis hardware
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_chassis_hardware
 	:members:
@@ -174,7 +176,7 @@ juniper command parser - chassis hardware
 
 
 juniper command parser - interfaces description
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_int_description
 	:members:
@@ -182,7 +184,7 @@ juniper command parser - interfaces description
 	:show-inheritance:
 
 juniper command parser - lldp
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_lldp
 	:members:
@@ -190,7 +192,7 @@ juniper command parser - lldp
 	:show-inheritance:
 
 juniper command parser - configuration
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running
 	:members:
@@ -198,7 +200,7 @@ juniper command parser - configuration
 	:show-inheritance:
 
 juniper command parser - bgp from configuration
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running_bgp
 	:members:
@@ -207,7 +209,7 @@ juniper command parser - bgp from configuration
 
 
 juniper command parser - interfaces from configuration
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running_interfaces
 	:members:
@@ -215,7 +217,7 @@ juniper command parser - interfaces from configuration
 	:show-inheritance:
 
 juniper command parser - bgp instances from configuration
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running_routing_instances
 	:members:
@@ -223,7 +225,7 @@ juniper command parser - bgp instances from configuration
 	:show-inheritance:
 
 juniper command parser - system from configuration
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running_system
 	:members:
@@ -231,7 +233,7 @@ juniper command parser - system from configuration
 	:show-inheritance:
 
 juniper command parser - version
--------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_version
 	:members:
