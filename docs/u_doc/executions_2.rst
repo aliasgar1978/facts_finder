@@ -104,9 +104,9 @@ Detailed How To
 
 	command output format should be as follows
 		
-		|! ==========================================
-		|! output for command: show runn
-		|! ==========================================
+		! ==========================================
+		! output for command: show runn
+		! ==========================================
 		
 		<<output of command>> ...
 
@@ -127,9 +127,9 @@ Detailed How To
 
 	command output format should be as follows
 
-		|# ===================================================	
-		|# output for command: show configuration | no-more
-		|# ===================================================			
+		# ===================================================	
+		# output for command: show configuration | no-more
+		# ===================================================			
 		
 		<<output of command>> ...
 
