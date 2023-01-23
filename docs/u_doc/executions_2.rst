@@ -5,7 +5,7 @@ Using facts-finder - Method 2 (CleanFacts)
 	#. Import necessary package, modules
 	#. Define your input files ( i.e. capture files )
 	#. Generate and evaluate database from device
-	#. Write database to Excel
+	#. rearrange database columns of Excel
 
 .. important::
 
@@ -105,7 +105,9 @@ Detailed How To
 	command output format should be as follows
 		
 		! ==========================================
+
 		! output for command: show runn
+
 		! ==========================================
 		
 		<<output of command>> ...
@@ -128,7 +130,9 @@ Detailed How To
 	command output format should be as follows
 
 		# ===================================================	
+		
 		# output for command: show configuration | no-more
+		
 		# ===================================================			
 		
 		<<output of command>> ...
