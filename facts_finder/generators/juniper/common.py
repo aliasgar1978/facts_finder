@@ -47,5 +47,14 @@ def get_vlans_juniper(spl, how="s"):
 	else:
 		return int_vl_list
 
+def get_juniper_pw_string(spl, key_index):
+	pw = " ".join(spl[key_index:]).strip().split("##")[0].strip()
+	if pw[0] == '"': pw = pw[1:]
+	if pw[-1] == '"': pw = pw[:-1]
+	try:
+		pw = juniper_decrypt(pw)
+	except: pass
+	return pw
+
 
 # ------------------------------------------------------------------------------

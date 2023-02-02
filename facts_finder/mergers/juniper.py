@@ -12,8 +12,8 @@ def add_access_vlan_column(port_mode, vlan):
 
 class JuniperMerge(Merged):
 
-	def __init__(self, fg, capture_tfsm_file):
-		super().__init__(fg, capture_tfsm_file)
+	def __init__(self, fg, capture_tfsm_file, use_cdp):
+		super().__init__(fg, capture_tfsm_file, use_cdp)
 
 	def __call__(self):
 		self.get_facts_modifiers()

@@ -15,10 +15,12 @@ def nbr_hostname(hn):
 
 def h4block(ipv6addr):
 	"""check for the ipv6 string(s) and from the address returns either 4th or 7th block"""
-	# l = eval(ipv6addr)
-	if isinstance(ipv6addr, (list, set, tuple)):
+	try:
+		l = eval(ipv6addr)
+	except: return ""
+	if isinstance(l, (list, set, tuple)):
 		try:
-			v6 = IPv6(ipv6addr[-1][:-2]+"/64")
+			v6 = IPv6(l[-1][:-2]+"/64")
 			block = v6.get_hext(4)  # for major assignments
 			if block and block!='0':
 				return block
@@ -77,8 +79,9 @@ def intvrf_update(vrf):
 # ================================================================================================
 class TableInterfaceCisco(DataFrameInit, TableInterfaces):
 
-	def __init__(self, capture, cmd_lst=None):
+	def __init__(self, capture, cmd_lst=None, use_cdp=None):
 		self.cmd_lst=cmd_lst
+		self.use_cdp = use_cdp
 		if not self.cmd_lst:
 			self.cmd_lst = cmd_lst_int
 		super().__init__(capture)
@@ -104,6 +107,8 @@ class TableInterfaceCisco(DataFrameInit, TableInterfaces):
 		pdf = pd.DataFrame({'interface':[]})
 		for sheet, df in self.dfd.items():
 			if sheet not in self.cmd_lst: continue
+			if sheet == 'show cdp neighbors detail' and not self.use_cdp: continue 
+			#
 			ndf = df[ self.cmd_lst[sheet].keys() ]
 			ndf = ndf.rename(columns=self.cmd_lst[sheet])
 			ndf['interface'] = ndf['interface'].apply(lambda x: STR.if_standardize(x, True))

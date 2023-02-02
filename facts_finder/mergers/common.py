@@ -62,9 +62,10 @@ def generate_int_number(pdf):
 
 class Merged:
 
-	def __init__(self, fg, capture_tfsm_file):
+	def __init__(self, fg, capture_tfsm_file, use_cdp):
 		self.Fg = fg
 		self.capture_tfsm_file = capture_tfsm_file
+		self.use_cdp = use_cdp
 		self.merged_dict = {}
 
 		# print([x for x,y in self.Fg])

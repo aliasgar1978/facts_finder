@@ -48,6 +48,7 @@ def cisco_modifier(capture_tfsm_file,
 	cmd_lst=None,
 	var_column_mapper_file=None,
 	int_column_mapper_file=None,
+	use_cdp=False,
 	):
 	"""Club var/interface/vrf data from various commands parsed excel outputs.
 	Refer: cisco/commands/cmd_dict.txt for list of required commands.
@@ -62,7 +63,7 @@ def cisco_modifier(capture_tfsm_file,
 	ntc_modifier.update( vc.pdf_dict )
 
 	## 2. ---  `table` Tab 
-	tic = TableInterfaceCisco(capture_tfsm_file, cmd_lst['cmd_lst_int'])
+	tic = TableInterfaceCisco(capture_tfsm_file, cmd_lst['cmd_lst_int'], use_cdp)
 	tic()
 	ntc_modifier.update( tic.pdf_dict )
 

@@ -19,11 +19,13 @@ class CleanFacts:
 		capture_log_file, 
 		capture_parsed_file,
 		new_suffix='-clean',
+		use_cdp=False,
 		debug=False,
 		):
 		self.capture_log_file = capture_log_file
 		self.capture_parsed_file = capture_parsed_file
 		self.new_suffix = new_suffix
+		self.use_cdp = use_cdp
 		self.debug = debug
 		self._clean_file = get_clean_filename(self.capture_parsed_file, self.new_suffix)
 		if debug:
@@ -58,7 +60,7 @@ class CleanFacts:
 
 	def call(self, MergeClass):
 		""" calls the modifier merge class """
-		self.Mc = MergeClass(self.Fg, self.capture_parsed_file)
+		self.Mc = MergeClass(self.Fg, self.capture_parsed_file, self.use_cdp)
 		self.Mc()
 
 	@property

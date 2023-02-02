@@ -6,8 +6,8 @@ from .common import Merged
 
 class CiscoMerge(Merged):
 
-	def __init__(self, fg, capture_tfsm_file):
-		super().__init__(fg, capture_tfsm_file)
+	def __init__(self, fg, capture_tfsm_file, use_cdp):
+		super().__init__(fg, capture_tfsm_file, use_cdp)
 
 	def __call__(self):
 		self.get_facts_modifiers()
@@ -24,7 +24,7 @@ class CiscoMerge(Merged):
 		self.add_fg_dfs()
 
 	def get_facts_modifiers(self):
-		self.pdf_dict = cisco_modifier(self.capture_tfsm_file)
+		self.pdf_dict = cisco_modifier(self.capture_tfsm_file, use_cdp=self.use_cdp)
 
 
 	def add_fg_dfs(self):

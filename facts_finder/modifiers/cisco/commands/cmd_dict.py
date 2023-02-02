@@ -2,6 +2,9 @@
 #  FROM CAPTURE_IT USING TEXTFSM AND
 #  RELATIVE REQUIRED FIELD VALUES. 
 #
+
+from collections import OrderedDict
+
 #
 # ---------- VAR
 #
@@ -21,13 +24,8 @@ cmd_lst_var = {
 #
 # ---------- INTERFACES
 #
-cmd_lst_int = {
-    'show cdp neighbors detail': {'destination_host': '//nbr_hostname',
-                            'local_port': 'interface',
-                            'management_ip': 'nbr_ip',
-                            'platform': 'nbr_platform',
-                            'remote_port': 'nbr_interface'},
-
+cmd_lst_int = OrderedDict()
+cmd_lst_int.update({
     'show etherchannel summary': {'group': 'int_number',
                             'interfaces': '//po_to_interface',
                             'po_name': 'interface'},
@@ -55,14 +53,18 @@ cmd_lst_int = {
     'show ip vrf interfaces': {'interface': 'interface', 'vrf': 'intvrf'},
 
     'show ipv6 interface brief': {'intf': 'interface', 'ipaddr': '//h4block'},
-
-    'show lldp neighbors detail': {'local_interface': 'interface',
-                                'management_ip': 'nbr_ip',
-                                'neighbor': '//nbr_hostname',
-                                'neighbor_port_id': 'nbr_interface',
-                                'serial': 'nbr_serial',
-                                'vlan': 'nbr_vlan'},
-}
+})
+cmd_lst_int['show cdp neighbors detail'] = {'destination_host': '//nbr_hostname',
+                                            'local_port': 'interface',
+                                            'management_ip': 'nbr_ip',
+                                            'platform': 'nbr_platform',
+                                            'remote_port': 'nbr_interface'}
+cmd_lst_int['show lldp neighbors detail'] = {'local_interface': 'interface',
+                                            'management_ip': 'nbr_ip',
+                                            'neighbor': '//nbr_hostname',
+                                            'neighbor_port_id': 'nbr_interface',
+                                            'serial': 'nbr_serial',
+                                            'vlan': 'nbr_vlan'}
 
 #
 # ---------- VRF

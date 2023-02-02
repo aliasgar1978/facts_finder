@@ -135,7 +135,14 @@ class RunningSystem(Running):
 		if l.startswith("set system tacplus-server") : ip = spl[3]
 		if ip and not op_dict.get('tacacs_server'):
 			op_dict['tacacs_server'] = set()
+			op_dict['tacacs_tcp_port'] = '49'
+			op_dict['tacacs_key'] = ''
 		if ip: op_dict['tacacs_server'].add(ip)
+		# if ip : print(spl)
+		if ip and spl[4] == 'port':
+			op_dict['tacacs_tcp_port'] = spl[5]
+		if ip and spl[4] == 'secret':
+				op_dict['tacacs_key'] = get_juniper_pw_string(spl, 5)		
 		return op_dict
 
 
