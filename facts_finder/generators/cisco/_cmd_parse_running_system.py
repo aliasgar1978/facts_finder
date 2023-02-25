@@ -72,7 +72,7 @@ class RunningSystem():
 					else:
 						key = spl[i+1]
 				if 'port' in spl:
-					port = spl[spl.index('key')+1]
+					port = spl[spl.index('port')+1]
 		dic = {}
 		for i, srv in enumerate(servers):
 			dic['tacacs_server_' + str(i+1)] = srv

@@ -10,11 +10,12 @@ IF_PROPS = {
 	3: ["nbr_dev_type", "nbr_hostname", "nbr_ip", "nbr_platform", "nbr_serial", "nbr_vlan", "nbr_interface",],
 	4: ["switchport", "admin_mode", "switchport_negotiation", "interface_mode", "access_vlan", "voice_vlan", 
 		"native_vlan", "vlan_members",],
-	5: ["subnet", "h4block",],
+	5: ["subnet", "h4block", "v4_helpers", "v6_helpers", ],
 	6: ["ospf_auth", "ospf_auth_type",],
-	7: ["intvrf", "channel_grp",],
+	7: ["intvrf", "channel_group_interface", "channel_grp", "channel_group_mode"],
 	8: ["description", "int_type", "int_filter", "dist_n", "dist_i",  ],
 	9: ["vlan_index", "vlan_type", "vlan_description",],
+	10:["int_udld",]
 }
 
 BGP_PROPS = [ 

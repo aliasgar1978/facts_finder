@@ -210,6 +210,32 @@ class RunningInterfaces():
 		func = self.get_int_ospf_auth
 		merge_dict(self.interface_dict, self.interface_read(func))
 
+
+	@staticmethod
+	def get_interface_v4_helpers(port_dict, l):
+		if l.strip().startswith("ip helper-address"):
+			if not port_dict.get('v4_helpers'):
+				port_dict['v4_helpers'] = l.strip().split()[-1]
+			else:
+				port_dict['v4_helpers'] += '\n'+l.strip().split()[-1]
+
+	def interface_v4_helpers(self):
+		func = self.get_interface_v4_helpers
+		merge_dict(self.interface_dict, self.interface_read(func))
+
+	@staticmethod
+	def get_interface_v6_helpers(port_dict, l):
+		if l.strip().startswith("ipv6 dhcp relay destination"):
+			if not port_dict.get('v6_helpers'):
+				port_dict['v6_helpers'] = l.strip().split()[-1]
+			else:
+				port_dict['v6_helpers'] += '\n'+l.strip().split()[-1]
+
+	def interface_v6_helpers(self):
+		func = self.get_interface_v6_helpers
+		merge_dict(self.interface_dict, self.interface_read(func))
+
+
 	# # Add more interface related methods as needed.
 
 
@@ -230,13 +256,14 @@ def get_interfaces_running(cmd_op, *args):
 	# R.interface_ips()
 	# R.interface_v6_ips()
 	# R.interface_vlans()
-	# R.interface_channel_group()
+	R.interface_channel_group()
 	# R.interface_vrf()
 	R.interface_ospf_auth()
 	R.interface_udld()
+	R.interface_v4_helpers()
+	R.interface_v6_helpers()
 
 	# # update more interface related methods as needed.
-
 	if not R.interface_dict:
 		R.interface_dict['dummy_int'] = ""
 	return R.interface_dict
