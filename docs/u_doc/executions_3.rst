@@ -45,8 +45,20 @@ Detailed How To
 
 		.. code:: python
 			
-			rearrange_tables(cf.clean_file)
+			rearrange_tables(cf.clean_file, foreign_keys=FOREIGN_KEYS)  ## refer below for foreign_keys parameter
 
+
+	.. note:: Information
+
+		FOREIGN_KEYS should be a dictionary of lists for addtional custom columns.  
+		
+		Its keys should be from these ('bgp', 'vrf', 'interfaces')
+		
+		Example:  FOREIGN_KEYS={
+								'bgp': ['custom_col_bgp_para', ],
+								'vrf': ['custom_col_vrf_para1', 'custom_col_vrf_para2'],
+								'interfaces': ['custom_col_int_para', ],
+								}
 
 
 
