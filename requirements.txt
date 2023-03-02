@@ -1,4 +1,4 @@
-nettoolkit>0.0.16
+nettoolkit>0.0.19
 pandas
 numpy
 openpyxl
