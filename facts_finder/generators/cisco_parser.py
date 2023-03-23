@@ -13,6 +13,7 @@ LEN_CMD_LINE = len(CMD_LINE_START_WITH)
 
 # ------------------------------------------------------------------------------
 # // Cisco //
+# Since lot of stuff offloaded to ntc many of the functionality are remarked/disabled.
 # ------------------------------------------------------------------------------
 # COMMANDS LIST DICTIONARY, DEFINE **kwargs as dictionary in command value     #
 # ``cisco_cmds_list``

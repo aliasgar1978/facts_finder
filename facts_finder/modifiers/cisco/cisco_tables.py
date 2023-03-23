@@ -132,7 +132,7 @@ class TableInterfaceCisco(DataFrameInit, TableInterfaces):
 					self.pdf.drop([x], axis=1, inplace=True)
 				self.pdf.drop([y], axis=1, inplace=True)
 			except:
-				print(f"duplicate col removal not happen for {x}")
+				print(f"Info: duplicate col removal not happen for {x}")
 
 	def po_to_interface(self):
 		"""add port channel number to member interfaces """
@@ -169,7 +169,7 @@ class TableInterfaceCisco(DataFrameInit, TableInterfaces):
 				self.pdf[col[2:]] = self.pdf[col].apply(func)
 				self.pdf.drop([col,], axis=1, inplace=True)
 			except:
-				print(f"Missing detail found in database {col}, mostly a key output capture failed.")
+				print(f"Warning: Missing detail found in database {col}, mostly a key output capture failed.  Further processing may fail due to missing elements.")
 
 	def update_neighbor_intf(self):
 		"""standardize neighbor interface length """

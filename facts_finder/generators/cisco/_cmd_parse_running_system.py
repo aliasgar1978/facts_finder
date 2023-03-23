@@ -41,17 +41,17 @@ class RunningSystem():
 			if ca_start and l.strip().startswith("quit"):
 				break
 			if not ca_start: continue
-			cert += l+'\n'
+			cert += l+" \n"
 		return {'ca_certificate': cert.rstrip()}
 
 	def system_tacacs_server(self):
 		"""get list of tacacs server ips from aaa configurations
 		"""
-		servers, key, port, start = set(), '', '', False
+		servers, key, port, start = [], '', '', False
 		for l in self.cmd_op:
 			spl = l.split()
 			if l.startswith("tacacs-server host "):
-				servers.add(spl[2])
+				servers.append(spl[2])
 			if l.startswith("tacacs-server ") and 'key' in spl:
 				key = decrypt_type7(spl[spl.index('key')+1])
 			if l.startswith("tacacs-server ") and 'port' in spl:
@@ -64,7 +64,7 @@ class RunningSystem():
 			if start:
 				spl = l.strip().split()
 				if spl[0] == 'server-private':
-					servers.add(spl[1])
+					servers.append(spl[1])
 				if 'key' in spl:
 					i = spl.index('key')
 					if str(spl[i+1]) == '7':
@@ -76,6 +76,7 @@ class RunningSystem():
 		dic = {}
 		for i, srv in enumerate(servers):
 			dic['tacacs_server_' + str(i+1)] = srv
+		dic['tacacs_servers'] = "\n".join(servers)
 		dic['tacacs_key'] = key
 		dic['tacacs_tcp_port'] = port
 		return dic
@@ -83,46 +84,49 @@ class RunningSystem():
 	def system_name_server(self):
 		"""get list of dns name server ips from configurations
 		"""
-		servers = set()
+		servers = []
 		for l in self.cmd_op:
 			if l.startswith("ip name-server "):
 				spl = l.split()
 				for i, x in enumerate(spl):
 					if i<2: continue
-					servers.add(x)
+					servers.append(x)
 		dic = {}
 		for i, srv in enumerate(servers):
 			dic['dns_server_' + str(i+1)] = srv
+		dic['dns_servers'] = "\n".join(servers)
 		return dic
 
 	def system_syslog_server(self):
 		"""get list of syslog server ips from configurations
 		"""
-		servers = set()
+		servers = []
 		for l in self.cmd_op:
 			if l.startswith("logging host "):
 				spl = l.split()
 				for i, x in enumerate(spl):
 					if i<2: continue
-					servers.add(x)
+					servers.append(x)
 		dic = {}
 		for i, srv in enumerate(servers):
 			dic['syslog_server_' + str(i+1)] = srv
+		dic['syslog_servers'] = "\n".join(servers)
 		return dic
 
 	def system_ntp_server(self):
 		"""get list of ntp server ips from configurations
 		"""
-		servers = set()
+		servers = []
 		for l in self.cmd_op:
 			if l.startswith("ntp server "):
 				spl = l.split()
 				for i, x in enumerate(spl):
 					if i<2: continue
-					servers.add(x)
+					servers.append(x)
 		dic = {}
 		for i, srv in enumerate(servers):
 			dic['ntp_server_' + str(i+1)] = srv
+		dic['ntp_servers'] = "\n".join(servers)
 		return dic
 
 
