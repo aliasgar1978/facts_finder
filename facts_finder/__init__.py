@@ -17,4 +17,4 @@ __all__ = [
 	'rearrange_tables',
 	]
 
-__ver__ = "0.0.11"
+__ver__ = "0.0.12"
