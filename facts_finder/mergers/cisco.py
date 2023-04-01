@@ -16,6 +16,7 @@ class CiscoMerge(Merged):
 		self.merged_interfaces_dataframe()	# self.int_df
 		self.merged_vrfs_dataframe()		# self.vrf_df
 		self.bgp_dataframe()
+		self.ospf_dataframe()
 
 		self.generate_interface_numbers()
 		self.split_interface_dataframe()

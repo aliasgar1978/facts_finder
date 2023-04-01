@@ -253,4 +253,22 @@ def get_vrf_cisco(line):
 
 
 
+# ---------------------------------------------------------------
+
+
+def get_appeneded_value(dic, key, value):
+	"""appends the value to an existing value found in dictionary with provided key if exist other wise returns same value
+
+	Args:
+		dic (dict): dictionary
+		key (str): dictionary key
+		value (str): arbitrary value to be appended to existing key if exist
+
+	returns:
+		str: appened string
+	"""
+	if not dic.get(key):
+		return value
+	else:
+		return dic[key] + '\n'+ value
 

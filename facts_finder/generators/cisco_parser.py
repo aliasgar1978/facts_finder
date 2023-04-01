@@ -44,7 +44,8 @@ cisco_cmds_op_hierachy_level = {
 		'system', 
 		'bgp neighbor', 
 		'Interfaces', 
-		'vrf'
+		'vrf',
+		'ospf',
 		)
 	# 'sh ver': 'system',
 	## ADD More as grow ##
@@ -64,7 +65,8 @@ cisco_commands_parser_map = {
 		get_system_running, 
 		get_bgp_running, 
 		get_interfaces_running, 
-		get_vrfs_running
+		get_vrfs_running,
+		get_ospf_running,
 		)
 	# 'show version': get_version,
 }

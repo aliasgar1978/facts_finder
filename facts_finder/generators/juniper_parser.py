@@ -31,7 +31,7 @@ juniper_cmds_list = OrderedDict([
 # ------------------------------------------------------------------------------
 juniper_cmds_op_hierachy_level = {
 	'show lldp neighbors': 'Interfaces',
-	'show configuration': ('Interfaces', 'system', 'vrf', 'bgp neighbor'),
+	'show configuration': ('Interfaces', 'system', 'vrf', 'bgp neighbor', 'ospf'),
 	'show version': 'system',
 	'show interfaces descriptions': 'Interfaces',
 	'show chassis hardware': ('Interfaces', 'system'),
@@ -52,7 +52,7 @@ juniper_commands_parser_map = {
     # ---------------------------------------------------
 
 	'show lldp neighbors': get_lldp_neighbour,
-	'show configuration': (get_interfaces_running, get_running_system, get_instances_running, get_instances_bgps),
+	'show configuration': (get_interfaces_running, get_running_system, get_instances_running, get_instances_bgps, get_instances_ospfs),
 	'show version': get_version,
 	'show interfaces descriptions': None,
 	'show interfaces terse': None,

@@ -13,4 +13,4 @@ from ._cmd_parse_version import get_version
 from ._cmd_parse_running_system import get_running_system
 from ._cmd_parse_running_routing_instances import get_instances_running
 from ._cmd_parse_running_bgp import get_instances_bgps
-
+from ._cmd_parse_running_ospf import get_instances_ospfs

@@ -14,4 +14,5 @@ from ._cmd_parse_running_system import get_system_running
 from ._cmd_parse_version import get_version
 from ._cmd_parse_bgp import get_bgp_running
 from ._cmd_parse_running_vrfs import get_vrfs_running
+from ._cmd_parse_ospf import get_ospf_running
 

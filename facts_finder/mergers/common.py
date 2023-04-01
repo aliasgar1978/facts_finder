@@ -127,6 +127,14 @@ class Merged:
 		fg_df['filter'] = 'bgp'
 		self['bgp'] = fg_df
 
+	def ospf_dataframe(self):
+		fg_df = self.Fg['ospf'].reset_index()
+		self.fg_ospf_df = fg_df
+		fg_df['filter'] = 'ospf'
+		self['ospf'] = fg_df
+
+
+
 	def split_interface_dataframe(self):
 		self.int_dfs = split_to_multiple_tabs(self.int_df)
 		for sheet, df in self.int_dfs.items():
