@@ -4,8 +4,8 @@
 from collections import OrderedDict
 
 from ._cmd_parse_running import Running
+from facts_finder.generators.commons import *
 from .common import *
-
 
 merge_dict = DIC.merge_dict
 # ------------------------------------------------------------------------------

@@ -4,6 +4,7 @@
 from collections import OrderedDict
 from nettoolkit.gpl import JUNIPER_IFS_IDENTIFIERS
 
+from facts_finder.generators.commons import *
 from ._cmd_parse_running import Running
 from .common import *
 

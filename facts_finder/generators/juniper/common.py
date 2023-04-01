@@ -3,27 +3,6 @@ from nettoolkit import *
 
 # ------------------------------------------------------------------------------
 
-def get_subnet(address):
-	"""get subnet zero network address for provided v4 address
-
-	Args:
-		address (str): ipv4 address
-
-	Returns:
-		str: subnet zero/network address
-	"""	
-	return IPv4(address).subnet_zero()
-
-def get_v6_subnet(address):
-	"""get subnet zero network address for provided v6 address
-
-	Args:
-		address (str): ipv6 address
-
-	Returns:
-		str: subnet zero/network address
-	"""	
-	return IPv6(address).subnet_zero()
 
 def get_vlans_juniper(spl, how="s"):
 	"""get the list of vlans on the interface
@@ -58,20 +37,3 @@ def get_juniper_pw_string(spl, key_index):
 
 
 # ------------------------------------------------------------------------------
-
-def get_appeneded_value(dic, key, value):
-	"""appends the value to an existing value found in dictionary with provided key if exist other wise returns same value
-
-	Args:
-		dic (dict): dictionary
-		key (str): dictionary key
-		value (str): arbitrary value to be appended to existing key if exist
-
-	returns:
-		str: appened string
-	"""
-	if not dic.get(key):
-		return value
-	else:
-		return dic[key] + '\n'+ value
-
