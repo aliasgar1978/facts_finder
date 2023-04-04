@@ -7,7 +7,7 @@
 # ---------- VAR
 #
 cmd_lst_var = {
-    'show version | no-more': {'hostname': 'hostname',
+    'show version': {'hostname': 'hostname',
                             'junos_version': 'ios_version',
                             'model': 'hardware',
                             'serial_number': 'serial'}
@@ -17,14 +17,14 @@ cmd_lst_var = {
 # ---------- INTERFACES
 #
 cmd_lst_int = {
-    'show interfaces | no-more': {'admin_state': 'link_status',
+    'show interfaces': {'admin_state': 'link_status',
                                 'description': 'description',
                                 'destination': '//subnet',
                                 'hardware_type': 'GRE',
                                 'interface': 'interface',
                                 'link_status': 'protocol_status',
                                 'local': '//subnet1'},
-    'show lldp neighbors | no-more': {'local_interface': 'interface',
+    'show lldp neighbors': {'local_interface': 'interface',
                                'port_info': 'nbr_interface',
                                'system_name': '//nbr_hostname'}
 }

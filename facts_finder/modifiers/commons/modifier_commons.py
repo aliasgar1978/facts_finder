@@ -3,6 +3,15 @@ from nettoolkit import *
 import pandas as pd
 
 # ================================================================================================
+# Functions
+# ================================================================================================
+def trunk_no_more(cmd):
+	spl = cmd.split("|")
+	ucmd = spl[0].strip()
+	return ucmd
+
+
+# ================================================================================================
 # Dynamic Cisco Key Exchanger
 # ================================================================================================
 class KeyExchanger():
@@ -16,8 +25,9 @@ class KeyExchanger():
 	def read_column_mapper(self):
 		dfd = pd.read_excel(self.column_mapper, None)
 		for sheet, df in dfd.items():
-			if sheet not in self.cmd_lst: continue
-			dfd[sheet] = df.fillna("")
+			trunkated_sheet = trunk_no_more(sheet)
+			if trunkated_sheet not in self.cmd_lst: continue
+			dfd[trunkated_sheet] = df.fillna("")
 		return dfd
 
 	def update_cisco_cmd_lst(self):
@@ -41,8 +51,9 @@ class DataFrameInit():
 		dfd = pd.read_excel(self.capture, None)
 		ndf = {}
 		for sheet, df in dfd.items():
-			if sheet not in self.cmd_lst: continue
-			ndf[sheet] = df.fillna("")
+			trunkated_sheet = trunk_no_more(sheet)
+			if trunkated_sheet not in self.cmd_lst: continue
+			ndf[trunkated_sheet] = df.fillna("")
 		return ndf
 
 	@staticmethod

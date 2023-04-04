@@ -34,7 +34,7 @@ class TableInterfaceJuniper(DataFrameInit, TableInterfaces):
 		pdf = pd.DataFrame({'interface':[]})
 		for sheet, df in self.dfd.items():
 			if sheet not in self.cmd_lst: continue
-			if sheet == "show lldp neighbors | no-more":
+			if sheet == "show lldp neighbors":
 				df.rename(columns={'local_interface': 'interface', })
 			ndf = df[ self.cmd_lst[sheet].keys() ]
 			ndf = ndf.rename(columns=self.cmd_lst[sheet])

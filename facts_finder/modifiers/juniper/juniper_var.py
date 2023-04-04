@@ -16,7 +16,7 @@ class VarJuniper(DataFrameInit, Var):
 		super().__init__(capture)
 
 	def __call__(self):
-		self.update_device('show version | no-more')
+		self.update_device('show version')
 		self.convert_to_dataframe()
 
 	## Calls
