@@ -30,6 +30,14 @@ def split_to_multiple_tabs(pdf):
 	return pdf
 
 def update_int_number(number):
+	"""calculates and returns interface number for given interface
+
+	Args:
+		number (str): cisco/juniper interface
+
+	Returns:
+		str: interface number
+	"""	
 	if not number: return -1
 	port_suffix = STR.if_suffix(number)
 	s = 0
@@ -61,14 +69,20 @@ def generate_int_number(pdf):
 # ========================================================================================
 
 class Merged:
-
+	"""Common class defining general methods for mergers of generator and modifiers
+	"""	
 	def __init__(self, fg, capture_tfsm_file, use_cdp):
+		"""object initializer
+
+		Args:
+			fg (generator object): Facts generator object from generators
+			capture_tfsm_file (str): file name of configuration capture 
+			use_cdp (bool): defines for cisco use cdp neighbors or not. Some cases where lldp is disabled using cdp to identify neighbors.
+		"""		
 		self.Fg = fg
 		self.capture_tfsm_file = capture_tfsm_file
 		self.use_cdp = use_cdp
 		self.merged_dict = {}
-
-		# print([x for x,y in self.Fg])
 
 	def __iter__(self):
 		for k, v in self.merged_dict.items():
@@ -81,8 +95,17 @@ class Merged:
 		if item != "":
 			self.merged_dict[item] = value
 
-
 	def merge_and_drop_empty_filter_rows(self, fg_df, fm_df, merge_on):
+		"""merges generator and modifier dataframes and drops empty rows for data where no filter value assigned.
+
+		Args:
+			fg_df (DataFrame): generator DataFrame
+			fm_df (DataFrame): modifier DataFrame
+			merge_on (str, list): column(s) on which merge to happen
+
+		Returns:
+			DataFrame: merged DataFrame
+		"""		
 		if merge_on in fg_df.keys() and merge_on in fm_df.keys():
 			pdf = pd.merge( fm_df, fg_df, on=[merge_on,], how='outer').fillna("")		## merged dataframe
 			ix = [x for x in reversed(pdf.index[pdf['filter'] == ""])]				## row indexes for data where filter column value unavailable.
@@ -95,6 +118,8 @@ class Merged:
 		
 
 	def merged_interfaces_dataframe(self):
+		"""_summary_
+		"""		
 		fg_df = self.Fg['Interfaces'].reset_index()									## facts-gen dataframe
 		fg_df.rename(columns={'Interfaces': 'interface'}, inplace=True)				## update column name to match key/index between two dataframes. 
 		self.fg_int_df = fg_df
