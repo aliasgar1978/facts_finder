@@ -11,4 +11,5 @@ User documentation!
    Executions-DeviceDB <u_doc/executions_1>
    Executions-CleanFacts <u_doc/executions_2>
    CleanFacts-Custom Edits <u_doc/executions_3>
+   Samples <u_doc/samples>
    Version Control <u_doc/version_control>
