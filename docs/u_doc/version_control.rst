@@ -12,6 +12,9 @@ Version Control
      - date   
      - Updates
 
+   * - 0.0.1
+     - Feb 14, 2022
+     - Initial release on pypi 
    * - 0.0.02
      - April 12, 2022
      - update to cover *juniper* **bgp** para 
@@ -51,7 +54,10 @@ Version Control
 
 
 
+-----
+
+
 .. note::
 
-   Updates prior 0.0.12 were untracked.
+   some of version updates were untracked.
 
