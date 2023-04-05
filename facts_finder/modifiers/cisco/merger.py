@@ -1,3 +1,6 @@
+"""merger in steps
+"""
+
 from pathlib import *
 import os
 
@@ -15,8 +18,14 @@ def get_cmd_list_cisco(
 	int_column_mapper_file=None,
 	):
 	"""create commands list for each tab (var/interface/vrf) from the column mapper
-	--> dictionary of commands list
-	"""
+
+	Args:
+		var_column_mapper_file (str, optional): var column mapper file. Defaults to None.
+		int_column_mapper_file (str, optional): interfaces column mapper file. Defaults to None.
+
+	Returns:
+		dict: dictionary of commands list
+	"""	
 	cmd_lst = {
 		'cmd_lst_var': None,
 		'cmd_lst_int': None,
@@ -51,8 +60,17 @@ def cisco_modifier(capture_tfsm_file,
 	use_cdp=False,
 	):
 	"""Club var/interface/vrf data from various commands parsed excel outputs.
-	Refer: cisco/commands/cmd_dict.txt for list of required commands.
-	"""
+
+	Args:
+		capture_tfsm_file (str): device capture file
+		cmd_lst (_type_, optional): manually provide commands list, or it will take a few default commands ie. Defaults to None.
+		var_column_mapper_file (str, optional): var column mapper file. Defaults to None.
+		int_column_mapper_file (str, optional): interfaces column mapper file. Defaults to None.
+		use_cdp (bool, optional): inspect cdp neighbors or not. Defaults to False.
+
+	Returns:
+		dict: dictionary of pandas dataframes
+	"""	
 	ntc_modifier = {}
 	if cmd_lst is None:
 		cmd_lst=get_cmd_list_cisco(var_column_mapper_file, int_column_mapper_file)

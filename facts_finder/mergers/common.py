@@ -118,7 +118,7 @@ class Merged:
 		
 
 	def merged_interfaces_dataframe(self):
-		"""_summary_
+		"""merges Interfaces generator and modifier dataframes and drops empty rows for data where no filter value assigned.
 		"""		
 		fg_df = self.Fg['Interfaces'].reset_index()									## facts-gen dataframe
 		fg_df.rename(columns={'Interfaces': 'interface'}, inplace=True)				## update column name to match key/index between two dataframes. 
@@ -128,6 +128,8 @@ class Merged:
 		self.int_df = pdf
 
 	def merged_vrfs_dataframe(self):
+		"""merges vrf generator and modifier dataframes and drops empty rows for data where no filter value assigned.
+		"""	
 		fg_df = self.Fg['vrf'].reset_index()									## facts-gen dataframe
 		fm_df = self.pdf_dict['vrf']											## facts-modifier dataframe
 		self.fg_vrf_df = fg_df
@@ -137,6 +139,8 @@ class Merged:
 		self['vrf'] = pdf
 
 	def merged_var_dataframe(self):
+		"""merges system/var generator and modifier dataframes and drops empty rows for data where no filter value assigned.
+		"""	
 		fg_df = self.Fg['system'].reset_index()									## facts-gen dataframe
 		fm_df = self.pdf_dict['var']											## facts-modifier dataframe
 		self.fg_var_df = fg_df
@@ -147,28 +151,38 @@ class Merged:
 		self['var'] = pdf
 
 	def bgp_dataframe(self):
+		"""merges bgp generator and modifier dataframes and drops empty rows for data where no filter value assigned.
+		"""	
 		fg_df = self.Fg['bgp neighbor'].reset_index()
 		self.fg_bgp_df = fg_df
 		fg_df['filter'] = 'bgp'
 		self['bgp'] = fg_df
 
 	def ospf_dataframe(self):
+		"""merges ospf generator and modifier dataframes and drops empty rows for data where no filter value assigned.
+		"""	
 		fg_df = self.Fg['ospf'].reset_index()
 		self.fg_ospf_df = fg_df
 		fg_df['filter'] = 'ospf'
 		self['ospf'] = fg_df
 
-
-
 	def split_interface_dataframe(self):
+		"""splits interface dataframe in to multiple tabs.
+		"""	
+		self.interface_dataframe_keys = set()	
 		self.int_dfs = split_to_multiple_tabs(self.int_df)
 		for sheet, df in self.int_dfs.items():
+			self.interface_dataframe_keys.add(sheet)
 			self[sheet] = df
 
-	def generate_interface_numbers(self):		
+	def generate_interface_numbers(self):
+		"""generates interface number for each interfaces 
+		"""		
 		generate_int_number(self.int_df)
 
 	def add_filters(self):
+		"""add filter column to each dataframe except 'var'
+		"""		
 		for sheet, df in  self:
 			if sheet == 'var': continue
 			if not 'filter' in df.columns:
@@ -176,4 +190,9 @@ class Merged:
 
 	@property
 	def hostname(self):
+		"""self device property (hostname) from var tab
+
+		Returns:
+			str: hostname of device
+		"""		
 		return [x for x in self.var_df[self.var_df['var'] == 'hostname']['default']][0]

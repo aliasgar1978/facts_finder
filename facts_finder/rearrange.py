@@ -1,7 +1,11 @@
+"""rearrange the columns in appropriate orders
+"""
 
 import pandas as pd
 from nettoolkit import *
 
+# =====================================================================================================
+# Interface Propoerties/Columns
 # =====================================================================================================
 
 IF_PROPS = {
@@ -18,10 +22,18 @@ IF_PROPS = {
 	10: [],
 }
 
+# =====================================================================================================
+# BGP Propoerties/Columns
+# =====================================================================================================
+
 BGP_PROPS = [ 
 	"filter", "bgp neighbor", "bgp_vrf", "address-family", "bgp_peergrp", "bgp_peer_description", "bgp_peer_password", 
 	"bgp_peer_ip", "bgp_peer_as", "local-as", "update-source", "route-map in", "route-map out", "unsuppress-map",
 ]
+
+# =====================================================================================================
+# VRF Propoerties/Columns
+# =====================================================================================================
 
 VRF_PROPS = [
 	"filter", "vrf", "protocols", "default_rd", "vrf_route_target", 
@@ -37,14 +49,23 @@ VRF_PROPS = [
 
 # =====================================================================================================
 def _get_all_int_columns():
-	"""get all columns from all Interface Properties defined globally """
+	"""get all columns from all Interface Properties defined globally 
+	"""
 	all_if_cols = []
 	for _k, v in IF_PROPS.items():
 		all_if_cols.extend(v)
 	return all_if_cols
 
 def _df_columns_rearrange(pdf_dict, all_cols):
-	"""rearrange columns of the dataframe as per interface properties grouping defined globally """
+	"""rearrange columns of the dataframe as per interface properties grouping defined globally 
+
+	Args:
+		pdf_dict (dict): dictionary of DataFrames
+		all_cols (dict): dictionary of list of all columns
+
+	Returns:
+		dict: updated dictioarny of DataFrames
+	"""	
 	for sht, df in pdf_dict.items():
 		if sht in ('var',): continue
 		if sht in ('bgp', 'vrf',):
@@ -62,7 +83,11 @@ def _df_columns_rearrange(pdf_dict, all_cols):
 def rearrange_tables(clean_file, foreign_keys=None):
 	"""rearrange Excel file columns as per interface properties grouping defined globally 
 	provide foreign_keys dictionary with list of columns to be extended.
-	"""
+
+	Args:
+		clean_file (str): ouptut clean file name
+		foreign_keys (dict, optional): custom columns (if any). Defaults to None.
+	"""	
 	pdf_dict = pd.read_excel(clean_file, sheet_name=None)
 	#
 	all_if_cols = _get_all_int_columns()

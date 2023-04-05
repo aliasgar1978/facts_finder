@@ -1,3 +1,5 @@
+"""cisco vrf table modifiers 
+"""
 from nettoolkit import *
 import pandas as pd
 
@@ -14,6 +16,12 @@ from facts_finder.modifiers.commons import *
 # Cisco Database VRF Object
 # ================================================================================================
 class TableVrfsCisco(DataFrameInit, TableVrfs):
+	"""Cisco Database VRF Object
+
+	Args:
+		DataFrameInit (cls): DataFrameInit
+		TableVrfs (cls): TableVrfs
+	"""	
 	
 	def __init__(self, capture, cmd_lst=None):
 		self.cmd_lst=cmd_lst

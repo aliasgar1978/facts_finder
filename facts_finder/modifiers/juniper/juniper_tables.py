@@ -1,3 +1,6 @@
+"""Juniper table modifiers
+"""
+
 from nettoolkit import *
 import pandas as pd
 
@@ -10,9 +13,15 @@ from .commands.cmd_dict import *
 
 
 # ================================================================================================
-# Cisco Database Tables Object
+# Juniper Database Tables Object
 # ================================================================================================
 class TableInterfaceJuniper(DataFrameInit, TableInterfaces):
+	"""Juniper Database Tables Object
+
+	Inherits:
+		DataFrameInit (cls): DataFrameInit
+		TableInterfaces (cls): TableInterfaces
+	"""	
 
 	def __init__(self, capture, cmd_lst):
 		self.cmd_lst=cmd_lst
@@ -43,7 +52,8 @@ class TableInterfaceJuniper(DataFrameInit, TableInterfaces):
 		self.pdf = pdf
 
 	def remove_duplicates(self):
-		"""drop a few duplicate columns"""
+		"""drop a few duplicate columns
+		"""
 		drop_cols = {
 			'//subnet', '//subnet1', '//nbr_hostname', 
 		}

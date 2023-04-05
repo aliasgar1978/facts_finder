@@ -1,3 +1,6 @@
+"""Device Facts cleanup
+"""
+
 
 import os
 from nettoolkit import *
@@ -13,7 +16,8 @@ class CleanFacts:
 	"""cleans the captured parsed file and writes out the modified facts in new clean file
 	using additional information provided from capture log file.
 	Also can get a few additional properties to process futher. A new clean file will be 
-	generated upon instance calling."""
+	generated upon instance calling.
+	"""
 
 	def __init__(self,
 		capture_log_file, 
@@ -42,12 +46,14 @@ class CleanFacts:
 			write_to_xl(self._fm_data_file, self.Mc.pdf_dict, overwrite=True)
 
 	def get_facts_gen(self):
-		"""gets Facts from generators """
+		"""gets Facts from generators 
+		"""
 		self.Fg = FactsGen(self.capture_log_file)
 		self.Fg()
 
 	def merge_class(self):
-		""" returns Modifier Merge Class from the generated Facts """
+		""" returns Modifier Merge Class from the generated Facts 
+		"""
 		if self.Fg.dev_type == 'cisco':
 			MergeClass = CiscoMerge
 			self._config = cisco_config(self.capture_log_file)
@@ -59,34 +65,50 @@ class CleanFacts:
 		return MergeClass
 
 	def call(self, MergeClass):
-		""" calls the modifier merge class """
+		""" calls the modifier merge class 
+
+		Args:
+			MergeClass (cls): MergeClass
+		"""		
 		self.Mc = MergeClass(self.Fg, self.capture_parsed_file, self.use_cdp)
 		self.Mc()
 
 	@property
 	def clean_file(self):
-		"""new output clean filename """
+		"""new output clean filename 
+		"""
 		return self._clean_file
 
 	@property
 	def hostname(self):
-		"""device hostname"""
+		"""device hostname
+		"""
 		return self.Mc.hostname
 
 	@property
 	def config(self):
-		"""device configuration.  for cisco show running, for juniper show configuration - set output"""
+		"""device configuration.  for cisco show running, for juniper show configuration - set output
+		"""
 		return self._config
 
 	@property
 	def dev_type(self):
-		"""device type string either(cisco/juniper)"""
+		"""device type string either(cisco/juniper)
+		"""
 		return self.Fg.dev_type		
 
 # ========================================================================================
 
 def get_clean_filename(file, suffix):
-	"""get a new clened filename appended with suffix string"""
+	"""get a new clened filename appended with suffix string
+
+	Args:
+		file (str): full path with output file name
+		suffix (str): suffix to be appened
+
+	Returns:
+		str: updated file name
+	"""	
 	p = Path(file)
 	filename_wo_ext = str(p.stem)
 	file_ext = str(p.suffix)
@@ -95,19 +117,37 @@ def get_clean_filename(file, suffix):
 
 
 def remove_file(xl):
-	"""try to remove file if available, skip else"""
+	"""try to delete file if available, skip else
+
+	Args:
+		xl (str): file to be deleted
+	"""	
 	try: os.remove(xl)			# remove old file if any
 	except: pass
 
 
 def cisco_config(capture_log_file):
-	"""returns cisco running configuration """
+	"""returns cisco running configuration 
+
+	Args:
+		capture_log_file (str): device captured log 
+
+	Returns:
+		list: configuration output in list
+	"""	
 	config = get_op_cisco(capture_log_file, 'show running-config')
 	return config
 
 
 def juniper_config(capture_log_file):
-	"""returns juniper configuration in set commnand output """
+	"""returns juniper configuration in set commnand output format
+
+	Args:
+		capture_log_file (str): device captured log 
+
+	Returns:
+		list: configuration output in list
+	"""	
 	cmd_op = get_op(capture_log_file, 'show configuration')
 	JS = JSet(input_list=cmd_op)
 	JS.to_set

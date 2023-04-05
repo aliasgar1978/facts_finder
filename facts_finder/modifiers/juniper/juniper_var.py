@@ -1,12 +1,20 @@
+"""Juniper var modifiers
+"""
 
 from nettoolkit import *
 
 from facts_finder.modifiers.commons import *
 from .commands.cmd_dict import *
 # ================================================================================================
-# Cisco  Var  DB
+# Juniper  Var  DB
 # ================================================================================================
 class VarJuniper(DataFrameInit, Var):
+	"""Juniper  Var  DataBase
+
+	Inherits:
+		DataFrameInit (cls): DataFrameInit
+		Var (cls): Var
+	"""	
 	
 	def __init__(self, capture, cmd_lst=None):
 		self.var = {}

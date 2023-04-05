@@ -1,3 +1,5 @@
+"""cisco var modifiers 
+"""
 
 from nettoolkit import *
 import pandas as pd
@@ -10,6 +12,12 @@ from facts_finder.modifiers.commons import *
 # Cisco  Var  DB
 # ================================================================================================
 class VarCisco(DataFrameInit, Var):
+	"""Cisco  Var  Databse
+
+	Inherits:
+		DataFrameInit (cls): DataFrameInit
+		Var (cls): Var
+	"""	
 	
 	def __init__(self, capture, cmd_lst=None):
 		self.var = {}

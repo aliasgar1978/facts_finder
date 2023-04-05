@@ -1,8 +1,10 @@
+"""
+# ---------------------------------------------------------------------------
 #  THIS FILE CONTAINS THE COLUMN MAPPINGS FROM THE FILE WHICH GOT GENERATED 
 #  FROM CAPTURE_IT USING TEXTFSM AND
 #  RELATIVE REQUIRED FIELD VALUES. 
-#
-
+# ---------------------------------------------------------------------------
+"""
 #
 # ---------- VAR
 #

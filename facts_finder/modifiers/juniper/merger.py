@@ -1,3 +1,6 @@
+"""Juniper mergers
+"""
+
 from pathlib import *
 import os
 
@@ -13,8 +16,13 @@ def get_cmd_list_juniper(
 	column_mapper_file=None,
 	):
 	"""create commands list for each tab (var/interface/vrf) from the column mapper
-	--> dictionary of commands list
-	"""
+
+	Args:
+		column_mapper_file (_type_, optional): column mapper file. Defaults to None.
+
+	Returns:
+		dict: dictionary of commands list
+	"""	
 	cmd_lst = {
 		'cmd_lst_var': None,
 		'cmd_lst_int': None,
@@ -41,8 +49,15 @@ def juniper_modifier(capture_tfsm_file,
 	column_mapper_file=None,
 	):
 	"""Club var/interface data from various commands parsed excel outputs.
-	Refer: juniper/commands/cmd_dict.txt for list of required commands.
-	"""
+
+	Args:
+		capture_tfsm_file (_type_): device capture output file
+		cmd_lst (_type_, optional): manual commands list. Defaults to None.
+		column_mapper_file (_type_, optional): column mapper file. Defaults to None.
+
+	Returns:
+		dict: dictionary of pandas DataFrame
+	"""	
 	ntc_modifier = {}
 	if cmd_lst is None:
 		cmd_lst=get_cmd_list_juniper(column_mapper_file)
