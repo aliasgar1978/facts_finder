@@ -34,6 +34,10 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.autosummary',
+    'sphinx.ext.inheritance_diagram',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.todo',
+    'sphinx.ext.viewcode',
     'sphinx_rtd_theme',
 ]
 
