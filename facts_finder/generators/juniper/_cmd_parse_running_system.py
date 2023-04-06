@@ -253,7 +253,11 @@ class RunningSystem(Running):
 			for i, srv in enumerate(value):
 				self.system_dict[key + "_" + str(i+1)] = srv
 		for key in eligibles:
+			self.club_list_items(key)
 			del(self.system_dict[key])
+
+	def club_list_items(self, key):
+		self.system_dict[key+'s'] = "\n".join(self.system_dict[key])
 
 # ------------------------------------------------------------------------------
 
