@@ -52,7 +52,7 @@ class RunningSystem():
 		for l in self.cmd_op:
 			spl = l.split()
 			if l.startswith("tacacs-server host "):
-				servers.append(spl[2])
+				add_to_list(servers, spl[2])
 			if l.startswith("tacacs-server ") and 'key' in spl:
 				key = decrypt_type7(spl[spl.index('key')+1])
 			if l.startswith("tacacs-server ") and 'port' in spl:
@@ -65,7 +65,7 @@ class RunningSystem():
 			if start:
 				spl = l.strip().split()
 				if spl[0] == 'server-private':
-					servers.append(spl[1])
+					add_to_list(servers, spl[1])
 				if 'key' in spl:
 					i = spl.index('key')
 					if str(spl[i+1]) == '7':
@@ -91,7 +91,7 @@ class RunningSystem():
 				spl = l.split()
 				for i, x in enumerate(spl):
 					if i<2: continue
-					servers.append(x)
+					add_to_list(servers, x)
 		dic = {}
 		for i, srv in enumerate(servers):
 			dic['dns_server_' + str(i+1)] = srv
@@ -107,7 +107,7 @@ class RunningSystem():
 				spl = l.split()
 				for i, x in enumerate(spl):
 					if i<2: continue
-					servers.append(x)
+					add_to_list(servers, x)
 		dic = {}
 		for i, srv in enumerate(servers):
 			dic['syslog_server_' + str(i+1)] = srv
@@ -123,7 +123,7 @@ class RunningSystem():
 				spl = l.split()
 				for i, x in enumerate(spl):
 					if i<2: continue
-					servers.append(x)
+					add_to_list(servers, x)
 		dic = {}
 		for i, srv in enumerate(servers):
 			dic['ntp_server_' + str(i+1)] = srv

@@ -21,9 +21,21 @@ def get_appeneded_value(dic, key, value):
 	else:
 		return dic[key] + '\n'+ value
 
+def add_to_list(lst, item):
+	"""appends item to list if not found
+
+	Args:
+		lst (list): list
+		item (str, int): item to be added to list
+
+	Returns:
+		list: updated list
+	"""	
+	if item in lst:
+		return lst
+	return lst.append(item)
 
 # ================================================================================================
-
 
 def get_subnet(address):
 	"""derive subnet number for provided ipv4 address
@@ -79,6 +91,7 @@ def get_int_mask(ip):
 
 __all__ = [
 	'get_appeneded_value', 
+	'add_to_list',
 	'get_subnet', 'get_v6_subnet',
 	'get_int_ip', 	'get_int_mask',
 

@@ -88,7 +88,7 @@ class RunningSystem(Running):
 		if l.startswith("set system name-server"): dns = spl[-1]
 		if dns and not op_dict.get('dns_server'):
 			op_dict['dns_server'] = []
-		if dns: op_dict['dns_server'].append(dns)
+		if dns: add_to_list(op_dict['dns_server'], dns)
 		return op_dict
 
 	def system_mgmt_ip(self):
@@ -138,7 +138,7 @@ class RunningSystem(Running):
 			op_dict['tacacs_server'] = []
 			op_dict['tacacs_tcp_port'] = '49'
 			op_dict['tacacs_key'] = ''
-		if ip: op_dict['tacacs_server'].append(ip)
+		if ip: add_to_list(op_dict['tacacs_server'], ip)
 		# if ip : print(spl)
 		if ip and spl[4] == 'port':
 			op_dict['tacacs_tcp_port'] = spl[5]
@@ -168,7 +168,7 @@ class RunningSystem(Running):
 		if l.startswith("set system syslog host") : ip = spl[4]
 		if ip and not op_dict.get('syslog_server'):
 			op_dict['syslog_server'] = []
-		if ip: op_dict['syslog_server'].append(ip)
+		if ip: add_to_list(op_dict['syslog_server'], ip)
 		return op_dict
 
 
@@ -193,7 +193,7 @@ class RunningSystem(Running):
 		if l.startswith("set system ntp server") : ip = spl[4]
 		if ip and not op_dict.get('ntp_server'):
 			op_dict['ntp_server'] = []
-		if ip: op_dict['ntp_server'].append(ip)
+		if ip: add_to_list(op_dict['ntp_server'], ip)
 		return op_dict
 
 
