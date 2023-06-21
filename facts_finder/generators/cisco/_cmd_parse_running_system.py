@@ -130,6 +130,15 @@ class RunningSystem():
 		dic['ntp_servers'] = "\n".join(servers)
 		return dic
 
+	def system_exec_banner(self):
+		"""get exec banner first line
+		"""
+		for l in self.cmd_op:
+			if l.startswith("banner exec "):
+				dic = {'banner': l}
+				return dic
+		return {}
+
 
 
 # ------------------------------------------------------------------------------
@@ -152,6 +161,7 @@ def get_system_running(cmd_op, *args):
 	R.system_dict.update(R.system_name_server())
 	R.system_dict.update(R.system_syslog_server())
 	R.system_dict.update(R.system_ntp_server())
+	R.system_dict.update(R.system_exec_banner())
 
 
 	# # update more interface related methods as needed.

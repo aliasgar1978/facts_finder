@@ -37,7 +37,7 @@ class OSPF():
 			spl = l.strip().split()
 			if l.startswith("router ospf "):
 				p = spl[2]
-				vrf = spl[4] if len(spl) > 3 and op_dict['3'] == 'vrf' else ""
+				vrf = spl[4] if len(spl) > 3 and spl[3] == 'vrf' else ""
 				if not op_dict.get(p): op_dict[p] = {}
 				vrf_op_dict = op_dict[p]
 				vrf_op_dict['ospf_vrf']= vrf
