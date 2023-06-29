@@ -57,6 +57,9 @@ Version Control
   * - 0.0.15
      - Jun 21, 2023
      - Bug fix for **juniper** ospf section, added banner exec capture
+  * - 0.0.16
+     - Jun 29, 2023
+     - Bug fix for **rearrange columns** section
 
 
 
