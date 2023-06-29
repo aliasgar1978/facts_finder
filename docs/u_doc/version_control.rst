@@ -54,10 +54,10 @@ Version Control
    * - 0.0.14
      - April 6, 2023
      - Bug fix for **juniper** devices system list type variables  *Skipping duplicates for list type variables and added club variable*
-  * - 0.0.15
+   * - 0.0.15
      - Jun 21, 2023
      - Bug fix for **juniper** ospf section, added banner exec capture
-  * - 0.0.16
+   * - 0.0.16
      - Jun 29, 2023
      - Bug fix for **rearrange columns** section
 
