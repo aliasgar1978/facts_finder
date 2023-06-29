@@ -4,55 +4,19 @@
 import pandas as pd
 from nettoolkit import *
 
-# =====================================================================================================
-# Interface Propoerties/Columns
-# =====================================================================================================
-
-IF_PROPS = {
-	1: ["filter", "interface", "int_number",  ],
-	2: [ "link_status", "protocol_status", "speed", "duplex", "media_type", ],
-	3: ["nbr_dev_type", "nbr_hostname", "nbr_ip", "nbr_platform", "nbr_serial", "nbr_vlan", "nbr_interface",],
-	4: ["switchport", "admin_mode", "switchport_negotiation", "interface_mode", "access_vlan", "voice_vlan", 
-		"native_vlan", "vlan_members",],
-	5: ["subnet", "h4block", "v4_helpers", "v6_helpers", ],
-	6: ["ospf_auth", "ospf_auth_type",],
-	7: ["intvrf", "channel_group_interface", "channel_grp", "channel_group_mode"],
-	8: ["description",  "int_filter", ],
-	9:["int_udld",],
-	10: [],
-}
 
 # =====================================================================================================
-# BGP Propoerties/Columns
-# =====================================================================================================
-
-BGP_PROPS = [ 
-	"filter", "bgp neighbor", "bgp_vrf", "address-family", "bgp_peergrp", "bgp_peer_description", "bgp_peer_password", 
-	"bgp_peer_ip", "bgp_peer_as", "local-as", "update-source", "route-map in", "route-map out", "unsuppress-map",
-]
-
-# =====================================================================================================
-# VRF Propoerties/Columns
-# =====================================================================================================
-
-VRF_PROPS = [
-	"filter", "vrf", "protocols", "default_rd", "vrf_route_target", 
-	"vrf_summaries", 
-	"vrf_static_default_nexthops", 
-	"vrf_description", "interfaces",
-]
-
-
-
-
-
-
-# =====================================================================================================
-def _get_all_int_columns():
+def _get_all_int_columns(if_props):
 	"""get all columns from all Interface Properties defined globally 
-	"""
+
+	Args:
+		if_props (dict): dictionary of list of interface column names
+
+	Returns:
+		list: filtered interface columns list
+	"""	
 	all_if_cols = []
-	for _k, v in IF_PROPS.items():
+	for _k, v in if_props.items():
 		all_if_cols.extend(v)
 	return all_if_cols
 
@@ -88,9 +52,45 @@ def rearrange_tables(clean_file, foreign_keys=None):
 		clean_file (str): ouptut clean file name
 		foreign_keys (dict, optional): custom columns (if any). Defaults to None.
 	"""	
+	# =====================================================================================================
+	# Interface Propoerties/Columns
+	# =====================================================================================================
+	IF_PROPS = {
+		1: ["filter", "interface", "int_number",  ],
+		2: [ "link_status", "protocol_status", "speed", "duplex", "media_type", ],
+		3: ["nbr_dev_type", "nbr_hostname", "nbr_ip", "nbr_platform", "nbr_serial", "nbr_vlan", "nbr_interface",],
+		4: ["switchport", "admin_mode", "switchport_negotiation", "interface_mode", "access_vlan", "voice_vlan", 
+			"native_vlan", "vlan_members",],
+		5: ["subnet", "h4block", "v4_helpers", "v6_helpers", ],
+		6: ["ospf_auth", "ospf_auth_type",],
+		7: ["intvrf", "channel_group_interface", "channel_grp", "channel_group_mode"],
+		8: ["description",  "int_filter", ],
+		9:["int_udld",],
+		10: [],
+	}
+
+	# =====================================================================================================
+	# BGP Propoerties/Columns
+	# =====================================================================================================
+	BGP_PROPS = [ 
+		"filter", "bgp neighbor", "bgp_vrf", "address-family", "bgp_peergrp", "bgp_peer_description", "bgp_peer_password", 
+		"bgp_peer_ip", "bgp_peer_as", "local-as", "update-source", "route-map in", "route-map out", "unsuppress-map",
+	]
+
+	# =====================================================================================================
+	# VRF Propoerties/Columns
+	# =====================================================================================================
+	VRF_PROPS = [
+		"filter", "vrf", "protocols", "default_rd", "vrf_route_target", 
+		"vrf_summaries", 
+		"vrf_static_default_nexthops", 
+		"vrf_description", "interfaces",
+	]
+	# =====================================================================================================
+	#
 	pdf_dict = pd.read_excel(clean_file, sheet_name=None)
 	#
-	all_if_cols = _get_all_int_columns()
+	all_if_cols = _get_all_int_columns(IF_PROPS)
 	all_bgp_cols = BGP_PROPS
 	all_vrf_cols = VRF_PROPS
 	#
