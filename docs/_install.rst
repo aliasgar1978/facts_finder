@@ -11,9 +11,12 @@ Requirements
 Installation
 ==================
 
-Install the fwOper package::
+Install the facts-finder package using pip::
 
     pip install --upgrade facts_finder
+	
+There are many other ways to install packages such as conda install or manual wheel file download and install.
+You can do it as per your prefered choice of installation.
 	
 
 
