@@ -1,4 +1,4 @@
-"""cisco VRF level running-config command output parser """
+"""cisco show running-config command parser for vrf level outputs """
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
@@ -10,13 +10,13 @@ merge_dict = DIC.merge_dict
 
 class RunningVRFs():
 	"""object for VRF level running config parser
+
+	Args:
+		cmd_op (list, str): running config output, either list of multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the running config output
-
-		Args:
-			cmd_op (list, str): running config output, either list of multiline string
 		"""    		    		
 		self.cmd_op = verifid_output(cmd_op)
 		self.vrf_dict = OrderedDict()
@@ -54,7 +54,7 @@ class RunningVRFs():
 
 		Args:
 			port_dict (dict): dictionary with a vrf info
-			l (str): line to parse
+			l (str): string line to parse
 
 		Returns:
 			None: None
@@ -71,7 +71,7 @@ class RunningVRFs():
 		func = self.get_vrf_description
 		merge_dict(self.vrf_dict, self.vrf_read(func))
 
-	# # Add more interface related methods as needed.
+	# # Add more vrf related methods as needed.
 
 
 # ------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ class RunningVRFs():
 
 def get_vrfs_running(cmd_op, *args):
 	"""defines set of methods executions. to get various vrf parameters.
-	uses RunningInterfaces in order to get all.
+	uses RunningVRFs in order to get all.
 
 	Args:
 		cmd_op (list, str): running config output, either list of multiline string

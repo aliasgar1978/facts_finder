@@ -19,8 +19,9 @@ class TableVrfsCisco(DataFrameInit, TableVrfs):
 	"""Cisco Database VRF Object
 
 	Args:
-		DataFrameInit (cls): DataFrameInit
-		TableVrfs (cls): TableVrfs
+		capture (str): configuration capture file
+		cmd_lst (list, optional): capture commands list . Defaults to None.
+
 	"""	
 	
 	def __init__(self, capture, cmd_lst=None):

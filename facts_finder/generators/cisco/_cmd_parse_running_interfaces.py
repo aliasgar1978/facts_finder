@@ -1,4 +1,4 @@
-"""cisco Interface level running-config command output parser """
+"""cisco show running-config parser for interface section outputs """
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
@@ -10,13 +10,13 @@ merge_dict = DIC.merge_dict
 
 class RunningInterfaces():
 	"""object for interface level running config parser
+
+	Args:
+		cmd_op (list, str): running config output, either list of multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the running config output
-
-		Args:
-			cmd_op (list, str): running config output, either list of multiline string
 		"""    		    		
 		self.cmd_op = verifid_output(cmd_op)
 		self.interface_dict = OrderedDict()
@@ -60,7 +60,7 @@ class RunningInterfaces():
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
 
 		Returns:
 			None: None
@@ -86,7 +86,7 @@ class RunningInterfaces():
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
 
 		Returns:
 			None: None
@@ -120,7 +120,7 @@ class RunningInterfaces():
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
 
 		Returns:
 			None: None
@@ -144,7 +144,7 @@ class RunningInterfaces():
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
 
 		Returns:
 			None: None
@@ -173,7 +173,7 @@ class RunningInterfaces():
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
 
 		Returns:
 			None: None
@@ -186,20 +186,45 @@ class RunningInterfaces():
 		port_dict['vrf'] = vrf
 
 
+	def interface_udld(self):
+		"""update the interface udld parameter details
+		"""   
+		func = self.get_int_udld
+		merge_dict(self.interface_dict, self.interface_read(func))
+
 	@staticmethod
 	def get_int_udld(port_dict, l):
+		"""parser function to update udld parameter details
+
+		Args:
+			port_dict (dict): dictionary with a port info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
 		udld = None
 		if l.strip().startswith("udld port "):
 			port_dict['int_udld'] = l.strip().split(" ", 2)[-1]
 		if not udld: return None
 
-	def interface_udld(self):
-		func = self.get_int_udld
+	def interface_ospf_auth(self):
+		"""update the interface ospf authentication details
+		"""   
+		func = self.get_int_ospf_auth
 		merge_dict(self.interface_dict, self.interface_read(func))
-
 
 	@staticmethod
 	def get_int_ospf_auth(port_dict, l):
+		"""parser function to update ospf authentication details
+
+		Args:
+			port_dict (dict): dictionary with a port info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
 		auth, auth_type = None, None
 		if l.strip().startswith("ip ospf authentication-key"):
 			port_dict['ospf_auth'] = decrypt_type7(l.strip().split()[-1])
@@ -207,34 +232,53 @@ class RunningInterfaces():
 			port_dict['ospf_auth_type'] = l.strip().split()[-1]
 		if not auth and not auth_type: return None
 
-	def interface_ospf_auth(self):
-		func = self.get_int_ospf_auth
+	def interface_v4_helpers(self):
+		"""update the interface ipv4 helpers details
+		"""   
+		func = self.get_interface_v4_helpers
 		merge_dict(self.interface_dict, self.interface_read(func))
 
 
 	@staticmethod
 	def get_interface_v4_helpers(port_dict, l):
+		"""parser function to update ipv4 helpers details
+
+		Args:
+			port_dict (dict): dictionary with a port info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
 		if l.strip().startswith("ip helper-address"):
 			if not port_dict.get('v4_helpers'):
 				port_dict['v4_helpers'] = l.strip().split()[-1]
 			else:
 				port_dict['v4_helpers'] += '\n'+l.strip().split()[-1]
 
-	def interface_v4_helpers(self):
-		func = self.get_interface_v4_helpers
+	def interface_v6_helpers(self):
+		"""update the interface ipv6 helpers details
+		"""   
+		func = self.get_interface_v6_helpers
 		merge_dict(self.interface_dict, self.interface_read(func))
+
 
 	@staticmethod
 	def get_interface_v6_helpers(port_dict, l):
+		"""parser function to update ipv6 helpers details
+
+		Args:
+			port_dict (dict): dictionary with a port info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
 		if l.strip().startswith("ipv6 dhcp relay destination"):
 			if not port_dict.get('v6_helpers'):
 				port_dict['v6_helpers'] = l.strip().split()[-1]
 			else:
 				port_dict['v6_helpers'] += '\n'+l.strip().split()[-1]
-
-	def interface_v6_helpers(self):
-		func = self.get_interface_v6_helpers
-		merge_dict(self.interface_dict, self.interface_read(func))
 
 
 	# # Add more interface related methods as needed.

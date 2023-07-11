@@ -17,6 +17,14 @@ class CleanFacts:
 	using additional information provided from capture log file.
 	Also can get a few additional properties to process futher. A new clean file will be 
 	generated upon instance calling.
+
+	Args:
+		capture_log_file (str): configuration capture log file name
+		capture_parsed_file (str): configuration parsed excel file name
+		new_suffix (str, optional): file suffix. Defaults to '-clean'.
+		use_cdp (bool, optional): use cdp neighbor (overrides lldp neighbor) . Defaults to False.
+		debug (bool, optional): for trouble shooting purpose only. Defaults to False.
+
 	"""
 
 	def __init__(self,
@@ -26,6 +34,15 @@ class CleanFacts:
 		use_cdp=False,
 		debug=False,
 		):
+		"""Instance Initializer
+
+		Args:
+			capture_log_file (str): configuration capture log file name
+			capture_parsed_file (str): configuration parsed excel file name
+			new_suffix (str, optional): file suffix. Defaults to '-clean'.
+			use_cdp (bool, optional): use cdp neighbor (overrides lldp neighbor) . Defaults to False.
+			debug (bool, optional): for trouble shooting purpose only. Defaults to False.
+		"""		
 		self.capture_log_file = capture_log_file
 		self.capture_parsed_file = capture_parsed_file
 		self.new_suffix = new_suffix

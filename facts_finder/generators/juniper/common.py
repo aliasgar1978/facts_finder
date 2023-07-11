@@ -27,6 +27,15 @@ def get_vlans_juniper(spl, how="s"):
 		return int_vl_list
 
 def get_juniper_pw_string(spl, key_index):
+	"""get plain-text-password from encrypted password. 
+
+	Args:
+		spl (list): splitted set command list for password entry.
+		key_index (int): index of password 
+
+	Returns:
+		str: decrypted password
+	"""	
 	pw = " ".join(spl[key_index:]).strip().split("##")[0].strip()
 	if pw[0] == '"': pw = pw[1:]
 	if pw[-1] == '"': pw = pw[:-1]

@@ -1,4 +1,4 @@
-"""Juniper Specific Command Parser Functions/Classes
+"""Define Juniper Specific Command Parser Functions/Classes available here
 """
 
 

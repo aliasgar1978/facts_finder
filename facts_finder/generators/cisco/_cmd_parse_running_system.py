@@ -1,4 +1,4 @@
-"""cisco running-config system level command output parser """
+"""cisco show running-config parser for system outputs """
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
@@ -10,13 +10,13 @@ merge_dict = DIC.merge_dict
 
 class RunningSystem():
 	"""object for running config parser
+
+	Args:
+		cmd_op (list, str): running config output, either list of multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the running config output
-
-		Args:
-			cmd_op (list, str): running config output, either list of multiline string
 		"""    		
 		self.cmd_op = verifid_output(cmd_op)
 		self.system_dict = {}
@@ -32,7 +32,7 @@ class RunningSystem():
 
 
 	def system_ca_certificate(self):
-		"""get the device certificate hex values for cisco 9xxx and later series  switches.
+		"""get the device certificate hex values for cisco 9k & supported series switches.
 		""" 
 		ca_start, cert = False, ''
 		for l in self.cmd_op:

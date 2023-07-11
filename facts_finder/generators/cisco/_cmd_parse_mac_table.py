@@ -1,4 +1,4 @@
-"""cisco mac address table command output parser """
+"""cisco show mac address-table command output parser """
 
 # ------------------------------------------------------------------------------
 from facts_finder.generators.commons import *

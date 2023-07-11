@@ -1,4 +1,4 @@
-"""cisco arp table command output parser """
+"""cisco show arp table command output parser """
 from nettoolkit import *
 
 # ------------------------------------------------------------------------------

@@ -12,13 +12,13 @@ merge_dict = DIC.merge_dict
 
 class RunningOSPF(Running):
 	"""object for ospf level config parser
+
+	Args:
+		cmd_op (list, str): config output, either list or multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the  config output
-
-		Args:
-			cmd_op (list, str): config output, either list of multiline string
 		"""    		    		
 		super().__init__(cmd_op)
 		self.op_dict = OrderedDict()
@@ -62,7 +62,8 @@ class RunningOSPF(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -83,7 +84,8 @@ class RunningOSPF(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -111,7 +113,8 @@ class RunningOSPF(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -138,7 +141,8 @@ class RunningOSPF(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None

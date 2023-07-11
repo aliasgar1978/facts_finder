@@ -13,13 +13,13 @@ merge_dict = DIC.merge_dict
 
 class RunningIntances(Running):
 	"""object for instance level config parser
+
+	Args:
+		cmd_op (list, str): config output, either list of multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the  config output
-
-		Args:
-			cmd_op (list, str): config output, either list of multiline string
 		"""    		    		
 		super().__init__(cmd_op)
 		self.instance_dict = OrderedDict()
@@ -58,7 +58,8 @@ class RunningIntances(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -79,7 +80,8 @@ class RunningIntances(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -101,7 +103,7 @@ class RunningIntances(Running):
 
 def get_instances_running(cmd_op, *args):
 	"""defines set of methods executions. to get various instance parameters.
-	uses RunningInterfaces in order to get all.
+	uses RunningIntances in order to get all.
 
 	Args:
 		cmd_op (list, str): running config output, either list of multiline string

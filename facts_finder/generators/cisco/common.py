@@ -1,4 +1,4 @@
-"""common functions for cisco devices """
+"""common functions for cisco parsers """
 
 # ------------------------------------------------------------------------------
 from nettoolkit import *

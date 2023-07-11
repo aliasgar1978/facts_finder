@@ -1,4 +1,4 @@
-"""cisco lldp neighbour command output parser """
+"""cisco show lldp neighbour command output parser """
 
 # ------------------------------------------------------------------------------
 from nettoolkit import *

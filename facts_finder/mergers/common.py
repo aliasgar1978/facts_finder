@@ -7,7 +7,14 @@ from nettoolkit import *
 # ========================================================================================
 
 def remove_duplicates(df, *cols):
-	"""removes the duplicated _x, _y columns for the given list of columns"""
+	"""removes the duplicated _x, _y columns for the given list of columns. Remove duplicate columns as given in additional keyword arguments cols 
+
+	Args:
+		df (DataFrame): Pandas DataFrame
+
+	Returns:
+		DataFrame: updated DataFrame
+	"""	
 	duplicated_cols = {col+"_x": col+"_y" for col in cols}
 	for x, y in duplicated_cols.items():
 		if df[x].equals(df[y]):
@@ -20,7 +27,14 @@ def remove_duplicates(df, *cols):
 
 
 def split_to_multiple_tabs(pdf):
-	"""splits dataframe to multiple tabs group by `filter` column"""
+	"""splits dataframe to multiple tabs group by `filter` column
+
+	Args:
+		pdf (DataFrame): Pandas DataFrame
+
+	Returns:
+		DataFrame: updated DataFrame
+	"""	
 	set_of_filters = set(pdf['filter'])
 	d = {}
 	for f in set_of_filters:
@@ -61,7 +75,11 @@ def update_int_number(number):
 	return s
 
 def generate_int_number(pdf):
-	"""generates interface number for each interfaces """
+	"""generates interface number for each interfaces
+
+	Args:
+		pdf (DataFrame): Pandas DataFrame
+	"""	
 	pdf['int_number'] =  pdf['interface'].apply(update_int_number)
 	pdf.sort_values(by=['int_number'], inplace=True)
 
@@ -70,14 +88,15 @@ def generate_int_number(pdf):
 
 class Merged:
 	"""Common class defining general methods for mergers of generator and modifiers
+
+	Args:
+		fg (generator object): Facts generator object from generators
+		capture_tfsm_file (str): file name of configuration capture 
+		use_cdp (bool): defines for cisco use cdp neighbors or not. Some cases where lldp is disabled using cdp to identify neighbors.
+
 	"""	
 	def __init__(self, fg, capture_tfsm_file, use_cdp):
 		"""object initializer
-
-		Args:
-			fg (generator object): Facts generator object from generators
-			capture_tfsm_file (str): file name of configuration capture 
-			use_cdp (bool): defines for cisco use cdp neighbors or not. Some cases where lldp is disabled using cdp to identify neighbors.
 		"""		
 		self.Fg = fg
 		self.capture_tfsm_file = capture_tfsm_file

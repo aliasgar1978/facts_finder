@@ -91,20 +91,17 @@ class Juniper(DevicePapa):
 	"""class defining juniper parser directives.
 
 	Args:
-		DevicePapa (type): Common shared methods/properties definitions under this parent class.
+		file (str): capture file
 	"""    	
 	
 	def __init__(self, file):
 		"""Initialize the object by providing the capture file
-
-		Args:
-			file (str): capture file
 		"""    		
 		super().__init__(file)
 
 	def parse(self, cmd, *arg, **kwarg):
 		"""start command output parsing from provided capture.
-		provide any additional arg, kwargs for dynamic filter purpose.
+		provide any additional arg, kwargs for dynamic filtering purpose.
 
 		Args:
 			cmd (str): juniper command for which output to be parsed
@@ -123,7 +120,7 @@ class Juniper(DevicePapa):
 	def run_parser(self, parse_func, abs_cmd, *arg, **kwarg):
 		"""derives the command output list for the provided trunked command.
 		and runs provided parser function on to it to get the necessary details.
-		provide any additional arg, kwargs for dynamic filter purpose.
+		provide any additional arg, kwargs for dynamic filtering purpose.
 
 		Args:
 			parse_func (func): function

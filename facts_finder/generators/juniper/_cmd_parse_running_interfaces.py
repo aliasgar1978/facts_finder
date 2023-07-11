@@ -14,13 +14,13 @@ merge_dict = DIC.merge_dict
 
 class RunningInterfaces(Running):
 	"""object for interface level config parser
+
+	Args:
+		cmd_op (list, str): config output, either list or multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the  config output
-
-		Args:
-			cmd_op (list, str): config output, either list of multiline string
 		"""    		    		
 		super().__init__(cmd_op)
 		self.interface_dict = OrderedDict()
@@ -58,13 +58,7 @@ class RunningInterfaces(Running):
 
 
 	def routing_instance_read(self):
-		"""directive function to get the various routing instance level output
-
-		Args:
-			func (method): method to be executed on instancel level config lines
-
-		Returns:
-			dict: parsed output dictionary
+		"""directive function to set the various routing instance level output from interface.
 		"""    		
 		foundavrf = False
 		for l in self.set_cmd_op:
@@ -128,7 +122,8 @@ class RunningInterfaces(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -153,7 +148,8 @@ class RunningInterfaces(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -187,7 +183,8 @@ class RunningInterfaces(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -212,7 +209,8 @@ class RunningInterfaces(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -234,7 +232,8 @@ class RunningInterfaces(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -259,7 +258,8 @@ class RunningInterfaces(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -284,7 +284,8 @@ class RunningInterfaces(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -361,7 +362,9 @@ class RunningInterfaces(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
+			ospf_idx(int): index value from where ospf information starting on set commands list
 
 		Returns:
 			None: None
@@ -386,6 +389,12 @@ class RunningInterfaces(Running):
 
 def get_physical_port_number(port):
 	""" physical interface - interface number calculator.
+
+	Args:
+		port (str): string lateral for various types of juniper interface/port
+
+	Returns:
+		int: a number assign to port value (sequencial)
 	"""
 	org_port = port
 	port = port.split(".")[0]
@@ -437,7 +446,14 @@ def get_interfaces_running(cmd_op, *args):
 
 def _juniper_port(int_type, spl):
 	"""get port/interface number based on interface type for split line
-	"""    	
+
+	Args:
+		int_type (str): interface type ## deprycated, unused
+		spl (list): splitted set command line list
+
+	Returns:
+		str: port number for given unit
+	"""	   	
 	if spl[3] == 'unit':
 		# if spl[2] in ('irb', 'vlan'):
 		# 	return spl[4]
@@ -446,22 +462,66 @@ def _juniper_port(int_type, spl):
 		return spl[2]
 
 def _get_v4_subnet(spl, line):
+	"""get ipv4 subnet/mask detail from provided splitted set command line list, or string line.
+
+	Args:
+		spl (list): splitted set command line list
+		line (str): string set command line
+
+	Returns:
+		str: subnet if found or None
+	"""	
 	if not _is_v4_addressline(line): return None
 	return get_subnet(spl[spl.index("address") + 1])
 
 def _get_v4_ip(spl, line):
+	"""get ipv4 subnet portion detail from provided splitted set command line list, or string line.
+
+	Args:
+		spl (list): splitted set command line list
+		line (str): string set command line
+
+	Returns:
+		str: subnet if found or None
+	"""	
 	if not _is_v4_addressline(line): return None
 	return spl[spl.index("address") + 1].split("/")[0]
 
 def _get_v4_address(spl, line):
+	"""get ipv4 ipaddress detail from provided splitted set command line list, or string line.
+
+	Args:
+		spl (list): splitted set command line list
+		line (str): string set command line
+
+	Returns:
+		str: ipv4 ipaddress if found or None
+	"""	
 	if not _is_v4_addressline(line): return None
 	return spl[spl.index("address") + 1]
 
 def _get_v4_mask(spl, line):
+	"""get ipv4 subnet mask detail from provided splitted set command line list, or string line.
+
+	Args:
+		spl (list): splitted set command line list
+		line (str): string set command line
+
+	Returns:
+		str: mask if found or None
+	"""	
 	if not _is_v4_addressline(line): return None
 	return spl[spl.index("address") + 1].split("/")[1]
 
 def _is_v4_addressline(line):	
+	"""check is there any ipv4 address configured in provided string line.
+
+	Args:
+		line (str): string set command line
+
+	Returns:
+		bool: True if found else None
+	"""	
 	if line.find("family inet") == -1: return None
 	if line.find("address") == -1: return None
 	return True
@@ -469,17 +529,52 @@ def _is_v4_addressline(line):
 
 
 def _get_v6_address(spl, line):
+	"""get ipv6 address (with Mask) from provided splitted set command line list, or string line.
+
+	Args:
+		spl (list): splitted set command line list
+		line (str): string set command line
+
+	Returns:
+		str: ipv6 address if found else None
+	"""	
 	v6ip = _is_v6_addressline(spl, line)
 	if not v6ip : return None
 	return v6ip
 
 def _get_v6_ip(v6ip):
+	"""get ipv6 address (without mask) from provided splitted set command line list, or string line.
+
+	Args:
+		spl (list): splitted set command line list
+		line (str): string set command line
+
+	Returns:
+		str: ipv6 address if found else None
+	"""	
 	return v6ip.split("/")[0]
 
 def _get_v6_mask(v6ip):
+	"""get ipv6 address mask from provided splitted set command line list, or string line.
+
+	Args:
+		spl (list): splitted set command line list
+		line (str): string set command line
+
+	Returns:
+		str: ipv6 address mask if found else None
+	"""	
 	return v6ip.split("/")[1]
 
 def _is_v6_addressline(spl, line):
+	"""check if any ipv6 address configured in provided string line.
+
+	Args:
+		line (str): string set command line
+
+	Returns:
+		bool,str: ipv6 address if found else None
+	"""	
 	if line.find("family inet6") == -1: return None
 	try:
 		if spl[spl.index('inet6')+1] != 'address': return None
@@ -487,14 +582,29 @@ def _is_v6_addressline(spl, line):
 	return spl[spl.index('inet6')+2]
 
 def _is_link_local(v6_ip):
+	"""checks if provided ipv6 ip is link local address or not
+
+	Args:
+		v6_ip (str): ipv6 address string
+
+	Returns:
+		bool: True if it is link local address else False
+	"""	
 	return v6_ip.lower().startswith("fe80:")
 
 # ------------------------------------------------------------------------------
 # // ospf auth
 # ------------------------------------------------------------------------------
 def _is_ospf_auth_line(line=None, spl=None):
-	""" check and return boolean if provided line/splitted line is an ospf authentication line or not.
-	"""
+	""" checks if provided line/splitted line is an ospf authentication line or not (provide either argument)
+
+	Args:
+		line (str, optional): set command line. Defaults to None.
+		spl (list, optional): splitted set command line. Defaults to None.
+
+	Returns:
+		int: index value where `ospf` starts if line contains `protocol ospf` else None
+	"""	
 	if not spl:
 		spl = line.split()
 	if 'ospf' in spl and 'protocols' in spl:
@@ -508,7 +618,13 @@ def _is_ospf_auth_line(line=None, spl=None):
 
 def set_of_voice_vlans(set_cmd_op):
 	"""get the set of voice vlans configured in provided set commands configuration.
-	"""
+
+	Args:
+		set_cmd_op (list): set command output
+
+	Returns:
+		set: set of voice vlans found in output
+	"""	
 	voice_vlans = {}
 	for l in set_cmd_op:
 		if blank_line(l): continue

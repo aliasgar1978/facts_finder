@@ -14,12 +14,19 @@ from facts_finder.modifiers.commons import *
 class VarCisco(DataFrameInit, Var):
 	"""Cisco  Var  Databse
 
+	Args:
+		capture (str): configuration capture file
+		cmd_lst (list, optional): capture commands list . Defaults to None.
+
 	Inherits:
 		DataFrameInit (cls): DataFrameInit
 		Var (cls): Var
 	"""	
 	
 	def __init__(self, capture, cmd_lst=None):
+		"""instance initializer
+
+		"""		
 		self.var = {}
 		self.cmd_lst=cmd_lst
 		if not self.cmd_lst:

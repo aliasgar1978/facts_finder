@@ -18,12 +18,18 @@ from .commands.cmd_dict import *
 class TableInterfaceJuniper(DataFrameInit, TableInterfaces):
 	"""Juniper Database Tables Object
 
+	Args:
+		capture (str): configuration capture log file
+		cmd_lst (list): capture commands list
+
 	Inherits:
 		DataFrameInit (cls): DataFrameInit
 		TableInterfaces (cls): TableInterfaces
 	"""	
 
 	def __init__(self, capture, cmd_lst):
+		"""object initializer
+		"""		
 		self.cmd_lst=cmd_lst
 		if not self.cmd_lst:
 			self.cmd_lst = cmd_lst_int

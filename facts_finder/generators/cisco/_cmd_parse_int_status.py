@@ -1,5 +1,5 @@
 # OUTPUT SHOULD BE UNFILTERED ( HEADER ROW REQUIRED IN OUTPUT )
-"""cisco interface status command output parser """
+"""cisco show interface status command output parser """
 
 # ------------------------------------------------------------------------------
 from nettoolkit import *

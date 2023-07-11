@@ -10,8 +10,15 @@ from .juniper_parser import Juniper
 
 
 class FactsGen:
+	"""Facts Generator class (boiler plate code)
+
+	Args:
+		capture_file (str): configuration capture file
+	"""	
 
 	def __init__(self, capture_file):
+		"""object initializer
+		"""		
 		self.capture_file = capture_file
 
 	def __call__(self):
@@ -31,7 +38,15 @@ class FactsGen:
 
 	@property
 	def dev_type(self):
-		"""detected device type for the given configuration capture"""
+		"""detected device type for the given configuration capture
+
+		Raises:
+			Exception: Invalid device type
+			Exception: Missing FactsGen call
+
+		Returns:
+			str: returns device type in string
+		"""		
 		try:
 			if isinstance(self.model, Cisco):
 				return 'cisco'

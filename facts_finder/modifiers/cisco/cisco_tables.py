@@ -139,12 +139,20 @@ def intvrf_update(vrf):
 class TableInterfaceCisco(DataFrameInit, TableInterfaces):
 	"""Cisco Database Tables Object
 
+	Args:
+		capture (str): configuration capture log file
+		cmd_lst (list, optional): cisco capture command list. Defaults to None.
+		use_cdp (bool, optional): use cdp neighbors (overrides lldp neighbor). Defaults to None.
+
 	Inherits:
 		DataFrameInit (cls): DataFrameInit
 		TableInterfaces (cls): TableInterfaces
 	"""	
 
 	def __init__(self, capture, cmd_lst=None, use_cdp=None):
+		"""instance initializer
+
+		"""		
 		self.cmd_lst=cmd_lst
 		self.use_cdp = use_cdp
 		if not self.cmd_lst:

@@ -7,21 +7,20 @@ from .common import Merged
 class CiscoMerge(Merged):
 	"""Class which merges generator and modifier data for Cisco. 
 	Inherits Merged class
+
+	Args:
+		fg (generator object): Facts generator object from generators
+		capture_tfsm_file (str): file name of configuration capture 
+		use_cdp (bool): defines for cisco use cdp neighbors or not. Some cases where lldp is disabled using cdp to identify neighbors.
+
 	"""	
 
 	def __init__(self, fg, capture_tfsm_file, use_cdp):
 		"""object initializer for cisco merger class.
-
-		Args:
-			fg (generator object): Facts generator object from generators
-			capture_tfsm_file (str): file name of configuration capture 
-			use_cdp (bool): defines for cisco use cdp neighbors or not. Some cases where lldp is disabled using cdp to identify neighbors.
 		"""		
 		super().__init__(fg, capture_tfsm_file, use_cdp)
 
 	def __call__(self):
-		"""object call,  merger execution steps by step
-		"""		
 		self.get_facts_modifiers()
 
 		self.merged_var_dataframe()			# self.var_df

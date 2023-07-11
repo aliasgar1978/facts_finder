@@ -1,4 +1,4 @@
-"""cisco cdp neighbour command output parser """
+"""cisco show cdp neighbour command output parser """
 
 # ------------------------------------------------------------------------------
 from nettoolkit import *

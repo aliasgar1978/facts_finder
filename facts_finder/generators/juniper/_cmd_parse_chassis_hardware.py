@@ -1,4 +1,4 @@
-"""juniper interface description command output parser """
+"""juniper show chassis hardware command output parser """
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
@@ -56,13 +56,14 @@ def get_chassis_serial(cmd_op, *args):
 
 
 class JuniperChassisHardware():
-	"""read the show chassis hardware output from juniper and returns port type(sfp)"""
+	"""read the show chassis hardware output from juniper and returns port type(sfp)
+
+	Args:
+		output (list): show chassis hardware output in list
+	"""
 
 	def __init__(self, output):
 		"""initialize and read output
-
-		Args:
-			output (list): show chassis hardware output in list
 		"""    		
 		self.fpc, self.pic = '', ''
 		self.port = ''
@@ -71,14 +72,20 @@ class JuniperChassisHardware():
 
 	def _read(self, output):
 		"""read the output and adds line to port info
-		"""    		
+
+		Args:
+			output (list): show chassis hardware command output in list
+		"""		
 		for l in output:
 			if not l.strip(): continue
 			self._add(l)
 
 	def _add(self, line):
 		"""adds port info from line 
-		"""    		
+
+		Args:
+			line (str): line outout
+		"""		
 		# if line.upper().find("BUILTIN") > 0: return         # Some of juniper output are incosistent so removed.
 		spl = line.strip().split()
 		if not spl[0].upper() in ("FPC", "PIC", "XCVR"): return

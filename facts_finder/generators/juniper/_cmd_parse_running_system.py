@@ -1,4 +1,4 @@
-"""juniper system config parser from show config command """
+"""juniper system config parser from set config """
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
@@ -13,13 +13,13 @@ merge_dict = DIC.merge_dict
 
 class RunningSystem(Running):
 	"""object for system level config parser
+
+	Args:
+		cmd_op (list, str): config output, either list of multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the  config output
-
-		Args:
-			cmd_op (list, str): config output, either list of multiline string
 		"""    		    		
 		super().__init__(cmd_op)
 		self.system_dict = OrderedDict()
@@ -55,7 +55,8 @@ class RunningSystem(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -78,8 +79,9 @@ class RunningSystem(Running):
 		"""parser function to update system name servers details
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			op_dict (dict): dictionary with a port info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -102,8 +104,9 @@ class RunningSystem(Running):
 		"""parser function to update system management ip details
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			op_dict (dict): dictionary with a port info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -126,8 +129,9 @@ class RunningSystem(Running):
 		"""parser function to update system gtac servers details
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			op_dict (dict): dictionary with a port info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -158,8 +162,9 @@ class RunningSystem(Running):
 		"""parser function to update system syslog servers details
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			op_dict (dict): dictionary with a port info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -183,8 +188,9 @@ class RunningSystem(Running):
 		"""parser function to update system ntp servers details
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			op_dict (dict): dictionary with a port info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -208,8 +214,9 @@ class RunningSystem(Running):
 		"""parser function to update system banner details
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			op_dict (dict): dictionary with a port info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -231,8 +238,9 @@ class RunningSystem(Running):
 		"""parser function to update system as details
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			op_dict (dict): dictionary with a port info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -246,6 +254,8 @@ class RunningSystem(Running):
 	# # Add more interface related methods as needed.
 
 	def convert_sets_to_strs(self):
+		"""convert set to string, general implementation
+		"""		
 		eligibles = set()
 		for key, value in self.system_dict.copy().items():
 			if not isinstance(value, (set, tuple, list,)): continue
@@ -257,6 +267,12 @@ class RunningSystem(Running):
 			del(self.system_dict[key])
 
 	def club_list_items(self, key):
+		"""concatenate items with carriage return character for the provided key in system_dict dictionary.
+		general implementation.
+
+		Args:
+			key (str): key for which items to be concatenate.
+		"""		
 		self.system_dict[key+'s'] = "\n".join(self.system_dict[key])
 
 # ------------------------------------------------------------------------------

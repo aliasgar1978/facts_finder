@@ -1,4 +1,4 @@
-"""cisco interface description command output parser """
+"""cisco show interface description command output parser """
 
 # ------------------------------------------------------------------------------
 from nettoolkit import *

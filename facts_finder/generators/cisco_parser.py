@@ -140,14 +140,11 @@ class Cisco(DevicePapa):
 	"""class defining cisco parser directives.
 
 	Args:
-		DevicePapa (type): Common shared methods/properties definitions under this parent class.
+		file (str): capture file
 	"""    	
 	
 	def __init__(self, file):
 		"""Initialize the object by providing the capture file
-
-		Args:
-			file (str): capture file
 		"""    		
 		super().__init__(file)
 

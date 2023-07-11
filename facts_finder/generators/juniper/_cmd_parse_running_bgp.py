@@ -1,4 +1,4 @@
-"""juniper routing instances parsing from set config  """
+"""juniper bgp protocol routing instances parsing from set config  """
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
@@ -13,13 +13,13 @@ merge_dict = DIC.merge_dict
 
 class RunningIntanceBGP(Running):
 	"""object for instance level config parser
+
+	Args:
+		cmd_op (list, str): config output, either list of multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the  config output
-
-		Args:
-			cmd_op (list, str): config output, either list of multiline string
 		"""    		    		
 		super().__init__(cmd_op)
 		self.instance_dict = OrderedDict()
@@ -90,7 +90,9 @@ class RunningIntanceBGP(Running):
 
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
+			proto_idx (int): index value from where protocol bgp starts in provided list
 
 		Returns:
 			None: None
@@ -137,10 +139,11 @@ class RunningIntanceBGP(Running):
 	def get_bgp_nbr_info(port_dict, l, spl, proto_idx):
 		"""parser function to update bgp neighbor detail - description, peer group, peer ip, auth-key, vrf, peer as
 
-
 		Args:
 			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			l (str): string line to parse
+			spl (list): splitted line to parse
+			proto_idx (int): index value from where protocol bgp starts in provided list
 
 		Returns:
 			None: None
@@ -185,7 +188,7 @@ class RunningIntanceBGP(Running):
 
 def get_instances_bgps(cmd_op, *args):
 	"""defines set of methods executions. to get various instance parameters.
-	uses RunningInterfaces in order to get all.
+	uses RunningIntanceBGP in order to get all.
 
 	Args:
 		cmd_op (list, str): running config output, either list of multiline string

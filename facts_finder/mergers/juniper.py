@@ -22,15 +22,15 @@ def add_access_vlan_column(port_mode, vlan):
 class JuniperMerge(Merged):
 	"""Class which merges generator and modifier data for Juniper. 
 	Inherits Merged class
+
+	Args:
+		fg (generator object): Facts generator object from generators
+		capture_tfsm_file (str): file name of configuration capture 
+		use_cdp (bool): defines for cisco use cdp neighbors or not. Some cases where lldp is disabled using cdp to identify neighbors.
 	"""	
 
 	def __init__(self, fg, capture_tfsm_file, use_cdp):
 		"""object initializer for juniper merger class.
-
-		Args:
-			fg (generator object): Facts generator object from generators
-			capture_tfsm_file (str): file name of configuration capture 
-			use_cdp (bool): defines for cisco use cdp neighbors or not. Some cases where lldp is disabled using cdp to identify neighbors.
 		"""	
 		super().__init__(fg, capture_tfsm_file, use_cdp)
 

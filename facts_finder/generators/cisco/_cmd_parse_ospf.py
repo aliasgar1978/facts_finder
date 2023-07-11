@@ -1,4 +1,4 @@
-"""cisco OSPF level running-config for ospf section output parser """
+"""cisco show running-config parser for ospf section output """
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
@@ -11,13 +11,13 @@ merge_dict = DIC.merge_dict
 
 class OSPF():
 	"""parent object for OSPF running config parser
+
+	Args:
+		cmd_op (list, str): running config output, either list of multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the running config output
-
-		Args:
-			cmd_op (list, str): running config output, either list of multiline string
 		"""    		    		
 		self.cmd_op = verifid_output(cmd_op)
 		self.op_dict = {}
@@ -61,8 +61,9 @@ class OSPF():
 		"""parser function to get router-id details
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			vrf_op_dict (dict): dictionary with a vrf info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -81,8 +82,9 @@ class OSPF():
 		"""parser function to get active interfaces
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			vrf_op_dict (dict): dictionary with a vrf info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -101,8 +103,9 @@ class OSPF():
 		"""parser function to get networks
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			vrf_op_dict (dict): dictionary with a vrf info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -131,8 +134,9 @@ class OSPF():
 		"""parser function to get ospf area range summaries
 
 		Args:
-			port_dict (dict): dictionary with a port info
-			l (str): line to parse
+			vrf_op_dict (dict): dictionary with a vrf info
+			l (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -167,6 +171,8 @@ def get_ospf_running(cmd_op, *args):
 	R.active_interfaces()
 	R.networks()
 	R.summaries()
+
+	
 	if not R.op_dict:
 		R.op_dict['dummy_ospf'] = ""
 	return R.op_dict

@@ -11,12 +11,18 @@ from .commands.cmd_dict import *
 class VarJuniper(DataFrameInit, Var):
 	"""Juniper  Var  DataBase
 
+	Args:
+		capture (str): configuration capture log file
+		cmd_lst (list, optional): capture commands list. Defaults to None.
+
 	Inherits:
 		DataFrameInit (cls): DataFrameInit
 		Var (cls): Var
 	"""	
 	
 	def __init__(self, capture, cmd_lst=None):
+		"""object initializer
+		"""		
 		self.var = {}
 		self.cmd_lst=cmd_lst
 		if not self.cmd_lst:

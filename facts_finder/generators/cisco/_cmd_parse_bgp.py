@@ -1,4 +1,4 @@
-"""cisco BGP level running-config for bgp section output parser """
+"""cisco running-config parser for bgp section output """
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
@@ -10,13 +10,13 @@ merge_dict = DIC.merge_dict
 
 class BGP_Papa():
 	"""parent object for BGP level running config parser
+
+	Args:
+		cmd_op (list, str): running config output, either list of multiline string
 	"""    	
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the running config output
-
-		Args:
-			cmd_op (list, str): running config output, either list of multiline string
 		"""    		    		
 		self.cmd_op = verifid_output(cmd_op)
 		self.op_dict = {}
@@ -33,7 +33,8 @@ class BGP_Papa():
 
 		Args:
 			port_dict (dict): dictionary with a bgp neighbour info
-			l (str): line to parse
+			line (str): string line to parse
+			spl (list): splitted line to parse
 
 		Returns:
 			None: None
@@ -62,6 +63,9 @@ class BGP_Papa():
 
 class AddressFamily(BGP_Papa):
 	"""object for address-family BGP running config parser
+
+	Args:
+		cmd_op (list, str): running config output, either list of multiline string
 	"""
 
 	def bgp_read(self, func):
@@ -96,13 +100,13 @@ class AddressFamily(BGP_Papa):
 
 class BGP(BGP_Papa):
 	"""object for native BGP running config parser
+
+	Args:
+		cmd_op (list, str): running config output, either list of multiline string
 	"""
 
 	def __init__(self, cmd_op):
 		"""initialize the object by providing the running config output
-
-		Args:
-			cmd_op (list, str): running config output, either list of multiline string
 		"""    		    		
 		super().__init__(cmd_op)
 		self.afl = {}
@@ -165,7 +169,7 @@ def merge_vrftype_name_inkey(d):
 		d (dict): dictionary with neighbours attributes
 
 	Returns:
-		dict: updated dict
+		dict: updated dict with bgp_vrf and address-family attributes
 	"""    	
 	update_dict = {}
 	for vrftype, vrfattrs in d.items():

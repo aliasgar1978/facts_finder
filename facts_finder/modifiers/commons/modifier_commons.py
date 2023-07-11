@@ -26,9 +26,16 @@ def trunk_no_more(cmd):
 # ================================================================================================
 class KeyExchanger():
 	"""Dynamic Cisco Key Exchanger
+
+	Args:
+		column_mapper (dict): cisco commands column mapper dictionary
+		cmd_lst (list): commands capture list 
+
 	"""	
 
 	def __init__(self, column_mapper, cmd_lst):
+		"""instance initializer
+		"""		
 		self.column_mapper = column_mapper
 		self.cmd_lst = cmd_lst
 		self.dfd = self.read_column_mapper()
@@ -63,9 +70,15 @@ class KeyExchanger():
 # ================================================================================================
 class DataFrameInit():
 	"""Database Object
+
+	Args:
+		capture (str): capture log file
 	"""	
 
 	def __init__(self, capture):
+		"""instance initializer
+
+		"""		
 		self.capture = capture
 		self.dfd = self.read_int_sheets()
 
