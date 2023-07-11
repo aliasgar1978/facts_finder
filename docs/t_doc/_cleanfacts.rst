@@ -1,8 +1,8 @@
-CLEAN FACTS
+Facts
 ===========================
 
 
-DEVICE FACTS CLEANING
+clean
 -------------------------------------------------------------------------------
 
 .. automodule:: facts_finder.clean

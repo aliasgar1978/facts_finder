@@ -1,13 +1,9 @@
-GENERATORS
+Generators
 =============================================================================
 
 
-CISCO
+Cisco
 -----------------------------------------------------------------------------
-
-
-cisco_parser
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco_parser
 	:members:
@@ -16,10 +12,22 @@ cisco_parser
 
 
 
-CISCO PARSER CLASSES AND FUNCTIONS
+Juniper
 -----------------------------------------------------------------------------
 
-cisco common functions
+.. automodule:: facts_finder.generators.juniper_parser
+	:members:
+	:undoc-members:
+	:show-inheritance:
+
+
+-----
+
+
+Cisco Parser Fn
+-----------------------------------------------------------------------------
+
+common functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco.common
@@ -28,9 +36,7 @@ cisco common functions
 	:show-inheritance:
 
 
-
-
-cisco command parser - arp table
+parser - arp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_arp_table
@@ -39,7 +45,7 @@ cisco command parser - arp table
 	:show-inheritance:
 
 
-cisco command parser - bgp
+parser - bgp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_bgp
@@ -49,7 +55,7 @@ cisco command parser - bgp
 
 
 
-cisco command parser - cdp neighbour
+parser - cdp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_cdp
@@ -58,7 +64,7 @@ cisco command parser - cdp neighbour
 	:show-inheritance:
 
 
-cisco command parser - interface description
+parser - if description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_int_description
@@ -67,7 +73,7 @@ cisco command parser - interface description
 	:show-inheritance:
 
 
-cisco command parser - interface status
+parser - if status
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_int_status
@@ -76,7 +82,7 @@ cisco command parser - interface status
 	:show-inheritance:
 
 
-cisco command parser - lldp neigbour
+parser - lldp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_lldp
@@ -85,7 +91,7 @@ cisco command parser - lldp neigbour
 	:show-inheritance:
 
 
-cisco command parser - mac table
+parser - mac
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_mac_table
@@ -94,7 +100,7 @@ cisco command parser - mac table
 	:show-inheritance:
 
 
-cisco command parser - interfaces from running config
+parser - interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_running_interfaces
@@ -103,7 +109,7 @@ cisco command parser - interfaces from running config
 	:show-inheritance:
 
 
-cisco command parser - system from running config
+parser - sys_info
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_running_system
@@ -112,7 +118,7 @@ cisco command parser - system from running config
 	:show-inheritance:
 
 
-cisco command parser - vrfs from running config
+parser - vrf
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_running_vrf
@@ -121,7 +127,7 @@ cisco command parser - vrfs from running config
 	:show-inheritance:
 
 
-cisco command parser - system version
+parser - version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.cisco._cmd_parse_version
@@ -132,25 +138,18 @@ cisco command parser - system version
 
 
 
-
-
-
-juniper_parser
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. automodule:: facts_finder.generators.juniper_parser
-	:members:
-	:undoc-members:
-	:show-inheritance:
+-----
 
 
 
 
-JUNIPER PARSER CLASSES AND FUNCTIONS
+
+
+Juniper Parser Fn
 -----------------------------------------------------------------------------
 
 
-juniper common functions
+common functions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper.common
@@ -159,7 +158,7 @@ juniper common functions
 	:show-inheritance:
 
 
-juniper command parser - arp table
+parser - arp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_arp_table
@@ -168,7 +167,7 @@ juniper command parser - arp table
 	:show-inheritance:
 
 
-juniper command parser - chassis hardware
+parser - hardware
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_chassis_hardware
@@ -177,7 +176,7 @@ juniper command parser - chassis hardware
 	:show-inheritance:
 
 
-juniper command parser - interfaces description
+parser - if description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_int_description
@@ -185,7 +184,7 @@ juniper command parser - interfaces description
 	:undoc-members:
 	:show-inheritance:
 
-juniper command parser - lldp
+parser - lldp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_lldp
@@ -193,7 +192,7 @@ juniper command parser - lldp
 	:undoc-members:
 	:show-inheritance:
 
-juniper command parser - configuration
+parser - configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running
@@ -201,7 +200,7 @@ juniper command parser - configuration
 	:undoc-members:
 	:show-inheritance:
 
-juniper command parser - bgp from configuration
+parser - bgp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running_bgp
@@ -210,7 +209,7 @@ juniper command parser - bgp from configuration
 	:show-inheritance:
 
 
-juniper command parser - interfaces from configuration
+parser - interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running_interfaces
@@ -218,7 +217,7 @@ juniper command parser - interfaces from configuration
 	:undoc-members:
 	:show-inheritance:
 
-juniper command parser - bgp instances from configuration
+parser - bgp instances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running_routing_instances
@@ -226,7 +225,7 @@ juniper command parser - bgp instances from configuration
 	:undoc-members:
 	:show-inheritance:
 
-juniper command parser - system from configuration
+parser - system
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_running_system
@@ -234,7 +233,7 @@ juniper command parser - system from configuration
 	:undoc-members:
 	:show-inheritance:
 
-juniper command parser - version
+parser - version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.generators.juniper._cmd_parse_version
@@ -242,4 +241,16 @@ juniper command parser - version
 	:undoc-members:
 	:show-inheritance:
 
+
+-----
+
+
+Helper Definitions
+-----------------------------------------------------------------------------
+
+.. toctree::
+	:maxdepth: 4
+	:caption: Contents:
+
+	Misc <_gen_misc>
 

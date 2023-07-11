@@ -1,8 +1,8 @@
-MERGERS
+Merger Definitions
 ===========================
 
 
-cisco merger functions
+cisco
 -------------------------------------------------------------------------------
 
 .. automodule:: facts_finder.mergers.cisco
@@ -10,7 +10,7 @@ cisco merger functions
 	:undoc-members:
 	:show-inheritance:
 
-juniper merger functions
+juniper
 -------------------------------------------------------------------------------
 
 .. automodule:: facts_finder.mergers.juniper
@@ -18,7 +18,7 @@ juniper merger functions
 	:undoc-members:
 	:show-inheritance:
 
-common merger functions
+common
 -------------------------------------------------------------------------------
 
 .. automodule:: facts_finder.mergers.common

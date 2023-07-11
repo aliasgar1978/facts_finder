@@ -1,9 +1,9 @@
-REARRANGE
+Rearrange
 =========================
 
 
 
-rearrange the table column sequences
+table columns
 -------------------------------------------------------------------------------
 
 .. automodule:: facts_finder.rearrange

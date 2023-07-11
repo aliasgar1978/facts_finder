@@ -1,11 +1,11 @@
-MODIFIERS
+Modifiers
 ============================================================================
 
 
-CISCO MODIFIER CLASSES AND FUNCTIONS
+Cisco
 -----------------------------------------------------------------------------
 
-cisco table modifier
+table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.cisco.cisco_tables
@@ -14,7 +14,7 @@ cisco table modifier
 	:show-inheritance:
 
 
-cisco var modifier
+var
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.cisco.cisco_var
@@ -22,7 +22,7 @@ cisco var modifier
 	:undoc-members:
 	:show-inheritance:
 
-cisco vrf modifier
+vrf
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.cisco.cisco_vrfs
@@ -31,7 +31,7 @@ cisco vrf modifier
 	:show-inheritance:
 
 
-cisco merger
+merger
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.cisco.merger
@@ -39,7 +39,8 @@ cisco merger
 	:undoc-members:
 	:show-inheritance:
 
-cisco commands dict
+
+commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.cisco.commands.cmd_dict
@@ -47,12 +48,14 @@ cisco commands dict
 	:undoc-members:
 	:show-inheritance:
 
+-----
 
 
-JUNIPER MODIFIER CLASSES AND FUNCTIONS
+
+Juniper
 -----------------------------------------------------------------------------
 
-juniper table modifier
+table
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.juniper.juniper_tables
@@ -61,7 +64,7 @@ juniper table modifier
 	:show-inheritance:
 
 
-juniper var modifier
+var
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.juniper.juniper_var
@@ -69,7 +72,7 @@ juniper var modifier
 	:undoc-members:
 	:show-inheritance:
 
-juniper merger
+merger
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.juniper.merger
@@ -78,7 +81,7 @@ juniper merger
 	:show-inheritance:
 
 
-juniper commands dict
+commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.juniper.commands.cmd_dict
@@ -88,10 +91,14 @@ juniper commands dict
 
 
 
-COMMON MODIFIER CLASSES AND FUNCTIONS
+-----
+
+
+
+Other Definitions
 -----------------------------------------------------------------------------
 
-common modifier
+commons
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. automodule:: facts_finder.modifiers.commons.modifier_commons
