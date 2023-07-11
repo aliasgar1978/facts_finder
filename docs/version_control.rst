@@ -50,7 +50,8 @@ Version Control
      - added ``ospf`` attributes extraction for **cisco/juniper** devices 
    * - 0.0.13
      - April 4, 2023
-     - changed var attributes appearance behaviour from set based to list based for  **juniper** devices.  Added functionality to read the NTC output Excel sheet name by trunkating | no-more; in order to allow read access with or without no-more suffix on to it.
+     - * Changed var attributes appearance behaviour from set based to list based for  **juniper** devices.  
+       * Added functionality to read the NTC output Excel sheet name by trunkating | no-more, in order to allow read access with or without no-more suffix on to it.
    * - 0.0.14
      - April 6, 2023
      - Bug fix for **juniper** devices system list type variables  *Skipping duplicates for list type variables and added club variable*
