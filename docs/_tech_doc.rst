@@ -6,9 +6,9 @@ Technical documentation!
 	:maxdepth: 4
 	:caption: Contents:
 
-
-	generators <t_doc/_generators>
-	modifiers <t_doc/_modifiers>
-	mergers <t_doc/_mergers>
-	clean facts <t_doc/_cleanfacts>
-	rearrange <t_doc/_rearrange>
+	facts generator <t_doc/facts_gen>
+	generators <t_doc/generators>
+	modifiers <t_doc/modifiers>
+	mergers <t_doc/mergers>
+	parsers <t_doc/parsers>
+	rearrange <t_doc/rearrange>
