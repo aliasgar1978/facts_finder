@@ -41,8 +41,8 @@ class FactsGen:
 		"""detected device type for the given configuration capture
 
 		Raises:
-			Exception: Invalid device type
-			Exception: Missing FactsGen call
+			Exception: for Invalid device type
+			Exception: for Missing FactsGen call
 
 		Returns:
 			str: returns device type in string
@@ -61,7 +61,11 @@ class FactsGen:
 
 	@property
 	def fg_dict(self):
-		"""facts generator dictionary"""
+		"""facts generator dictionary
+
+		Returns:
+			dict: dataframe dictionary
+		"""
 		return self.df_dict
 
 # ==============================================================================
