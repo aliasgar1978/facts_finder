@@ -21,6 +21,8 @@ class CiscoMerge(Merged):
 		super().__init__(fg, capture_tfsm_file, use_cdp)
 
 	def __call__(self):
+		"""object call,  merger execution steps by step
+		"""		
 		self.get_facts_modifiers()
 
 		self.merged_var_dataframe()			# self.var_df
@@ -28,6 +30,7 @@ class CiscoMerge(Merged):
 		self.merged_vrfs_dataframe()		# self.vrf_df
 		self.bgp_dataframe()
 		self.ospf_dataframe()
+		self.static_dataframe()
 
 		self.generate_interface_numbers()
 		self.split_interface_dataframe()

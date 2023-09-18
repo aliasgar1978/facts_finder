@@ -86,6 +86,14 @@ def rearrange_tables(clean_file, foreign_keys=None):
 		"vrf_static_default_nexthops", 
 		"vrf_description", "interfaces",
 	]
+
+	# =====================================================================================================
+	# Statics Propoerties/Columns
+	# =====================================================================================================
+	STATIC_PROPS = [
+		"filter", "version", "pfx_vrf", "prefix", "next_hop", "adminisrative_distance",  "tag_value", "remark", 		
+	]
+
 	# =====================================================================================================
 	#
 	pdf_dict = pd.read_excel(clean_file, sheet_name=None)
@@ -93,6 +101,7 @@ def rearrange_tables(clean_file, foreign_keys=None):
 	all_if_cols = _get_all_int_columns(IF_PROPS)
 	all_bgp_cols = BGP_PROPS
 	all_vrf_cols = VRF_PROPS
+	all_static_cols = STATIC_PROPS
 	#
 	# -- add foreign keys
 	if foreign_keys is not None:
@@ -104,11 +113,14 @@ def rearrange_tables(clean_file, foreign_keys=None):
 			all_if_cols.extend(foreign_keys['interfaces'])
 		if "ifs" in foreign_keys:
 			all_if_cols.extend(foreign_keys['ifs'])
+		if "static" in foreign_keys:
+			all_static_cols.extend(foreign_keys['static'])		
 	#
 	all_cols = {
 		'bgp': all_bgp_cols, 
 		'vrf': all_vrf_cols,
 		'interfaces': all_if_cols,
+		'static': all_static_cols,
 	}
 	pdf_dict = _df_columns_rearrange(pdf_dict, all_cols)
 	write_to_xl(clean_file, pdf_dict, overwrite=True)

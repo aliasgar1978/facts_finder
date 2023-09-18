@@ -45,6 +45,7 @@ class JuniperMerge(Merged):
 		self.add_vrf_dataframe()
 		self.bgp_dataframe()
 		self.ospf_dataframe()
+		self.static_dataframe()
 
 		self.generate_interface_numbers()
 		self.split_interface_dataframe()

@@ -185,6 +185,14 @@ class Merged:
 		fg_df['filter'] = 'ospf'
 		self['ospf'] = fg_df
 
+	def static_dataframe(self):
+		"""merges static generator and modifier dataframes and drops empty rows for data where no filter value assigned.
+		"""	
+		fg_df = self.Fg['static'].reset_index()
+		self.fg_ospf_df = fg_df
+		fg_df['filter'] = 'static'
+		self['static'] = fg_df
+
 	def split_interface_dataframe(self):
 		"""splits interface dataframe in to multiple tabs.
 		"""	

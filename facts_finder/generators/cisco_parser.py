@@ -46,6 +46,7 @@ cisco_cmds_op_hierachy_level = {
 		'Interfaces', 
 		'vrf',
 		'ospf',
+		'static',
 		)
 	# 'sh ver': 'system',
 	## ADD More as grow ##
@@ -67,6 +68,7 @@ cisco_commands_parser_map = {
 		get_interfaces_running, 
 		get_vrfs_running,
 		get_ospf_running,
+		get_system_running_routes,
 		)
 	# 'show version': get_version,
 }

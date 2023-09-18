@@ -113,6 +113,19 @@ def get_inet_address(line):
 		return s
 	return None
 
+def inet_address(ip, mask):
+	"""return inet address from cisco standard ip and mask format
+
+	Args:
+		ip (str): ip address
+		mask (str): subnet mask
+
+	Returns:
+		str: ip/mask
+	"""	
+	mm = to_dec_mask(mask)
+	return ip+"/"+str(mm)
+
 
 def get_inetv6_address(line, link_local):
 	"""derive the ipv6 information from provided line

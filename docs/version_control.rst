@@ -47,7 +47,7 @@ Version Control
      - untracked
    * - 0.0.12
      - April 1, 2023
-     - added ``ospf`` attributes extraction for **cisco/juniper** devices 
+     - added ``ospf`` (ospf protocol) attributes extraction for **cisco/juniper** devices 
    * - 0.0.13
      - April 4, 2023
      - * Changed var attributes appearance behaviour from set based to list based for  **juniper** devices.  
@@ -61,6 +61,9 @@ Version Control
    * - 0.0.16
      - Jun 29, 2023
      - Bug fix for **rearrange columns** section
+   * - 0.0.17
+     - Sep 18, 2023
+     - added ``static`` (static routes) attributes extraction for **cisco/juniper** devices
 
 
 
