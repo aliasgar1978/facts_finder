@@ -25,11 +25,12 @@ Detailed How To
 
 	#. Define input files ( i.e. captures-log, facts-excel )
 
-		``parsed_excelfile`` can be generated using capture_it utility.  
+		**parsed_excelfile** can be generated using ``capture_it`` utility.  
 		Along with device log capture it can generate the device facts by parsing the outputs concurrently..
 		It generates a separate sheet for each parsed command output.
 
-		* `see also: <https://capture_it.readthedocs.io>`_
+		* `see also: CaptureIT Documentation for more <https://capture_it.readthedocs.io>`_
+
 
 		.. code::
 
@@ -40,15 +41,9 @@ Detailed How To
 
 	#. Clean Facts
 
-		Evaluating the device capture along with the parsed excel file is called Cleaning.
-		it will automatically generate a new excel file suffixed with `-clean`. 
+		Evaluating the device capture along with the parsed excel file is called **Cleaning**.
+		It will automatically generate a new excel file suffixed with `-clean`. 
 
-		Returning cf instance of an CleanFacts object, will have a few properties.
-
-			* **hostname**: hostname of the device discovered from config
-			* **config**: raw configuration of device. ( for cisco it will be running config, while for juniper it will be set commands configuration )  
-			* **dev_type**: detected device type (either `cisco` or `juniper`) string
-			* **clean_file**: new output file name 
 
 		.. code:: python
 			
@@ -60,15 +55,23 @@ Detailed How To
 			cf()
 
 
+		**cf** *instance variable of an CleanFacts* object, has below properties.
+
+			* **hostname**: hostname of the device discovered from config
+			* **config**: raw configuration of device. ( for cisco it will be running config, while for juniper it will be set commands configuration )  
+			* **dev_type**: detected device type (either `cisco` or `juniper`) string
+			* **clean_file**: new output file name 
+
+
 		.. Note::
 
 			Incase if you have your own custom classes to modify the output database.
-			than execute it here. cf instance will provide the necessary attributes in order to process the data further.
+			than execute it here. **cf** instance will provide the necessary attributes in order to process the data further.
 
 			see next page for an example of such.
 
 
-	#. Rearrange columns in excel file in orders [optional step]
+	#. Rearrange columns in excel file in orders [*optional step*]
 
 		Orders are defined as per `rearrange.py` module of the package.
 
