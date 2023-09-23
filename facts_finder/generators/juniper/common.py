@@ -19,8 +19,10 @@ def get_vlans_juniper(spl, how="s"):
 		is_any_members = memid in spl
 		if is_any_members: break
 	if not is_any_members: return None
-	int_vl_list = [int(vl) for vl in spl[spl.index(memid)+1:] if vl.isdigit()]
-	str_vl_list = [vl for vl in spl[spl.index(memid)+1:] if vl.isdigit()]
+	_rng_vls = spl[spl.index(memid)+1:][0].split("-")
+	_spl_vls = [x for x in range(int(_rng_vls[0]), int(_rng_vls[-1])+1)]
+	int_vl_list = [int(vl) for vl in _spl_vls]
+	str_vl_list = [str(vl) for vl in _spl_vls]
 	if how == 's':
 		return str_vl_list
 	else:

@@ -64,6 +64,10 @@ Version Control
    * - 0.0.17
      - Sep 18, 2023
      - added ``static`` (static routes) attributes extraction for **cisco/juniper** devices
+   * - 0.0.18
+     - Sep 23, 2023
+     - Bug fix: **juniper** issues with - bgp_peer_as,  vlan_range in trunk interfaces 
+
 
 
 

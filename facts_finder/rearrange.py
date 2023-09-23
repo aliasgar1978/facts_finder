@@ -74,7 +74,7 @@ def rearrange_tables(clean_file, foreign_keys=None):
 	# =====================================================================================================
 	BGP_PROPS = [ 
 		"filter", "bgp neighbor", "bgp_vrf", "address-family", "bgp_peergrp", "bgp_peer_description", "bgp_peer_password", 
-		"bgp_peer_ip", "bgp_peer_as", "local-as", "update-source", "route-map in", "route-map out", "unsuppress-map",
+		"bgp_peer_ip", "bgp_peer_as", "bgp_local_as", "local-as", "update-source", "route-map in", "route-map out", "unsuppress-map",
 	]
 
 	# =====================================================================================================

@@ -122,7 +122,7 @@ class RunningIntanceBGP(Running):
 			port_dict['bgp_peer_as'] = spl[proto_idx+5]
 		## --- local-as ---
 		if len(spl)>proto_idx+4 and spl[proto_idx+4] == 'local-as':
-			port_dict['bgp_peer_as'] = spl[proto_idx+5]
+			port_dict['bgp_local_as'] = spl[proto_idx+5]
 		## --- ebgp multihops ---
 		if len(spl)>proto_idx+5 and spl[proto_idx+4] == 'multihop':
 			port_dict['bgp_peer_multihops'] = spl[-1]
@@ -174,7 +174,7 @@ class RunningIntanceBGP(Running):
 			port_dict['bgp_peer_as'] = spl[proto_idx+7]
 		## --- local-as ---
 		if len(spl)>proto_idx+6 and spl[proto_idx+6] == 'local-as':
-			port_dict['bgp_peer_as'] = spl[proto_idx+7]
+			port_dict['bgp_local_as'] = spl[proto_idx+7]
 
 
 

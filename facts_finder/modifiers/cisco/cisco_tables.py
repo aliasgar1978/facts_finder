@@ -205,7 +205,8 @@ class TableInterfaceCisco(DataFrameInit, TableInterfaces):
 					self.pdf.drop([x], axis=1, inplace=True)
 				self.pdf.drop([y], axis=1, inplace=True)
 			except:
-				print(f"Info: duplicate col removal not happen for {x}")
+				pass
+				# print(f"Info: duplicate col removal not happen for {x}")
 
 	def po_to_interface(self):
 		"""add port channel number to member interfaces 
