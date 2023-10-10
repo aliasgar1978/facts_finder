@@ -1,7 +1,7 @@
 """Juniper var modifiers
 """
 
-from nettoolkit import *
+# from nettoolkit import *
 
 from facts_finder.modifiers.commons import *
 from .commands.cmd_dict import *

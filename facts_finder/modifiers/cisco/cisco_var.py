@@ -1,7 +1,7 @@
 """cisco var modifiers 
 """
 
-from nettoolkit import *
+# from nettoolkit import *
 import pandas as pd
 
 from .commands.cmd_dict import *

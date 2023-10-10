@@ -1,7 +1,7 @@
 """cisco tables modifiers 
 """
 
-from nettoolkit import *
+from nettoolkit.addressing import *
 import pandas as pd
 import numpy as np
 
