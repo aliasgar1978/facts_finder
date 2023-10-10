@@ -32,7 +32,7 @@ def get_lldp_neighbour(cmd_op, *args, dsr=True):
 			continue
 		if not nbr_table_start: continue
 		if not line.strip(): continue				# Blank lines
-		if line.startswith("Total "): continue		# Summary line
+		if line.startswith("Total "): break  		# Summary line
 		if line.startswith("!"): continue			# Remarked line
 
 		### NBR TABLE PROCESS ###
@@ -45,11 +45,15 @@ def get_lldp_neighbour(cmd_op, *args, dsr=True):
 		if dsr: remote_hn = remove_domain(remote_hn)
 
 		# SET / RESET
-		nbr_d[local_if] = {'neighbor': {}}
-		nbr = nbr_d[local_if]['neighbor']
-		nbr['hostname'] = remote_hn
-		nbr['interface'] = remote_if
+		nbr_d[local_if] = {}
+		nbr = nbr_d[local_if]
+		nbr['nbr_hostname'] = remote_hn
+		nbr['nbr_interface'] = remote_if
 		remote_hn, remote_if, local_if = "", "", ""
-	# print(nbr_d)
+
+		# -- not yet implemented , enable if error of blank key due to lldp neighbor.
+		# if not (nbr_d.get('filter') and nbr_d['filter']):
+		# 	nbr['filter'] = get_cisco_int_type(local_if)
+
 	return nbr_d
 # ------------------------------------------------------------------------------

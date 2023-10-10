@@ -54,7 +54,8 @@ class RunningSystem():
 			if l.startswith("tacacs-server host "):
 				add_to_list(servers, spl[2])
 			if l.startswith("tacacs-server ") and 'key' in spl:
-				key = decrypt_type7(spl[spl.index('key')+1])
+				i = 1 if spl[spl.index('key')+1] == '7' else 0
+				key = decrypt_type7(spl[spl.index('key')+1+i])
 			if l.startswith("tacacs-server ") and 'port' in spl:
 				port = spl[spl.index('port')+1]
 			##
@@ -139,6 +140,16 @@ class RunningSystem():
 				return dic
 		return {}
 
+	def system_hostname(self):
+		"""get hostname of device
+		"""
+		for l in self.cmd_op:
+			if l.startswith("hostname "):
+				hn = l.split(" ", 1)[-1]
+				dic = {'hostname': hn, 'host-name': hn}
+				return dic
+		return {}
+
 
 
 # ------------------------------------------------------------------------------
@@ -162,6 +173,7 @@ def get_system_running(cmd_op, *args):
 	R.system_dict.update(R.system_syslog_server())
 	R.system_dict.update(R.system_ntp_server())
 	R.system_dict.update(R.system_exec_banner())
+	R.system_dict.update(R.system_hostname())
 
 
 	# # update more interface related methods as needed.

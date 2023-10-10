@@ -2,7 +2,7 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
-from nettoolkit.gpl import JUNIPER_IFS_IDENTIFIERS
+from nettoolkit.gpl import JUNIPER_IFS_IDENTIFIERS, get_juniper_int_type
 
 from facts_finder.generators.commons import *
 from ._cmd_parse_running import Running
@@ -103,6 +103,10 @@ class RunningInterfaces(Running):
 				if not p: continue
 				if not ports_dict.get(p): ports_dict[p] = {}
 				port_dict = ports_dict[p]
+				#
+				if not (port_dict.get('filter') and port_dict['filter']):
+					port_dict['filter'] = get_juniper_int_type(p).lower()
+				#
 				func(port_dict, l, spl, ospf_idx)
 		return ports_dict
 
@@ -130,11 +134,7 @@ class RunningInterfaces(Running):
 		"""    		
 		subnet = _get_v4_subnet(spl, l)
 		if not subnet: return		
-		port_dict['v4'] = {}
-		port_dict['v4']['address'] = _get_v4_address(spl, l)
-		port_dict['v4']['ip'] = _get_v4_ip(spl, l)
-		port_dict['v4']['mask'] = _get_v4_mask(spl, l)
-		port_dict['v4']['subnet'] = subnet
+		port_dict['subnet'] = subnet
 
 	def interface_v6_ips(self):
 		"""update the interface ipv6 ip address details
@@ -157,19 +157,9 @@ class RunningInterfaces(Running):
 		address = _get_v6_address(spl, l)
 		if not address: return
 		link_local = _is_link_local(address)
-		if not port_dict.get('v6'): port_dict['v6'] = {}
-		v6_port_dic = port_dict['v6']
 		if link_local :
-			if v6_port_dic.get("link-local"): return None
-			v6_port_dic['link-local'] = {}
-			v6_pd = v6_port_dic['link-local']
-		else:
-			if v6_port_dic.get("address"): return None
-			v6_pd = v6_port_dic
-		v6_pd['address'] = address
-		v6_pd['ip'] = _get_v6_ip(address)
-		v6_pd['mask'] = _get_v6_mask(address)
-		v6_pd['subnet'] = get_v6_subnet(address)
+			return None
+		port_dict['v6Subnet'] = get_v6_subnet(address)
 
 
 	def interface_vlans(self):
@@ -189,13 +179,18 @@ class RunningInterfaces(Running):
 		Returns:
 			None: None
 		"""
-		vlans = get_vlans_juniper(spl, "i")
+		vlans = get_vlans_juniper(spl, "s")
 		if not vlans: return None
-		if not port_dict.get('vlan'): port_dict['vlan'] = []
-		port_dict['vlan'].extend(vlans)
+		key = 'access_vlan'
+		if port_dict.get('interface_mode') and port_dict['interface_mode'] == 'trunk':
+			key = 'vlan_members'
+		if not port_dict.get(key): 			
+			port_dict[key] = str(" ".join(vlans))
+		else:
+			port_dict[key] += ","+str(" ".join(vlans))
 		for vlan in vlans:
 			if vlan in self.voice_vlans:
-				port_dict['voice_vlan'] = vlans
+				port_dict['voice_vlan'] = vlan
 
 	def interface_mode(self):
 		"""update the interface port mode trunk/access details
@@ -217,7 +212,7 @@ class RunningInterfaces(Running):
 		"""    		
 		mode = 'interface-mode' in spl or 'port-mode' in spl
 		if not mode: return None
-		if not port_dict.get('port_mode'): port_dict['port_mode'] = spl[-1]
+		if not port_dict.get('interface_mode'): port_dict['interface_mode'] = spl[-1]
 
 
 	def interface_description(self):
@@ -264,11 +259,7 @@ class RunningInterfaces(Running):
 		Returns:
 			None: None
 		"""    		
-		int_type = ""
-		for k, v in JUNIPER_IFS_IDENTIFIERS.items():
-			if spl[2].startswith(v):
-				int_type = k
-				break
+		int_type = get_juniper_int_type(spl[2])
 		port_dict['filter'] = int_type.lower()
 		return port_dict
 
@@ -294,6 +285,7 @@ class RunningInterfaces(Running):
 		if spl[-2] == "802.3ad":
 			grp = spl[-1][2:]
 			port_dict['channel_grp'] = grp
+			port_dict['channel_group_interface'] = spl[-1]
 		return port_dict
 
 
@@ -305,22 +297,31 @@ class RunningInterfaces(Running):
 	def int_dot_zero_merge_to_parent(self):
 		""" merges the value of two keys for `parent` and `parent unit 0` configs
 		"""
-		# print('came for zero merge')
 		for k, v in self.interface_dict.copy().items():
-			# print('k,v', k , v)
 			if k.endswith(".0"):
-				# print(k, ">>>>")
 				if self.interface_dict.get(k[:-2]):
 					self.interface_dict[k[:-2]].update(v)
 				else:
 					self.interface_dict[k[:-2]] = v
 				del(self.interface_dict[k])
 
+	def int_dot_zero_merge_to_parent1(self):
+		""" merges the value of two keys for `parent` and `parent unit 0` configs
+		"""
+		for k, v in self.interface_dict.copy().items():
+			if not k.endswith(".0"): continue
+			parent = k.split(".")[0]
+			if self.interface_dict.get(parent):
+				parent_dict = self.interface_dict[parent]
+				for key, value in parent_dict.items():
+					if not (v.get(key) and v[key]):
+						v[key] = value
+				del(self.interface_dict[parent])
+
 	def int_to_int_number(self):
 		''' creates an arbirary unique number for each interface on interface types 
 		'''
 		for k, v in self.interface_dict.items():
-			# print(k, v.keys())
 			if v['filter'] == 'physical':
 				v['int_number'] = get_physical_port_number(k)
 				continue
@@ -351,10 +352,8 @@ class RunningInterfaces(Running):
 	def ospf_authentication_details(self):
 		"""update the interface ospf authentication details
 		"""
-		# print(self.interface_dict['ge-0/0/7.0'])
 		func = self.get_ospf_authentication_details
 		merge_dict(self.interface_dict, self.ospf_auth_para_read(func))
-		# print(self.interface_dict['ge-0/0/7.0'])
 
 	@staticmethod
 	def get_ospf_authentication_details(port_dict, l, spl, ospf_idx):
@@ -434,7 +433,9 @@ def get_interfaces_running(cmd_op, *args):
 	R.int_to_int_number()
 	R.routing_instance_read()
 	R.ospf_authentication_details()
-	R.int_dot_zero_merge_to_parent()
+	# R.int_dot_zero_merge_to_parent()      ## removed due to issue arise check before add back.
+	R.int_dot_zero_merge_to_parent1()       ## added in place of above
+
 
 	if not R.interface_dict:
 		R.interface_dict['dummy_int'] = ''
@@ -454,10 +455,9 @@ def _juniper_port(int_type, spl):
 	Returns:
 		str: port number for given unit
 	"""	   	
-	if spl[3] == 'unit':
-		# if spl[2] in ('irb', 'vlan'):
-		# 	return spl[4]
-		return spl[2]+"."+spl[4]
+	if 'unit' in spl:
+		i = spl.index('unit')
+		return spl[i-1] + "." + spl[i+1]
 	else:
 		return spl[2]
 
@@ -474,44 +474,6 @@ def _get_v4_subnet(spl, line):
 	if not _is_v4_addressline(line): return None
 	return get_subnet(spl[spl.index("address") + 1])
 
-def _get_v4_ip(spl, line):
-	"""get ipv4 subnet portion detail from provided splitted set command line list, or string line.
-
-	Args:
-		spl (list): splitted set command line list
-		line (str): string set command line
-
-	Returns:
-		str: subnet if found or None
-	"""	
-	if not _is_v4_addressline(line): return None
-	return spl[spl.index("address") + 1].split("/")[0]
-
-def _get_v4_address(spl, line):
-	"""get ipv4 ipaddress detail from provided splitted set command line list, or string line.
-
-	Args:
-		spl (list): splitted set command line list
-		line (str): string set command line
-
-	Returns:
-		str: ipv4 ipaddress if found or None
-	"""	
-	if not _is_v4_addressline(line): return None
-	return spl[spl.index("address") + 1]
-
-def _get_v4_mask(spl, line):
-	"""get ipv4 subnet mask detail from provided splitted set command line list, or string line.
-
-	Args:
-		spl (list): splitted set command line list
-		line (str): string set command line
-
-	Returns:
-		str: mask if found or None
-	"""	
-	if not _is_v4_addressline(line): return None
-	return spl[spl.index("address") + 1].split("/")[1]
 
 def _is_v4_addressline(line):	
 	"""check is there any ipv4 address configured in provided string line.
@@ -541,30 +503,6 @@ def _get_v6_address(spl, line):
 	v6ip = _is_v6_addressline(spl, line)
 	if not v6ip : return None
 	return v6ip
-
-def _get_v6_ip(v6ip):
-	"""get ipv6 address (without mask) from provided splitted set command line list, or string line.
-
-	Args:
-		spl (list): splitted set command line list
-		line (str): string set command line
-
-	Returns:
-		str: ipv6 address if found else None
-	"""	
-	return v6ip.split("/")[0]
-
-def _get_v6_mask(v6ip):
-	"""get ipv6 address mask from provided splitted set command line list, or string line.
-
-	Args:
-		spl (list): splitted set command line list
-		line (str): string set command line
-
-	Returns:
-		str: ipv6 address mask if found else None
-	"""	
-	return v6ip.split("/")[1]
 
 def _is_v6_addressline(spl, line):
 	"""check if any ipv6 address configured in provided string line.
@@ -625,7 +563,7 @@ def set_of_voice_vlans(set_cmd_op):
 	Returns:
 		set: set of voice vlans found in output
 	"""	
-	voice_vlans = {}
+	voice_vlans = set()
 	for l in set_cmd_op:
 		if blank_line(l): continue
 		if l.strip().startswith("#"): continue

@@ -7,7 +7,7 @@ from .common import *
 # ------------------------------------------------------------------------------
 
 def get_cdp_neighbour(cmd_op, *args, dsr=True):
-	"""parser - show cdp neigh command output
+	"""parser - show cdp neigh command output // Deprycated and removed // use lldp neighbor instead.
 
 	Parsed Fields:
 		* port/interface
@@ -23,11 +23,10 @@ def get_cdp_neighbour(cmd_op, *args, dsr=True):
 		dict: output dictionary with parsed fields
 	"""	
 	cmd_op = verifid_output(cmd_op)
-	nbr_d, remote_hn = {}, ""
+	nbr_d, remote_hn, prev_line = {}, "", ""
 	nbr_table_start = False
 	for i, line in enumerate(cmd_op):
 		line = line.strip()
-		dbl_spl = line.split("  ")
 		if line.startswith("Device ID"): 
 			nbr_table_start = True
 			continue
@@ -38,11 +37,20 @@ def get_cdp_neighbour(cmd_op, *args, dsr=True):
 
 		### NBR TABLE PROCESS ###
 
+		if len(line.strip().split()) == 1:  
+			prev_line = line
+			continue
+		if prev_line:
+			l = prev_line.strip() + " " + line
+			prev_line = ""
+		else:
+			l = line
+		dbl_spl = l.split("  ")
+
 		# // NBR HOSTNAME //
 		if not remote_hn:
 			remote_hn = dbl_spl[0].strip()
 			if dsr: remote_hn = remove_domain(remote_hn)
-		if len(line.split()) == 1:  continue
 
 		# // LOCAL/NBR INTERFACE, NBR PLATFORM //
 		local_if = STR.if_standardize("".join(dbl_spl[0].split()))
@@ -50,8 +58,8 @@ def get_cdp_neighbour(cmd_op, *args, dsr=True):
 		remote_plateform = dbl_spl[-1].split()[0]
 
 		# SET / RESET
-		nbr_d[local_if] = {'neighbor': {}}
-		nbr = nbr_d[local_if]['neighbor']
+		nbr_d[local_if] = {'nbr': {}}
+		nbr = nbr_d[local_if]['nbr']
 		nbr['hostname'] = remote_hn
 		nbr['interface'] = remote_if
 		nbr['plateform'] = remote_plateform

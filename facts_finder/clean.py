@@ -9,6 +9,7 @@ from pathlib import *
 from .generators import FactsGen
 from .generators.cisco_parser import get_op_cisco
 from .mergers import CiscoMerge, JuniperMerge
+from .inputlog import to_cit
 
 # ========================================================================================
 
@@ -21,6 +22,8 @@ class CleanFacts:
 	Args:
 		capture_log_file (str): configuration capture log file name
 		capture_parsed_file (str): configuration parsed excel file name
+		convert_to_cit(bool, optional): convert normal capture log file to capture_it output format (useful if capture was taken manually). Defaults to False.
+		skip_txtfsm(bool, optional): skip evaluation of capture excel file (textfsm parsed file), and use native facts-finder parsers. Defaults to False.
 		new_suffix (str, optional): file suffix. Defaults to '-clean'.
 		use_cdp (bool, optional): use cdp neighbor (overrides lldp neighbor) . Defaults to False.
 		debug (bool, optional): for trouble shooting purpose only. Defaults to False.
@@ -30,53 +33,68 @@ class CleanFacts:
 	def __init__(self,
 		capture_log_file, 
 		capture_parsed_file,
+		convert_to_cit=False,
+		skip_txtfsm=False,
 		new_suffix='-clean',
 		use_cdp=False,
 		debug=False,
 		):
 		"""Instance Initializer
-
-		Args:
-			capture_log_file (str): configuration capture log file name
-			capture_parsed_file (str): configuration parsed excel file name
-			new_suffix (str, optional): file suffix. Defaults to '-clean'.
-			use_cdp (bool, optional): use cdp neighbor (overrides lldp neighbor) . Defaults to False.
-			debug (bool, optional): for trouble shooting purpose only. Defaults to False.
 		"""		
 		self.capture_log_file = capture_log_file
 		self.capture_parsed_file = capture_parsed_file
+		self.convert_to_cit = convert_to_cit
+		self.skip_txtfsm = skip_txtfsm
 		self.new_suffix = new_suffix
 		self.use_cdp = use_cdp
 		self.debug = debug
-		self._clean_file = get_clean_filename(self.capture_parsed_file, self.new_suffix)
+		try:
+			if convert_to_cit: 
+				self.capture_log_file = to_cit(self.capture_log_file)
+		except Exception as e:
+			print(f'log file convert to Capture-it failed..\n{e}')
+		#
+		self._clean_file = get_clean_filename(self.capture_log_file, self.new_suffix)
 		if debug:
-			self._fg_data_file = get_clean_filename(self.capture_parsed_file, "-fg")
-			self._fm_data_file = get_clean_filename(self.capture_parsed_file, "-fm")
+			self._fg_data_file = get_clean_filename(self.capture_log_file, "-fg")
+			self._fm_data_file = get_clean_filename(self.capture_log_file, "-fm")
 
 	def __call__(self):
 		self.get_facts_gen()
-		self.call(self.merge_class())
+		self.set_config()
+		if not self.skip_txtfsm:
+			self.call(self.merge_class())
 		remove_file(self.clean_file)
-		write_to_xl(self.clean_file, self.Mc.merged_dict, overwrite=True)
-		if self.debug:
-			write_to_xl(self._fg_data_file, self.Mc.fg_merged_dict, overwrite=True)
-			write_to_xl(self._fm_data_file, self.Mc.pdf_dict, overwrite=True)
+		if self.skip_txtfsm:
+			write_to_xl(self.clean_file, self.Fg.df_dict, overwrite=True, index=True)
+		else:
+			write_to_xl(self.clean_file, self.Mc.merged_dict, overwrite=True)
+			if self.debug:
+				write_to_xl(self._fg_data_file, self.Mc.fg_merged_dict, overwrite=True)
+				write_to_xl(self._fm_data_file, self.Mc.pdf_dict, overwrite=True)
 
 	def get_facts_gen(self):
 		"""gets Facts from generators 
 		"""
 		self.Fg = FactsGen(self.capture_log_file)
+		self.Fg.verify_capture_existance()
 		self.Fg()
+
+	def set_config(self):
+		if self.Fg.dev_type == 'cisco':
+			self._config = cisco_config(self.capture_log_file)
+		elif self.Fg.dev_type == 'juniper':
+			self._config = juniper_config(self.capture_log_file)
+		else:
+			raise Exception(f"undetected device type {self.Fg.dev_type}, cannot proceed")
 
 	def merge_class(self):
 		""" returns Modifier Merge Class from the generated Facts 
 		"""
 		if self.Fg.dev_type == 'cisco':
 			MergeClass = CiscoMerge
-			self._config = cisco_config(self.capture_log_file)
 		elif self.Fg.dev_type == 'juniper':
 			MergeClass = JuniperMerge
-			self._config = juniper_config(self.capture_log_file)
 		else:
 			raise Exception(f"undetected device type {self.Fg.dev_type}, cannot proceed")
 		return MergeClass
@@ -100,7 +118,10 @@ class CleanFacts:
 	def hostname(self):
 		"""device hostname
 		"""
-		return self.Mc.hostname
+		try:
+			return self.Mc.hostname
+		except:
+			return get_hostname_from_logfile(self.capture_log_file)
 
 	@property
 	def config(self):
@@ -128,10 +149,20 @@ def get_clean_filename(file, suffix):
 	"""	
 	p = Path(file)
 	filename_wo_ext = str(p.stem)
-	file_ext = str(p.suffix)
+	file_ext = ".xlsx"
 	cur_folder = str(p.resolve().parents[0])
 	return cur_folder+"/"+filename_wo_ext+suffix+file_ext
 
+def get_hostname_from_logfile(file):
+	"""get device hostname from log file name
+
+	Args:
+		file (str): full path with output file name
+
+	Returns:
+		str: updated file name
+	"""	
+	return str(Path(file).stem)
 
 def remove_file(xl):
 	"""try to delete file if available, skip else

@@ -2,6 +2,7 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
+import nettoolkit as nt
 from facts_finder.generators.commons import *
 from .common import *
 
@@ -42,11 +43,33 @@ class RunningInterfaces():
 				if not p: continue
 				if not ports_dict.get(p): ports_dict[p] = {}
 				port_dict = ports_dict[p]
+				port_dict['filter'] = nt.gpl.interface_type(l.split("interface ")[-1])[0].lower()
 				int_toggle = True
 				continue
 			if int_toggle:
 				func(port_dict, l)
 		return ports_dict
+
+	def interface_description(self):
+		"""update the interface description details
+		"""    		
+		func = self.get_interface_description
+		merge_dict(self.interface_dict, self.interface_read(func))
+
+	@staticmethod
+	def get_interface_description(port_dict, l):
+		"""parser function to update interface description details
+
+		Args:
+			port_dict (dict): dictionary with a port info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
+		if l.strip().startswith("description "):
+			port_dict['description'] = l.strip().split(" ", 1)[-1]
+
 
 	def interface_ips(self):
 		"""update the interface ipv4 ip address details
@@ -67,11 +90,7 @@ class RunningInterfaces():
 		"""    		
 		address = get_inet_address(l)
 		if not address: return None
-		port_dict['v4'] = {}
-		port_dict['v4']['address'] = address
-		port_dict['v4']['ip'] = get_int_ip(address)
-		port_dict['v4']['mask'] = get_int_mask(address)
-		port_dict['v4']['subnet'] = get_subnet(address)
+		port_dict['subnet'] = get_subnet(address)
 
 
 	def interface_v6_ips(self):
@@ -95,17 +114,30 @@ class RunningInterfaces():
 		if l.find("anycast") > -1: return None
 		address = get_inetv6_address(l, link_local)
 		if not address: return None
-		if not port_dict.get('v6'): port_dict['v6'] = {}
 		if link_local:
-			port_dict['v6']['link-local'] = {}
-			pd = port_dict['v6']['link-local']
-			pd['address'] = address
 			return None
-		pd = port_dict['v6']
-		pd['address'] = address
-		pd['ip'] = get_int_ip(address)
-		pd['mask'] = get_int_mask(address)
-		pd['subnet'] = get_v6_subnet(address)
+		port_dict['v6subnet'] = get_v6_subnet(address)
+		port_dict['h4block'] = IPv6(address).getHext(4)
+
+	def interface_mode(self):
+		"""update the interface mode details
+		"""   
+		func = self.get_int_mode_details
+		merge_dict(self.interface_dict, self.interface_read(func))
+
+	@staticmethod
+	def get_int_mode_details(port_dict, l):
+		"""parser function to update interface mode details
+
+		Args:
+			port_dict (dict): dictionary with a port info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
+		if l.strip().startswith('switchport mode '):
+			port_dict['interface_mode'] = l.strip().split()[-1]
 
 
 	def interface_vlans(self):
@@ -127,9 +159,8 @@ class RunningInterfaces():
 		"""    		
 		vlans = get_vlans_cisco(l.strip())
 		if not vlans: return None
-		if not port_dict.get("vlan"): port_dict['vlan'] = {}
 		for k, v in vlans.items():
-			if v: port_dict['vlan'][k] = v
+			if v: port_dict[k] = v
 
 
 	def interface_channel_group(self):
@@ -156,9 +187,9 @@ class RunningInterfaces():
 			po_mode = spl[-1]
 
 		if not po: return None
-		port_dict['channel_group'] = {}
-		port_dict['channel_group']['interface'] = "Port-channel" + po
-		port_dict['channel_group']['mode'] = po_mode
+		port_dict['channel_group_interface'] = "Port-channel" + po
+		port_dict['channel_group_mode'] = po_mode
+		port_dict['channel_group'] = po
 
 
 	def interface_vrf(self):
@@ -183,7 +214,7 @@ class RunningInterfaces():
 			or l.strip().startswith("ip vrf forwarding")):
 			vrf = l.strip().split()[-1]
 		if not vrf: return None
-		port_dict['vrf'] = vrf
+		port_dict['intvrf'] = vrf
 
 
 	def interface_udld(self):
@@ -298,11 +329,15 @@ def get_interfaces_running(cmd_op, *args):
 		dict: output dictionary with parsed with system fields
 	"""    	
 	R  = RunningInterfaces(cmd_op)
-	# R.interface_ips()
-	# R.interface_v6_ips()
-	# R.interface_vlans()
+
+	R.interface_description()
+	R.interface_ips()
+	R.interface_v6_ips()
+	R.interface_vlans()
+	R.interface_mode()
+	R.interface_vrf()
+
 	R.interface_channel_group()
-	# R.interface_vrf()
 	R.interface_ospf_auth()
 	R.interface_udld()
 	R.interface_v4_helpers()

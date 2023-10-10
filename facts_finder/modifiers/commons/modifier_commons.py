@@ -87,8 +87,11 @@ class DataFrameInit():
 
 		Returns:
 			dict: dictionary of dataframe
-		"""		
-		dfd = pd.read_excel(self.capture, None)
+		"""
+		try:
+			dfd = pd.read_excel(self.capture, None)
+		except:
+			dfd = {}
 		ndf = {}
 		for sheet, df in dfd.items():
 			trunkated_sheet = trunk_no_more(sheet)
@@ -187,7 +190,7 @@ class Var():
 			None: None
 		"""		
 		sht_df = self._is_sheet_data_available(self.dfd, sht)
-		if sht_df.empty: return None
+		if not sht_df or sht_df.empty: return None
 		#
 		for k, v in self.cmd_lst[sht].items():
 			try:

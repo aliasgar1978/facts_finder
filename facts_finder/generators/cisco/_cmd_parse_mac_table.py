@@ -32,8 +32,8 @@ def get_mac_address_table(cmd_op, *args):
 			if spl[2].upper() != 'DYNAMIC': continue
 		except: continue
 		p = spl[-1]
-		if not op_dict.get(p): op_dict[p] = {'neighbor': {}}
-		nbr = op_dict[p]['neighbor']
+		if not op_dict.get(p): op_dict[p] = {}
+		nbr = op_dict[p]
 		if not nbr.get("mac"): nbr["mac"] = set()
 		if not nbr.get("mac2"): nbr["mac2"] = set()
 		if not nbr.get("mac4"): nbr["mac4"] = set()
@@ -41,4 +41,6 @@ def get_mac_address_table(cmd_op, *args):
 		nbr['mac2'].add(mac_2digit_separated(spl[1]))
 		nbr['mac4'].add(mac_4digit_separated(spl[1]))
 	return op_dict
+# ------------------------------------------------------------------------------
+# NOT WORKING AS EXPECTED
 # ------------------------------------------------------------------------------

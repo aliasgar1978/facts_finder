@@ -45,6 +45,7 @@ class OSPF():
 				continue
 			if l.startswith("!"): toggle = False
 			if toggle:
+				vrf_op_dict['filter'] = 'ospf'
 				func(vrf_op_dict, l, spl)
 
 		return op_dict

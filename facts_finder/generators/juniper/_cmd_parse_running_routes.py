@@ -119,7 +119,7 @@ def get_system_running_routes(cmd_op, *args):
 
 	# # update more interface related methods as needed.
 	if not R.route_dict:
-		R.route_dict['dummy_col'] = ""
+		R.route_dict['dummy_route'] = ""
 
 	return R.route_dict
 

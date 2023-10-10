@@ -2,6 +2,7 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
+from nettoolkit import *
 
 from ._cmd_parse_running import Running
 from facts_finder.generators.commons import *
@@ -41,10 +42,14 @@ class RunningOSPF(Running):
 			if len(ospf_spl) != 2: continue
 			spl = ospf_spl[-1].split()
 			p = "" if ospf_spl[0] == 'set' else ospf_spl[0].split()[-1]
+			if not p: continue
 			#
 			if not instance_dict.get(p): instance_dict[p] = {}
 			vrf_instance_dict = instance_dict[p]
 			vrf_instance_dict['ospf_vrf']= p
+			#
+			# if not (vrf_instance_dict.get('filter') and vrf_instance_dict['filter']):
+			# 	vrf_instance_dict['filter'] = get_juniper_int_type(p).lower()
 			#
 			func(vrf_instance_dict, ospf_spl[-1], spl)
 		return instance_dict
@@ -183,7 +188,7 @@ def get_instances_ospfs(cmd_op, *args):
 
 	# # update more instance related methods as needed.
 	if not R.op_dict:
-		R.op_dict['dummy_bgp'] = ""
+		R.op_dict['dummy_ospf'] = ""
 
 	return R.op_dict
 

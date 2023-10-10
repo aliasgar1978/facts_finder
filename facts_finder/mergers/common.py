@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 from nettoolkit import *
+from facts_finder.commons.common import *
 
 
 # ========================================================================================
@@ -43,45 +44,6 @@ def split_to_multiple_tabs(pdf):
 	pdf = d
 	return pdf
 
-def update_int_number(number):
-	"""calculates and returns interface number for given interface
-
-	Args:
-		number (str): cisco/juniper interface
-
-	Returns:
-		str: interface number
-	"""	
-	if not number: return -1
-	port_suffix = STR.if_suffix(number)
-	s = 0
-	for i, n in enumerate(reversed(port_suffix.split("/"))):
-		org_n = n
-		spl_n = n.split(".")
-		pfx = spl_n[0]
-		if pfx == org_n:
-			pfx = pfx.split(":")[0]
-		if pfx != '0':
-			if len(spl_n) == 2:
-				sfx = float("0." + spl_n[1])
-			else:
-				sfx = 0
-			multiplier = 100**i
-			if pfx:
-				nm = int(pfx)*multiplier
-				s += nm+sfx
-		else:
-			s += int(spl_n[-1])
-	return s
-
-def generate_int_number(pdf):
-	"""generates interface number for each interfaces
-
-	Args:
-		pdf (DataFrame): Pandas DataFrame
-	"""	
-	pdf['int_number'] =  pdf['interface'].apply(update_int_number)
-	pdf.sort_values(by=['int_number'], inplace=True)
 
 
 # ========================================================================================
@@ -127,8 +89,6 @@ class Merged:
 		"""		
 		if merge_on in fg_df.keys() and merge_on in fm_df.keys():
 			pdf = pd.merge( fm_df, fg_df, on=[merge_on,], how='outer').fillna("")		## merged dataframe
-			ix = [x for x in reversed(pdf.index[pdf['filter'] == ""])]				## row indexes for data where filter column value unavailable.
-			pdf.drop(ix, inplace=True)												##    remove such rows 
 			return pdf
 		elif merge_on in fg_df.keys() and merge_on not in fm_df.keys():
 			return fg_df
@@ -139,12 +99,12 @@ class Merged:
 	def merged_interfaces_dataframe(self):
 		"""merges Interfaces generator and modifier dataframes and drops empty rows for data where no filter value assigned.
 		"""		
-		fg_df = self.Fg['Interfaces'].reset_index()									## facts-gen dataframe
-		fg_df.rename(columns={'Interfaces': 'interface'}, inplace=True)				## update column name to match key/index between two dataframes. 
-		self.fg_int_df = fg_df
-		fm_df = self.pdf_dict['tables']												## facts-modifier dataframe
-		pdf = self.merge_and_drop_empty_filter_rows(fg_df, fm_df, 'interface')
-		self.int_df = pdf
+		self.interface_types = set(self.pdf_dict['tables']['filter'])
+		for int_type in self.interface_types:
+			fg_df = self.Fg[int_type]
+			fm_df = self.pdf_dict['tables'][self.pdf_dict['tables']['filter'] == int_type]
+			pdf = self.merge_and_drop_empty_filter_rows(fg_df, fm_df, 'interface')
+			self[int_type] = pdf
 
 	def merged_vrfs_dataframe(self):
 		"""merges vrf generator and modifier dataframes and drops empty rows for data where no filter value assigned.
@@ -160,7 +120,7 @@ class Merged:
 	def merged_var_dataframe(self):
 		"""merges system/var generator and modifier dataframes and drops empty rows for data where no filter value assigned.
 		"""	
-		fg_df = self.Fg['system'].reset_index()									## facts-gen dataframe
+		fg_df = self.Fg['var'].reset_index()									## facts-gen dataframe
 		fm_df = self.pdf_dict['var']											## facts-modifier dataframe
 		self.fg_var_df = fg_df
 		pdf = pd.merge( fm_df, fg_df, on=['var',], how='outer').fillna("")		## merged dataframe	
@@ -172,7 +132,7 @@ class Merged:
 	def bgp_dataframe(self):
 		"""merges bgp generator and modifier dataframes and drops empty rows for data where no filter value assigned.
 		"""	
-		fg_df = self.Fg['bgp neighbor'].reset_index()
+		fg_df = self.Fg['bgp'].reset_index()
 		self.fg_bgp_df = fg_df
 		fg_df['filter'] = 'bgp'
 		self['bgp'] = fg_df
@@ -196,16 +156,13 @@ class Merged:
 	def split_interface_dataframe(self):
 		"""splits interface dataframe in to multiple tabs.
 		"""	
-		self.interface_dataframe_keys = set()	
-		self.int_dfs = split_to_multiple_tabs(self.int_df)
-		for sheet, df in self.int_dfs.items():
-			self.interface_dataframe_keys.add(sheet)
-			self[sheet] = df
+		pass
 
 	def generate_interface_numbers(self):
 		"""generates interface number for each interfaces 
 		"""		
-		generate_int_number(self.int_df)
+		for int_type in self.interface_types:
+			generate_int_number(self[int_type])
 
 	def add_filters(self):
 		"""add filter column to each dataframe except 'var'
@@ -222,4 +179,7 @@ class Merged:
 		Returns:
 			str: hostname of device
 		"""		
-		return [x for x in self.var_df[self.var_df['var'] == 'hostname']['default']][0]
+		try:
+			return [x for x in self.var_df[self.var_df['var'] == 'hostname']['default']][0]
+		except:
+			return ""

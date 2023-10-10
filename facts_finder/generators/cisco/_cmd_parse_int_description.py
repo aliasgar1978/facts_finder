@@ -1,7 +1,7 @@
 """cisco show interface description command output parser """
 
 # ------------------------------------------------------------------------------
-from nettoolkit import *
+from nettoolkit_common import *
 from facts_finder.generators.commons import *
 from .common import *
 # ------------------------------------------------------------------------------
@@ -35,5 +35,8 @@ def get_interface_description(cmd_op, *args):
 			int_desc_dict[p] = {}
 		port = int_desc_dict[p]
 		port['description'] = get_string_trailing(l, desc_begin_at)
+		if not (int_desc_dict.get('filter') and int_desc_dict['filter']):
+			port['filter'] = get_cisco_int_type(p)
+
 	return int_desc_dict
 # ------------------------------------------------------------------------------

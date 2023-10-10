@@ -2,7 +2,7 @@
 """cisco show interface status command output parser """
 
 # ------------------------------------------------------------------------------
-from nettoolkit import *
+from nettoolkit_common import *
 from facts_finder.generators.commons import *
 from .common import *
 # ------------------------------------------------------------------------------
@@ -46,9 +46,11 @@ def get_interface_status(cmd_op, *args):
 		p = STR.if_standardize(spl[0])
 		int_status_dict[p] = {}
 		port = int_status_dict[p]
-		port['port_type'] = get_string_trailing(l, type_begin_at)
+		port['media_type'] = get_string_trailing(l, type_begin_at)
 		port['duplex'] = get_string_part(l, duplex_begin, duplex_end)
 		port['speed'] = get_string_part(l, speed_begin, speed_end)
-		port['port_status'] = get_string_part(l, status_begin, status_end)
+		port['link_status'] = get_string_part(l, status_begin, status_end)
+		if not (int_status_dict.get('filter') and int_status_dict['filter']):
+			port['filter'] = get_cisco_int_type(p)
 	return int_status_dict
 # ------------------------------------------------------------------------------

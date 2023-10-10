@@ -48,7 +48,6 @@ class DeviceDB():
 			elif isinstance(hierachy_levels[cmd], tuple):
 				for i, hierachy_level in enumerate(hierachy_levels[cmd]):
 					self.update_hierarcy(hierachy_level, parsed_op[i])
-		# pprint(self.config)
 		return self.convert_dict_to_df()
 
 	def update_hierarcy(self, hierarchy, content=None):

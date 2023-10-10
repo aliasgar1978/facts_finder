@@ -41,6 +41,7 @@ class RunningRoutes():
 			n += 1
 			ports_dict[n] = {}
 			rdict = ports_dict[n]
+			rdict['filter'] = 'static'
 			func(rdict,  l, spl)
 		return ports_dict
 
@@ -116,7 +117,6 @@ class RunningRoutes():
 			remark = " ".join(spl[idx_update+5:])
 			idx_update += 2
 		#
-		dic['filter'] = 'static'
 		dic['pfx_vrf'] = pfx_vrf
 		dic['prefix'] = prefix
 		dic['next_hop'] = next_hop

@@ -19,59 +19,59 @@ LEN_CMD_LINE = len(CMD_LINE_START_WITH)
 # ``cisco_cmds_list``
 # ------------------------------------------------------------------------------
 cisco_cmds_list = OrderedDict([
-	# ('sh lldp nei', {'dsr': True}),			# dsr = domain suffix removal
+	('sh lldp nei', {'dsr': True}),			# dsr = domain suffix removal
 	# ('sh cdp nei', {'dsr': True}),			# dsr = domain suffix removal
-	# ('sh int status', {}),
-	# ('sh int desc', {}),
-	# ('show mac address-table', {}),
-	# ('sh ip arp', {}),
+	('sh int status', {}),
+	# ('sh int desc', {}),           # N/R - part of running interface config 
+	# ('show mac address-table', {}),  # N/W - as expected
+	# ('sh ip arp', {}),  # N/W - as expected
 	('sh run', {}),
-	# ('sh ver', {}),
+	('sh ver', {}),
 	## ADD More as grow ##
 ])
 # ------------------------------------------------------------------------------
 # COMMAND OUTPUT HIERARCHY LEVEL ( key need to match with 'cisco_cmds_list' )
 # ``cisco_cmds_op_hierachy_level``
 # ------------------------------------------------------------------------------
-cisco_cmds_op_hierachy_level = {
-	# 'sh lldp nei': 'Interfaces',
-	# 'sh cdp nei': 'Interfaces',
-	# 'sh int status': 'Interfaces',
+cisco_cmds_op_hierachy_level = OrderedDict([
+	('sh lldp nei', 'Interfaces'),
+	# ('sh cdp nei', 'Interfaces'),
+	('sh int status', 'Interfaces'),
 	# 'sh int desc': 'Interfaces',
 	# 'show mac address-table': 'arp',
 	# 'sh ip arp': 'arp',
-	'sh run': (
-		'system', 
-		'bgp neighbor', 
-		'Interfaces', 
-		'vrf',
-		'ospf',
-		'static',
-		)
-	# 'sh ver': 'system',
+	('sh run', (
+			'var', 
+			'bgp', 
+			'Interfaces', 
+			'vrf',
+			'ospf',
+			'static',
+			)),
+	('sh ver', 'var'),
 	## ADD More as grow ##
-}
+])
 # ------------------------------------------------------------------------------
 # Dict of cisco commands, %full commands in keys mapped with parser func.
 # ``cisco_commands_parser_map``
 # ------------------------------------------------------------------------------
-cisco_commands_parser_map = {
-	# 'show lldp neighbors': get_lldp_neighbour,
-	# 'show cdp neighbors': get_cdp_neighbour,
-	# 'show interfaces status': get_interface_status,
+cisco_commands_parser_map = OrderedDict([
+	('show lldp neighbors', get_lldp_neighbour),
+	# ('show cdp neighbors', get_cdp_neighbour),       # removed due to multiline problem
+	('show interfaces status', get_interface_status),
 	# 'show interfaces description': get_interface_description,
 	# 'show mac address-table': get_mac_address_table,
 	# 'show ip arp': get_arp_table,
-	'show running-config': (
-		get_system_running, 
-		get_bgp_running, 
-		get_interfaces_running, 
-		get_vrfs_running,
-		get_ospf_running,
-		get_system_running_routes,
-		)
-	# 'show version': get_version,
-}
+	('show running-config', (
+			get_system_running, 
+			get_bgp_running, 
+			get_interfaces_running, 
+			get_vrfs_running,
+			get_ospf_running,
+			get_system_running_routes,
+			)),
+	('show version', get_version),
+])
 # ------------------------------------------------------------------------------
 
 def absolute_command(cmd, cmd_parser_map):
@@ -88,14 +88,17 @@ def absolute_command(cmd, cmd_parser_map):
 	spl_cmd = cmd.split()
 	for c_cmd in cmd_parser_map:
 		spl_c_cmd = c_cmd.split()
-		for i, word in enumerate(spl_cmd):
-			try:
-				word_match = spl_c_cmd[i].startswith(word)
-				if not word_match: break
-			except:
-				word_match = False
-				break
-		if word_match: break
+		if len(spl_cmd) == len(spl_c_cmd):
+			for i, word in enumerate(spl_cmd):
+				try:
+					word_match = spl_c_cmd[i].startswith(word)
+					if not word_match: break
+				except:
+					word_match = False
+					break
+			if word_match: break
+		else:
+			word_match = False
 	if word_match:  return c_cmd
 	return cmd
 
@@ -179,9 +182,35 @@ class Cisco(DevicePapa):
 
 		Returns:
 			dict: dictionary with the details captured from the output
-		"""    		
+		"""   
 		op_list = get_op_cisco(self.file, abs_cmd, cisco_commands_parser_map)
 		if not parse_func: return None		
 		po = parse_func(op_list,*arg, **kwarg)
 		return po
+
+	def verify(self):
+		"""verification in capture for existance of cisco command in output
+
+		Raises:
+			Exception: If missing any mandatory captures
+		"""		
+		mandatory_cmds = set(cisco_commands_parser_map.keys())
+		found_cmds = set()
+		with open(self.file, 'r') as f:
+			lines = f.readlines()
+		for line in lines:
+			if line.startswith(f"! {CMD_LINE_START_WITH}"):
+				cmd = line.split(CMD_LINE_START_WITH)[-1]
+				abs_cmd = absolute_command(cmd, cisco_commands_parser_map)
+				found_cmds.add(abs_cmd)
+		missing_op_cmds = mandatory_cmds.difference(found_cmds)
+		if missing_op_cmds:
+			for moc in missing_op_cmds:
+				print(f'Missing capture for command: {moc}')
+			raise Exception(f'Cannot Continue due to missing mandatory capture(s)')
+		print(f'Capture Verified...,', end='\t')
+
+
+
+
 # ------------------------------------------------------------------------------

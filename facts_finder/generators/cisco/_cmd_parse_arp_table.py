@@ -36,9 +36,11 @@ def get_arp_table(cmd_op, *args):
 			ip = spl[1]
 		except:
 			pass
-		if not op_dict.get(p): op_dict[p] = {'arps': {}}
-		port = op_dict[p]['arps']
+		if not op_dict.get(p): op_dict[p] = {}
+		port = op_dict[p]
 		if not port.get(_mac): port[_mac] = set()
 		port[_mac].add(ip)
 	return op_dict
+# ------------------------------------------------------------------------------
+# NOT WORKING AS EXPECTED
 # ------------------------------------------------------------------------------

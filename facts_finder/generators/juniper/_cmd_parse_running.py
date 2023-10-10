@@ -15,6 +15,11 @@ class Running():
 		"""initialize the object by providing the  config output
 		"""    		    		
 		self.cmd_op = cmd_op
-		JS = JSet(input_list=cmd_op)
-		JS.to_set
-		self.set_cmd_op = verifid_output(JS.output)
+		if self.cmd_op:	
+			JS = JSet(input_list=cmd_op)
+			JS.to_set
+			self.set_cmd_op = verifid_output(JS.output)
+		else:
+			self.set_cmd_op = []
+			raise Exception(f'Missing Configuration capture.. {cmd_op}, verify input')
+

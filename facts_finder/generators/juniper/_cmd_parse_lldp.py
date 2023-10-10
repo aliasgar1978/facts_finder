@@ -1,6 +1,7 @@
 """juniper lldp neighbour command output parser """
 
 # ------------------------------------------------------------------------------
+from nettoolkit import get_juniper_int_type
 from facts_finder.generators.commons import *
 from .common import *
 
@@ -44,10 +45,13 @@ def get_lldp_neighbour(cmd_op, *args, dsr=True):
 		if dsr: remote_hn = remove_domain(remote_hn)
 
 		# SET / RESET
-		nbr_d[local_if] = {'neighbor': {}}
-		nbr = nbr_d[local_if]['neighbor']
-		nbr['hostname'] = remote_hn
-		nbr['interface'] = remote_if
+		nbr_d[local_if] = {}
+		nbr = nbr_d[local_if]
+		nbr['nbr_hostname'] = remote_hn
+		nbr['nbr_interface'] = remote_if
+		if not (nbr_d.get('filter') and nbr_d['filter']):
+			int_type = get_juniper_int_type(local_if)
+			nbr['filter'] = int_type.lower()
 		local_if, remote_hn, remote_if = "", "", ""
 	return nbr_d
 # ------------------------------------------------------------------------------

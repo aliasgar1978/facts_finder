@@ -93,6 +93,7 @@ class AddressFamily(BGP_Papa):
 			if not op_dict.get(nbr):
 				op_dict[nbr] = {}
 				nbr_dict = op_dict[nbr]
+				nbr_dict['filter'] = 'bgp'
 			func(nbr_dict, l, spl)
 
 		return op_dict
@@ -155,6 +156,7 @@ class BGP(BGP_Papa):
 			if not op_dict.get(nbr):
 				op_dict[nbr] = {}
 				nbr_dict = op_dict[nbr]
+				nbr_dict['filter'] = 'bgp'
 			func(nbr_dict, l, spl)
 
 		update_dict = merge_vrftype_name_inkey(self.afl)

@@ -34,7 +34,7 @@ class RunningVRFs():
 		vrfs_dict = OrderedDict()
 		for l in self.cmd_op:
 			if blank_line(l): continue
-			if l.strip().startswith("!"): 
+			if l.startswith("!"): 
 				int_toggle = False
 				continue
 			if l.startswith("vrf ") or l.startswith("ip vrf "):
@@ -45,6 +45,7 @@ class RunningVRFs():
 				int_toggle = True
 				continue
 			if int_toggle:
+				port_dict['filter'] = 'vrf'
 				func(port_dict, l)
 		return vrfs_dict
 
@@ -71,6 +72,77 @@ class RunningVRFs():
 		func = self.get_vrf_description
 		merge_dict(self.vrf_dict, self.vrf_read(func))
 
+	@staticmethod
+	def get_vrf_rd(port_dict, l):
+		"""parser function to update vrf rd details
+
+		Args:
+			port_dict (dict): dictionary with a vrf info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
+		rd = None
+		if l.strip().startswith("rd "):
+			rd = l.strip().split(" ", 1)[-1]
+			port_dict['default_rd'] = rd
+		if not rd: return None
+
+	def vrf_rd(self):
+		"""update the vrf rd details
+		"""    		
+		func = self.get_vrf_rd
+		merge_dict(self.vrf_dict, self.vrf_read(func))
+
+	@staticmethod
+	def get_vrf_rt(port_dict, l):
+		"""parser function to update vrf rt details
+
+		Args:
+			port_dict (dict): dictionary with a vrf info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
+		rt = None
+		if l.strip().startswith("route-target export "):
+			rt = l.strip().split(":")[-1]
+			port_dict['vrf_route_target'] = rt
+		if not rt: return None
+
+	def vrf_rt(self):
+		"""update the vrf rt details
+		"""    		
+		func = self.get_vrf_rt
+		merge_dict(self.vrf_dict, self.vrf_read(func))
+
+	@staticmethod
+	def get_vrf_af(port_dict, l):
+		"""parser function to update vrf address-family details
+
+		Args:
+			port_dict (dict): dictionary with a vrf info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    	
+		if l.strip().startswith("address-family "):
+			af = l.strip().split()[-1]
+			if port_dict.get('protocols'):
+				port_dict['protocols'] += "," + af
+			else:
+				port_dict['protocols'] = af
+
+	def vrf_af(self):
+		"""update the vrf address-family details
+		"""    		
+		func = self.get_vrf_af
+		merge_dict(self.vrf_dict, self.vrf_read(func))
+
+
 	# # Add more vrf related methods as needed.
 
 
@@ -89,6 +161,9 @@ def get_vrfs_running(cmd_op, *args):
 	"""    	
 	R  = RunningVRFs(cmd_op)
 	R.vrf_description()
+	R.vrf_rd()
+	R.vrf_rt()
+	R.vrf_af()
 
 	# # update more interface related methods as needed.
 

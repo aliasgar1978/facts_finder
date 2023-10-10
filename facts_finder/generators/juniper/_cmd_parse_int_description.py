@@ -2,9 +2,11 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
+from nettoolkit import get_juniper_int_type
 from facts_finder.generators.commons import *
 from .common import *
 # ------------------------------------------------------------------------------
+
 
 def get_int_description(cmd_op, *args):
 	"""parser - show interfaces description command output
@@ -22,18 +24,23 @@ def get_int_description(cmd_op, *args):
 	cmd_op = verifid_output(cmd_op)
 	op_dict = OrderedDict()
 
-	nbr_d, remote_hn = {}, ""
-	nbr_table_start = False
 	for l in cmd_op:
 		if blank_line(l): continue
 		if l.strip().startswith("#"): continue
 		if l.startswith("Interface"): 
 			desc_begin_at = l.find("Description")
+			link_desc_begin_at = l.find("Admin")
 			continue
 		spl = l.strip().split()
 		p = spl[0]
 		if not op_dict.get(p): op_dict[p] = {}
 		port = op_dict[p]
-		port['description'] = get_string_trailing(l, desc_begin_at)
+		if not (port.get('description') and port['description']):
+			port['description'] = get_string_trailing(l, desc_begin_at)
+		port['link_status'] = l[link_desc_begin_at:link_desc_begin_at+5].strip()
+		if not (op_dict.get('filter') and op_dict['filter']):
+			int_type = get_juniper_int_type(p)
+			port['filter'] = int_type.lower()
+
 	return op_dict
 # ------------------------------------------------------------------------------

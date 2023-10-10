@@ -3,10 +3,8 @@
 
 from .merger import device
 from .merger import DeviceDB
-from .facts_gen import FactsGen
+from .facts_gen import FactsGen, get_necessary_cmds, get_absolute_command
 
 __all__ = [ 
-	'device', 'DeviceDB', 'FactsGen',
+	'device', 'DeviceDB', 'FactsGen', 'get_necessary_cmds', 'get_absolute_command',
 ]
-
-__ver__ = "0.0.7"

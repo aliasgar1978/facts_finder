@@ -23,6 +23,7 @@ class CiscoMerge(Merged):
 	def __call__(self):
 		"""object call,  merger execution steps by step
 		"""		
+		if not self.capture_tfsm_file: return None
 		self.get_facts_modifiers()
 
 		self.merged_var_dataframe()			# self.var_df
@@ -49,7 +50,6 @@ class CiscoMerge(Merged):
 		"""		
 		self.fg_merged_dict = {
 			'var': self.fg_var_df,
-			'interface': self.fg_int_df,
 			'vrf': self.fg_vrf_df,
 			'bgp': self.fg_bgp_df,
 

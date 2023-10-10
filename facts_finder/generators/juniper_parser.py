@@ -8,6 +8,7 @@ from .juniper import *
 from .device import DevicePapa
 # ------------------------------------------------------------------------------
 
+CMD_LINE_START_WITH = "output for command: "
 # ------------------------------------------------------------------------------
 # // Juniper //
 # ------------------------------------------------------------------------------
@@ -15,12 +16,12 @@ from .device import DevicePapa
 # ``juniper_cmds_list``
 # ------------------------------------------------------------------------------
 juniper_cmds_list = OrderedDict([
+	('show interfaces descriptions', {}),
 	('show lldp neighbors', {'dsr': True}),		# dsr = domain-suffix removal, default=True
 	('show configuration', {}),
 	('show version', {}),
-	('show interfaces descriptions', {}),
 	('show chassis hardware', {}),
-	('show arp', {}),
+	# ('show arp', {}),
 
 
 	## ADD More as grow ##
@@ -29,40 +30,40 @@ juniper_cmds_list = OrderedDict([
 # COMMAND OUTPUT HIERARCHY LEVEL
 # ``juniper_cmds_op_hierachy_level``
 # ------------------------------------------------------------------------------
-juniper_cmds_op_hierachy_level = {
-	'show lldp neighbors': 'Interfaces',
-	'show configuration': ('Interfaces', 'system', 'vrf', 'bgp neighbor', 'ospf', 'static', ),
-	'show version': 'system',
-	'show interfaces descriptions': 'Interfaces',
-	'show chassis hardware': ('Interfaces', 'system'),
-	'show arp': 'arp',
+juniper_cmds_op_hierachy_level = OrderedDict([
+	('show interfaces descriptions', 'Interfaces'),
+	('show lldp neighbors', 'Interfaces'),
+	('show configuration', ('Interfaces', 'var', 'vrf', 'bgp', 'ospf', 'static', )),
+	('show version', 'var'),
+	('show chassis hardware', ('Interfaces', 'var')),
+	# 'show arp': 'arp',
 
 
 	## ADD More as grow ##
-}
+])
 # ------------------------------------------------------------------------------
 # Dict of Juniper commands, %trunked commands mapped with parser func.
 # ``juniper_commands_parser_map``
 # ------------------------------------------------------------------------------
-juniper_commands_parser_map = {
+juniper_commands_parser_map = OrderedDict([
 
     # ---- ADD PARSER FUNCTIONS IN BELOW FORMAT ONLY ----
     # 'juniper show command' : function_name,                               ## if single hierarchy details from output
     # 'juniper show command' : (function_name1, function_name2, ... ),      ## if multiple hierarchies details from output
     # ---------------------------------------------------
 
-	'show lldp neighbors': get_lldp_neighbour,
-	'show configuration': (get_interfaces_running, get_running_system, get_instances_running, 
-			get_instances_bgps, get_instances_ospfs, get_system_running_routes),
-	'show version': get_version,
-	'show interfaces descriptions': None,
-	'show interfaces terse': None,
-	'show chassis hardware': (get_chassis_hardware, get_chassis_serial),
-	'show arp': get_arp_table,
-	'show bgp summary': None,
+	('show interfaces descriptions', get_int_description),
+	('show lldp neighbors', get_lldp_neighbour),
+	('show configuration', (get_interfaces_running, get_running_system, get_instances_running, 
+				get_instances_bgps, get_instances_ospfs, get_system_running_routes)),
+	('show version', get_version),
+	('show chassis hardware', (get_chassis_hardware, get_chassis_serial)),
+	# 'show interfaces terse': None,
+	# 'show arp': get_arp_table,
+	# 'show bgp summary': None,
     
     # ... ADD MORE AS NECESSARY ... 
-}
+])
 # ------------------------------------------------------------------------------
 
 def absolute_command(cmd, cmd_parser_map, op_filter=False):
@@ -134,5 +135,28 @@ class Juniper(DevicePapa):
 		if not parse_func: return None
 		po = parse_func(op_list, *arg, **kwarg)
 		return po
+
+	def verify(self):
+		"""verifications of existance of mandatory commands in output captures
+
+		Raises:
+			Exception: Raises if a mandatory command is missing in output  
+		"""		
+		mandatory_cmds = set(juniper_commands_parser_map.keys())
+		found_cmds = set()
+		with open(self.file, 'r') as f:
+			lines = f.readlines()
+		for line in lines:
+			if line.startswith(f"# {CMD_LINE_START_WITH}"):
+				cmd = line.split(CMD_LINE_START_WITH)[-1]
+				abs_cmd = absolute_command(cmd, juniper_commands_parser_map)
+				found_cmds.add(abs_cmd.split("|")[0])
+		missing_op_cmds = mandatory_cmds.difference(found_cmds)
+		if missing_op_cmds:
+			for moc in missing_op_cmds:
+				print(f'Missing capture for command: {moc}')
+			raise Exception(f'Cannot Continue due to missing mandatory capture(s)')
+		print(f'Capture Verified...,', end='\t')
+
 
 # ------------------------------------------------------------------------------

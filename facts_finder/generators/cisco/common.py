@@ -51,16 +51,16 @@ def get_vlans_cisco(line):
 	Returns:
 		dict: vlan information dictionary
 	"""    	
-	vlans = {'trunk': set(), 'access': None, 'voice': None, 'native': None}
+	vlans = {'vlan_members': set(), 'access_vlan': None, 'voice_vlan': None, 'native_vlan': None}
 	line = line.strip()
 	if line.startswith("switchport trunk allowed"):
-		vlans['trunk'] = trunk_vlans_cisco(line)
+		vlans['vlan_members'] = LST.list_variants(trunk_vlans_cisco(line))['csv_list']
 	elif line.startswith("switchport access vlan"):
-		vlans['access'] = line.split()[-1]
+		vlans['access_vlan'] = line.split()[-1]
 	elif line.startswith("switchport voice vlan"):
-		vlans['voice'] = line.split()[-1]
+		vlans['voice_vlan'] = line.split()[-1]
 	elif line.startswith("switchport trunk native"):
-		vlans['native'] = line.split()[-1]
+		vlans['native_vlan'] = line.split()[-1]
 	else:
 		return None
 	return vlans
@@ -106,9 +106,9 @@ def get_inet_address(line):
 		str: ipv4 address with /mask , None if not found.
 	"""    	
 	if line.strip().startswith("ip address "):
-		spl = line.split()
-		ip  = spl[-2]
-		mask = to_dec_mask(spl[-1])
+		spl = line.strip().split()
+		ip  = spl[2]
+		mask = to_dec_mask(spl[3])
 		s = ip+"/"+str(mask)
 		return s
 	return None
