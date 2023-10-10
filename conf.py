@@ -18,11 +18,11 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'facts_finder'
-copyright = '2023, ALIASGAR [ALI]'
-author = 'ALIASGAR [ALI]'
+copyright = '2023, AHOLO [ALI]'
+author = 'ALIASGAR'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.18'
+release = '0.1.0'
 
 
 # -- General configuration ---------------------------------------------------

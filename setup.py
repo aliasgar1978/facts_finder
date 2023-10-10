@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="facts_finder",
-    version="0.0.18",
+    version="0.1.0",
     author="ALIASGAR - ALI",
     author_email="aholo2000@gmail.com",
     description="facts_finder for Networking Geeks",
