@@ -2,11 +2,10 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
-from nettoolkit.gpl import JUNIPER_IFS_IDENTIFIERS, get_juniper_int_type
 
 from facts_finder.generators.commons import *
-from ._cmd_parse_running import Running
 from .common import *
+from ._cmd_parse_running import Running
 
 
 merge_dict = DIC.merge_dict

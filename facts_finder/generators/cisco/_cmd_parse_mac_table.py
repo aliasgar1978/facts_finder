@@ -1,6 +1,7 @@
 """cisco show mac address-table command output parser """
 
 # ------------------------------------------------------------------------------
+
 from facts_finder.generators.commons import *
 from .common import *
 # ------------------------------------------------------------------------------

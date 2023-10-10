@@ -1,6 +1,7 @@
 """cisco show version command output parser """
 
 # ------------------------------------------------------------------------------
+
 from facts_finder.generators.commons import *
 from .common import *
 # ------------------------------------------------------------------------------

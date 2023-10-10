@@ -1,9 +1,8 @@
 """common functions for cisco parsers """
 
 # ------------------------------------------------------------------------------
-from nettoolkit import *
-from nettoolkit.gpl import CISCO_IFSH_IDENTIFIERS
-
+from nettoolkit_common.gpl import *
+from nettoolkit.addressing import *
 # ------------------------------------------------------------------------------
 
 

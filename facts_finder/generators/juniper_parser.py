@@ -2,7 +2,7 @@
 """
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
-from nettoolkit import *
+from nettoolkit_common import *
 
 from .juniper import *
 from .device import DevicePapa

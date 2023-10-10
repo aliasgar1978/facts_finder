@@ -1,8 +1,10 @@
 """juniper set config initiator - parent """
 
+# ------------------------------------------------------------------------------
+
 from facts_finder.generators.commons import *
 from .common import *
-
+# ------------------------------------------------------------------------------
 
 class Running():
 	"""parent object for config parser
@@ -23,3 +25,4 @@ class Running():
 			self.set_cmd_op = []
 			raise Exception(f'Missing Configuration capture.. {cmd_op}, verify input')
 
+# ------------------------------------------------------------------------------

@@ -1,7 +1,6 @@
 """juniper lldp neighbour command output parser """
 
 # ------------------------------------------------------------------------------
-from nettoolkit import get_juniper_int_type
 from facts_finder.generators.commons import *
 from .common import *
 

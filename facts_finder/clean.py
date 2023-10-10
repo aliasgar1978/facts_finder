@@ -3,7 +3,9 @@
 
 
 import os
-from nettoolkit import *
+from nettoolkit_common import *
+from nettoolkit_db import *
+from pyJuniper import *
 from pathlib import *
 
 from .generators import FactsGen

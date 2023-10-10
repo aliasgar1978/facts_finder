@@ -2,7 +2,7 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
-import nettoolkit as nt
+
 from facts_finder.generators.commons import *
 from .common import *
 
@@ -43,7 +43,7 @@ class RunningInterfaces():
 				if not p: continue
 				if not ports_dict.get(p): ports_dict[p] = {}
 				port_dict = ports_dict[p]
-				port_dict['filter'] = nt.gpl.interface_type(l.split("interface ")[-1])[0].lower()
+				port_dict['filter'] = interface_type(l.split("interface ")[-1])[0].lower()
 				int_toggle = True
 				continue
 			if int_toggle:

@@ -1,7 +1,7 @@
 """cisco show interface description command output parser """
 
 # ------------------------------------------------------------------------------
-from nettoolkit_common import *
+
 from facts_finder.generators.commons import *
 from .common import *
 # ------------------------------------------------------------------------------

@@ -2,6 +2,7 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
+
 from facts_finder.generators.commons import *
 from .common import *
 # ------------------------------------------------------------------------------

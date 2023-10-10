@@ -2,7 +2,7 @@
 """
 
 import pandas as pd
-from nettoolkit import *
+from nettoolkit_db import *
 
 
 # =====================================================================================================

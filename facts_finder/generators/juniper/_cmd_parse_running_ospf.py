@@ -2,11 +2,10 @@
 
 # ------------------------------------------------------------------------------
 from collections import OrderedDict
-from nettoolkit import *
 
-from ._cmd_parse_running import Running
 from facts_finder.generators.commons import *
 from .common import *
+from ._cmd_parse_running import Running
 
 merge_dict = DIC.merge_dict
 # ------------------------------------------------------------------------------

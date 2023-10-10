@@ -1,6 +1,7 @@
 
 from collections import OrderedDict
-from nettoolkit import *
+from nettoolkit_common import *
+
 
 from .cisco_parser import *
 from .juniper_parser import *

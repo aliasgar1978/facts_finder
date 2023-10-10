@@ -1,7 +1,7 @@
 """cisco show cdp neighbour command output parser """
 
 # ------------------------------------------------------------------------------
-from nettoolkit import *
+
 from facts_finder.generators.commons import *
 from .common import *
 # ------------------------------------------------------------------------------
