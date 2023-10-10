@@ -1,5 +1,7 @@
-nettoolkit>0.0.19
 pandas
 numpy
 openpyxl
-
+nettoolkit_db
+nettoolkit_common
+pyjuniper
+pynetcrypt
