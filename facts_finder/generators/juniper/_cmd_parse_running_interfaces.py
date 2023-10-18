@@ -52,7 +52,7 @@ class RunningInterfaces(Running):
 			if not p: continue
 			if not ports_dict.get(p): ports_dict[p] = {}
 			port_dict = ports_dict[p]
-			func(port_dict, l, spl)
+			func(port_dict, l, spl, p)
 		return ports_dict
 
 
@@ -120,7 +120,7 @@ class RunningInterfaces(Running):
 		merge_dict(self.interface_dict, self.interface_read(func))
 
 	@staticmethod
-	def get_ip_details(port_dict, l, spl):
+	def get_ip_details(port_dict, l, spl, p):
 		"""parser function to update interface ipv4 ip address details
 
 		Args:
@@ -142,7 +142,7 @@ class RunningInterfaces(Running):
 		merge_dict(self.interface_dict, self.interface_read(func))
 
 	@staticmethod
-	def get_ipv6_details(port_dict, l, spl):
+	def get_ipv6_details(port_dict, l, spl, p):
 		"""parser function to update interface ipv6 ip address details
 
 		Args:
@@ -167,7 +167,7 @@ class RunningInterfaces(Running):
 		func = self.get_int_vlan_details
 		merge_dict(self.interface_dict, self.interface_read(func))
 
-	def get_int_vlan_details(self, port_dict, l, spl):
+	def get_int_vlan_details(self, port_dict, l, spl, p):
 		"""parser function to update interface vlan details
 
 		Args:
@@ -180,13 +180,17 @@ class RunningInterfaces(Running):
 		"""
 		vlans = get_vlans_juniper(spl, "s")
 		if not vlans: return None
-		key = 'access_vlan'
-		if port_dict.get('interface_mode') and port_dict['interface_mode'] == 'trunk':
+		# key = 'access_vlan'
+		if self.interface_dict[p].get('interface_mode') and self.interface_dict[p]['interface_mode'] == 'trunk':
 			key = 'vlan_members'
-		if not port_dict.get(key): 			
-			port_dict[key] = str(" ".join(vlans))
+		elif self.interface_dict[p].get('interface_mode') and self.interface_dict[p]['interface_mode'] == 'access':
+			key = 'access_vlan'
 		else:
-			port_dict[key] += ","+str(" ".join(vlans))
+			return None
+		if not port_dict.get(key): 			
+			port_dict[key] = str(",".join(vlans))
+		else:
+			port_dict[key] += ","+str(",".join(vlans))
 		for vlan in vlans:
 			if vlan in self.voice_vlans:
 				port_dict['voice_vlan'] = vlan
@@ -198,7 +202,7 @@ class RunningInterfaces(Running):
 		merge_dict(self.interface_dict, self.interface_read(func))
 
 	@staticmethod
-	def get_interface_mode(port_dict, l, spl):
+	def get_interface_mode(port_dict, l, spl, p):
 		"""parser function to update interface port mode trunk/access details
 
 		Args:
@@ -221,7 +225,7 @@ class RunningInterfaces(Running):
 		merge_dict(self.interface_dict, self.interface_read(func))
 
 	@staticmethod
-	def get_int_description(port_dict, l, spl):
+	def get_int_description(port_dict, l, spl, p):
 		"""parser function to update interface description details
 
 		Args:
@@ -246,8 +250,7 @@ class RunningInterfaces(Running):
 		func = self.get_int_filter
 		merge_dict(self.interface_dict, self.interface_read(func))
 
-	@staticmethod
-	def get_int_filter(port_dict, l, spl):
+	def get_int_filter(self, port_dict, l, spl, p):
 		"""parser function to update interface type details
 
 		Args:
@@ -257,10 +260,9 @@ class RunningInterfaces(Running):
 
 		Returns:
 			None: None
-		"""    		
+		"""
 		int_type = get_juniper_int_type(spl[2])
 		port_dict['filter'] = int_type.lower()
-		return port_dict
 
 	def interface_channel_grp(self):
 		"""update the interface port channel details
@@ -269,7 +271,7 @@ class RunningInterfaces(Running):
 		merge_dict(self.interface_dict, self.interface_read(func))
 
 	@staticmethod
-	def get_interface_channel_grp(port_dict, l, spl):
+	def get_interface_channel_grp(port_dict, l, spl, p):
 		"""parser function to update interface port channel details
 
 		Args:
@@ -296,26 +298,15 @@ class RunningInterfaces(Running):
 	def int_dot_zero_merge_to_parent(self):
 		""" merges the value of two keys for `parent` and `parent unit 0` configs
 		"""
-		for k, v in self.interface_dict.copy().items():
-			if k.endswith(".0"):
-				if self.interface_dict.get(k[:-2]):
-					self.interface_dict[k[:-2]].update(v)
-				else:
-					self.interface_dict[k[:-2]] = v
-				del(self.interface_dict[k])
-
-	def int_dot_zero_merge_to_parent1(self):
-		""" merges the value of two keys for `parent` and `parent unit 0` configs
-		"""
+		parents = set()
 		for k, v in self.interface_dict.copy().items():
 			if not k.endswith(".0"): continue
 			parent = k.split(".")[0]
 			if self.interface_dict.get(parent):
-				parent_dict = self.interface_dict[parent]
-				for key, value in parent_dict.items():
-					if not (v.get(key) and v[key]):
-						v[key] = value
-				del(self.interface_dict[parent])
+				parents.add(k)
+				self.interface_dict[parent].update(v)
+		for p in parents:
+			del(self.interface_dict[p])
 
 	def int_to_int_number(self):
 		''' creates an arbirary unique number for each interface on interface types 
@@ -423,17 +414,15 @@ def get_interfaces_running(cmd_op, *args):
 	R.interface_mode()
 	R.interface_vlans()
 	R.interface_description()
-	R.int_filter()
 	R.interface_channel_grp()
+	R.int_filter()
 
 
 	# # update more interface related methods as needed.
-	R.int_filter()
 	R.int_to_int_number()
 	R.routing_instance_read()
 	R.ospf_authentication_details()
-	# R.int_dot_zero_merge_to_parent()      ## removed due to issue arise check before add back.
-	R.int_dot_zero_merge_to_parent1()       ## added in place of above
+	R.int_dot_zero_merge_to_parent()
 
 
 	if not R.interface_dict:
