@@ -40,13 +40,14 @@ class RunningOSPF(Running):
 			ospf_spl = l.split(" protocols ospf ")
 			if len(ospf_spl) != 2: continue
 			spl = ospf_spl[-1].split()
-			p = "" if ospf_spl[0] == 'set' else ospf_spl[0].split()[-1]
+			p = "1" if ospf_spl[0] == 'set' else ospf_spl[0].split()[-1]
 			if not p: continue
 			#
 			if not instance_dict.get(p): instance_dict[p] = {}
 			vrf_instance_dict = instance_dict[p]
-			vrf_instance_dict['ospf_vrf']= p
+			vrf_instance_dict['ospf_vrf'] = "" if p =='1' else  p
 			#
+			vrf_instance_dict['filter'] = 'ospf'
 			# if not (vrf_instance_dict.get('filter') and vrf_instance_dict['filter']):
 			# 	vrf_instance_dict['filter'] = get_juniper_int_type(p).lower()
 			#
@@ -124,7 +125,7 @@ class RunningOSPF(Running):
 			None: None
 		"""
 		if len(spl)>6 and spl[4] == 'authentication':
-			password = get_juniper_pw_string(spl, 6)
+			password = juniper_decrypt(get_juniper_pw_string(spl, 6))
 			interface = spl[3]
 			if not vrf_op_dict.get('auth'):
 				vrf_op_dict['auth'] = {}

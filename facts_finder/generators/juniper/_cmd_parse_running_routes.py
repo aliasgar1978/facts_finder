@@ -53,6 +53,7 @@ class RunningRoutes(Running):
 				ports_dict[self.n] = {} 
 			prev_prefix = prefix
 			rdict = ports_dict[self.n]
+			rdict['filter'] = 'static'
 			func(rdict,  l, vrf_spl_sect, route_spl_sect, v)
 		return ports_dict
 

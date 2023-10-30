@@ -39,15 +39,24 @@ def get_lldp_neighbour(cmd_op, *args, dsr=True):
 
 		# // LOCAL/NBR INTERFACE, NBR HOSTNAME //
 		local_if = spl[0]
-		remote_if = standardize_if(spl[-2].strip())
 		remote_hn = spl[-1].strip()
 		if dsr: remote_hn = remove_domain(remote_hn)
 
 		# SET / RESET
 		nbr_d[local_if] = {}
 		nbr = nbr_d[local_if]
+		#
+		remote_device = get_device_manu(spl[-2].strip())
+		if remote_device == 'cisco':
+			remote_if = standardize_if(spl[-2].strip())
+			nbr['nbr_interface'] = remote_if
+			nbr['int_udld'] = 'aggressive'
+		else:
+			remote_if = spl[-2].strip()
+			nbr['nbr_interface'] = remote_if
+			nbr['int_udld'] = 'disable'
+		#
 		nbr['nbr_hostname'] = remote_hn
-		nbr['nbr_interface'] = remote_if
 		if not (nbr_d.get('filter') and nbr_d['filter']):
 			int_type = get_juniper_int_type(local_if)
 			nbr['filter'] = int_type.lower()

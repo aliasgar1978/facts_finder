@@ -70,6 +70,25 @@ class RunningInterfaces():
 		if l.strip().startswith("description "):
 			port_dict['description'] = l.strip().split(" ", 1)[-1]
 
+	def interface_state(self):
+		"""update the interface status (up/down/disabled) details
+		"""    		
+		func = self.get_interface_state
+		merge_dict(self.interface_dict, self.interface_read(func))
+
+	@staticmethod
+	def get_interface_state(port_dict, l):
+		"""parser function to update interface state details
+
+		Args:
+			port_dict (dict): dictionary with a port info
+			l (str): string line to parse
+
+		Returns:
+			None: None
+		"""    		
+		if l.strip().startswith("shutdown"):
+			port_dict['link_status'] = 'administratively down'
 
 	def interface_ips(self):
 		"""update the interface ipv4 ip address details
@@ -336,6 +355,7 @@ def get_interfaces_running(cmd_op, *args):
 	R.interface_vlans()
 	R.interface_mode()
 	R.interface_vrf()
+	R.interface_state()
 
 	R.interface_channel_group()
 	R.interface_ospf_auth()

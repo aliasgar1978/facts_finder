@@ -158,7 +158,7 @@ class RunningInterfaces(Running):
 		link_local = _is_link_local(address)
 		if link_local :
 			return None
-		port_dict['v6Subnet'] = get_v6_subnet(address)
+		port_dict['v6subnet'] = get_v6_subnet(address)
 
 
 	def interface_vlans(self):
@@ -295,7 +295,7 @@ class RunningInterfaces(Running):
 
 	## --------------------------------------------------------------------------------
 
-	def int_dot_zero_merge_to_parent(self):
+	def int_dot_zero_merge_to_parent1(self):
 		""" merges the value of two keys for `parent` and `parent unit 0` configs
 		"""
 		parents = set()
@@ -422,7 +422,7 @@ def get_interfaces_running(cmd_op, *args):
 	R.int_to_int_number()
 	R.routing_instance_read()
 	R.ospf_authentication_details()
-	R.int_dot_zero_merge_to_parent()
+	R.int_dot_zero_merge_to_parent1()       ## added in place of above
 
 
 	if not R.interface_dict:
