@@ -66,66 +66,24 @@ class RunningRoutes():
 		version = 'unknown'		
 		if spl[0] == 'ip': version = 4
 		if spl[0] == 'ipv6': version = 6
-		#
+		if version not in (4,6): return None
 		idx_update = 0
-		pfx_vrf = ''
-		if spl[2] == 'vrf': 
-			pfx_vrf = spl[3]
-			idx_update += 2
 		#
-		if version == 4:
-			prefix, subnet_mask, next_hop = spl[idx_update+2], spl[idx_update+3], ''
-			prefix = inet_address(prefix, subnet_mask)
-			nh = spl[idx_update+4]
-			try:
-				addressing(nh)
-				next_hop = nh
-				idx_update += 1
-			except:
-				pass
-		elif version == 6:
-			prefix, next_hop = spl[idx_update+2], ''
-			nh = spl[idx_update+3]
-			idx_update -= 1
-			try:
-				addressing(nh)
-				next_hop = nh
-				idx_update += 1
-			except:
-				pass
-		else:
-			return None
+		if spl[2] == 'vrf':  idx_update += 2
 		#
-		adminisrative_distance = ''
-
-		if 'Null0' in spl:
-			if spl[idx_update+5].isnumeric():
-				adminisrative_distance = spl[idx_update+5]
-				idx_update += 2
-			else:
-				idx_update += 1
-		elif next_hop != '' and len(spl)>=idx_update+5 and spl[idx_update+4].isnumeric():
-			adminisrative_distance = spl[idx_update+4]
-			idx_update += 1
+		prefix, next_hop, idx_update = get_pfx_nh_idxdist(version, spl, idx_update)
 		#
-		tag_value = ''
-		if 'tag' in spl:
-			tag_value = spl[idx_update+5]
-			idx_update += 2
-		#
-		remark = ''
-		if 'name' in spl:
-			remark = " ".join(spl[idx_update+5:])
-			idx_update += 2
-		#
-		dic['pfx_vrf'] = pfx_vrf
+		dic['version'] = version
+		dic['pfx_vrf'] = get_singel_idx_item('vrf', spl)
 		dic['prefix'] = prefix
 		dic['next_hop'] = next_hop
-		dic['adminisrative_distance'] = adminisrative_distance
-		dic['tag_value'] = tag_value
-		dic['remark'] = remark
-		dic['version'] = version
+		dic['adminisrative_distance'] = get_administrative_dist(spl, next_hop, idx_distance=idx_update)
+		dic['tag_value'] = get_singel_idx_item('tag', spl)
+		dic['remark'] = get_multi_idx_item('name', spl)
+		dic['track'] = get_singel_idx_item('track', spl)
 		return dic
+
+
 
 
 
@@ -154,3 +112,56 @@ def get_system_running_routes(cmd_op, *args):
 
 # ------------------------------------------------------------------------------
 
+def index_of(item, lst):
+	if item in lst:
+		return lst.index(item)
+	return ""
+
+def get_singel_idx_item(item, lst):
+	idx = index_of(item, lst)
+	if idx: return lst[idx+1]
+	return ""
+
+def get_multi_idx_item(item, lst):
+	candidates = {'vrf', 'Null0', 'tag', 'name', 'track'}
+	my_idx = index_of(item, lst)
+	if not my_idx: return ""
+	max_idx = len(lst)
+	others_idx = {index_of(c, lst):c for c in candidates if index_of(c, lst)}
+	for k in sorted(others_idx.keys()):
+		if k > my_idx:
+			max_idx = k
+			break
+	return " ".join(lst[my_idx+1:max_idx])
+
+def get_administrative_dist(spl, next_hop, idx_distance):
+	adminisrative_distance = ''
+	if (
+			('Null0' in spl and spl[idx_distance+5].isnumeric())
+		or 	(next_hop != '' and len(spl)>=idx_distance+5 and spl[idx_distance+4].isnumeric())
+		):
+		adminisrative_distance = get_singel_idx_item('Null0', spl)
+	return adminisrative_distance
+
+def get_pfx_nh_idxdist(version, spl, idx_distance):
+	if version == 4:
+		prefix, subnet_mask, next_hop = spl[idx_distance+2], spl[idx_distance+3], ''
+		prefix = inet_address(prefix, subnet_mask)
+		nh = spl[idx_distance+4]
+		try:
+			addressing(nh)
+			next_hop = nh
+			idx_distance += 1
+		except:
+			pass
+	elif version == 6:
+		prefix, next_hop = spl[idx_distance+2], ''
+		nh = spl[idx_distance+3]
+		idx_distance -= 1
+		try:
+			addressing(nh)
+			next_hop = nh
+			idx_distance += 1
+		except:
+			pass
+	return (prefix, next_hop, idx_distance)

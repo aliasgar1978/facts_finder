@@ -40,7 +40,10 @@ def get_lldp_neighbour(cmd_op, *args, dsr=True):
 		# // LOCAL/NBR INTERFACE, NBR PLATFORM //
 		# // NBR HOSTNAME //
 		local_if = STR.if_standardize(line[20:31].strip().replace(" ", ""))
-		remote_if = STR.if_standardize(dbl_spl[-1].strip())
+		try:
+			remote_if = STR.if_standardize(dbl_spl[-1].strip())
+		except KeyError:
+			remote_if = ''
 		remote_hn = line[:20].strip()
 		if dsr: remote_hn = remove_domain(remote_hn)
 
