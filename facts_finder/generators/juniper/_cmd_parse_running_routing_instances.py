@@ -43,6 +43,7 @@ class RunningIntances(Running):
 			if not p: continue
 			if not ports_dict.get(p): ports_dict[p] = {}
 			port_dict = ports_dict[p]
+			port_dict['filter'] = 'vrf'
 			func(port_dict, l, spl)
 		return ports_dict
 

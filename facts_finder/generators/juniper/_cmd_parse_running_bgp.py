@@ -47,6 +47,7 @@ class RunningIntanceBGP(Running):
 			if not p: continue
 			if not ports_dict.get(p): ports_dict[p] = {}
 			port_dict = ports_dict[p]
+			port_dict['filter'] = 'bgp'
 			func(port_dict, l, spl, proto_idx)
 		return ports_dict
 
@@ -73,6 +74,7 @@ class RunningIntanceBGP(Running):
 			if not p: continue
 			if not ports_dict.get(p): ports_dict[p] = {}
 			port_dict = ports_dict[p]
+			port_dict['filter'] = 'bgp'
 			func(port_dict, l, spl, proto_idx)
 		return ports_dict
 
