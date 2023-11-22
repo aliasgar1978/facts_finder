@@ -67,8 +67,17 @@ Version Control
    * - 0.0.18
      - Sep 23, 2023
      - Bug fix: **juniper** issues with - bgp_peer_as,  vlan_range in trunk interfaces 
+   * - 0.1.1
+     - Nov 1, 2023
+     - added **OSPF** and **STATIC ROUTES** filters. 
 
 
+
+.. warning::
+
+  * Updation of this package individually is stopped.
+  * Package is incorporated in ``nettoolkit`` package as a sub-package.
+  * Use nettoolkit for the future updates.
 
 
 -----
